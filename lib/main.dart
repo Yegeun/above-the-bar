@@ -1,3 +1,6 @@
+import 'package:above_the_bar/bloc/app_blocs.dart';
+import 'package:above_the_bar/bloc/app_states.dart';
+import 'package:above_the_bar/repo/exercise_repo.dart';
 import 'package:above_the_bar/screens/athletes/athlete_history.dart';
 import 'package:above_the_bar/screens/athletes/athlete_profile.dart';
 import 'package:above_the_bar/screens/athletes/athlete_program.dart';
@@ -13,6 +16,7 @@ import 'package:above_the_bar/screens/coach/manage_programs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
 import 'screens/coach_home.dart';
 import 'screens/home.dart';
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/coach/profile': (context) => CoachProfile(),
         '/coach/edit': (context) => EditProgram(), // Edit through args
         '/coach/create-program': (context) => CreateProgram(),
-        '/coach/create-exercise': (context) => CreateExercise(),
+        '/coach/create-exercise': (context) => CreateExercisePage(),
         '/coach/add-athlete': (context) => AddAthlete(),
         '/coach/assign-athlete': (context) => AssignAthlete(),
       },
