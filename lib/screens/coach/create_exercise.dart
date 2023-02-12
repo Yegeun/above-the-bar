@@ -1,5 +1,8 @@
+import 'package:above_the_bar/models/exercise_model.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:above_the_bar/bloc/exercise/exercise_bloc.dart';
+import '/bloc/blocs.dart';
 
 class CreateExercise extends StatefulWidget {
   @override
@@ -7,11 +10,7 @@ class CreateExercise extends StatefulWidget {
 }
 
 class _CreateExerciseState extends State<CreateExercise> {
-  //this can be implemented somewhere else
   final _formKey = GlobalKey<FormState>();
-
-  final Stream<QuerySnapshot> users =
-      FirebaseFirestore.instance.collection('users').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +32,46 @@ class _CreateExerciseState extends State<CreateExercise> {
                 ),
               ],
             ),
-            Text(
-              'Read data',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                BlocBuilder<ExerciseBloc, ExerciseState>(
+                  builder: (context, state) {
+                    if (state is ExerciseLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is ExerciseLoaded) {
+                      final List<Exercise> exercisetemp =
+                          state.exercises.toList();
+                      print(exercisetemp.length);
+                      return Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: exercisetemp.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(exercisetemp[index].name),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        'Something went wrong ',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
             Container(
               height: 250,
               padding: EdgeInsets.symmetric(vertical: 20.0),
-
-              //                 final messages = snapshot.data!.docs;
-              //                 List<Text> messageWidgets = [];
-              //
-              //                 for (var element in messages) {
-              //                   final messageText = element['text'];
-              //                   final messageSender = element['sender'];
-              //
-              //                   final messageWidget =
-              //                       Text('$messageText from $messageSender');
-              //                   messageWidgets.add(messageWidget);
-              //                 }
-              //                 return Column(
-              //                   children: messageWidgets,
-              //                 );
-              //               }
-              //               return const Text('Error');
-              //             },
-              //             stream:collectionStream),
             ),
             Row(
               children: [
