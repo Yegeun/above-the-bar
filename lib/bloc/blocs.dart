@@ -1,1 +1,2 @@
-export 'exercise/exercise_bloc.dart';
+export 'exerciselist/exercise_bloc.dart';
+export 'create_new_exercise/create_new_exercise_bloc.dart';

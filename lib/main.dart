@@ -1,5 +1,8 @@
-import 'package:above_the_bar/bloc/exercise/exercise_bloc.dart';
-import 'package:above_the_bar/repositories/exercise/exercise_repository.dart';
+import 'package:above_the_bar/bloc/blocs.dart';
+import 'package:above_the_bar/bloc/exerciselist/exercise_bloc.dart';
+import 'package:above_the_bar/models/models.dart';
+import 'package:above_the_bar/repositories/create_new_exercise/create_new_exercise_repository.dart';
+import 'package:above_the_bar/repositories/exerciselist/exercise_repository.dart';
 import 'package:above_the_bar/screens/athletes/athlete_history.dart';
 import 'package:above_the_bar/screens/athletes/athlete_profile.dart';
 import 'package:above_the_bar/screens/athletes/athlete_program.dart';
@@ -40,9 +43,14 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => ExerciseBloc(
+          create: (context) => ExerciseBloc(
             exerciseRepository: ExerciseRepository(),
           )..add(LoadExercises()),
+        ),
+        BlocProvider(
+          create: (_) => CreateNewExerciseBloc(
+            createNewExerciseRepository: CreateNewExerciseRepository(),
+          ),
         ),
       ],
       child: MaterialApp(
