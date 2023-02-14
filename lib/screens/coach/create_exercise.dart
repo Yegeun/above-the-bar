@@ -1,7 +1,7 @@
 import 'package:above_the_bar/models/exercise_model.dart';
+import 'package:above_the_bar/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:above_the_bar/bloc/exercise/exercise_bloc.dart';
 import '/bloc/blocs.dart';
 
 class CreateExercise extends StatefulWidget {
@@ -82,39 +82,84 @@ class _CreateExerciseState extends State<CreateExercise> {
                       alignment: Alignment.center,
                       child: Text("Exercise Name")),
                 ),
+              ],
+            ),
+            Row(
+              children: [
                 Expanded(
-                  flex: 3,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10.0),
-                    alignment: Alignment.center,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.add),
-                        hintText: 'What is the exercise called',
-                        labelText: 'Name',
-                      ),
-                      onChanged: (value) {},
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
+                  child: BlocBuilder<CreateNewExerciseBloc,
+                      CreateNewExerciseState>(
+                    builder: (context, state) {
+                      if (state is CreateNewExerciseLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (state is CreateNewExerciseLoaded) {
+                        return Container(
+                          padding: EdgeInsets.only(top: 10.0),
+                          alignment: Alignment.center,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.add),
+                              hintText: 'What is the exercise called',
+                              labelText: 'Name',
+                            ),
+                            onChanged: (value) {
+                              context.read<CreateNewExerciseBloc>().add(
+                                    UpdateNewExercises(
+                                      SingleExercise(newName: value),
+                                    ),
+                                  );
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                        );
+                      }
+                      return Text(
+                        'Something went wrong ',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
             SizedBox(height: 20),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Sending Data')));
+              child: BlocBuilder<CreateNewExerciseBloc, CreateNewExerciseState>(
+                builder: (context, state) {
+                  if (state is CreateNewExerciseLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
+                  if (state is CreateNewExerciseLoaded) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        context.read<CreateNewExerciseBloc>().add(
+                              CreateNewExercise(
+                                SingleExercise(
+                                  newName: state.singleExercise.newName,
+                                ),
+                              ),
+                            );
+                        Navigator.pop(context);
+                      },
+                      child: Text('Submit'),
+                    );
+                  }
+                  return Text(
+                    'Something went wrong ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  );
                 },
-                child: Text('Submit'),
               ),
             ),
           ],
