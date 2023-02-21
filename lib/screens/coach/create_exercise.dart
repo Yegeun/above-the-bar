@@ -46,7 +46,7 @@ class _CreateExerciseState extends State<CreateExercise> {
                       final List<Exercise> exercisetemp =
                           state.exercises.toList();
                       print(exercisetemp.length);
-                      return Expanded(
+                      return Flexible(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -70,8 +70,8 @@ class _CreateExerciseState extends State<CreateExercise> {
               ],
             ),
             Container(
-              height: 250,
-              padding: EdgeInsets.symmetric(vertical: 20.0),
+              height: 50,
+              padding: EdgeInsets.symmetric(vertical: 10.0),
             ),
             Row(
               children: [

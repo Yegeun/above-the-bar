@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData.dark(),
+        theme: ThemeData.light(),
         initialRoute: '/',
         routes: {
           '/': (context) => Home(),
