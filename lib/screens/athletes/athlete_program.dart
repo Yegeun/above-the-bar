@@ -20,15 +20,6 @@ class _AthleteProgramState extends State<AthleteProgram> {
                 flex: 1,
                 child: Text("Program"),
               ),
-              Expanded(
-                flex: 1,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/coach/edit');
-                  },
-                  child: Text("Edit Program"),
-                ),
-              ),
             ],
           )
         ],
