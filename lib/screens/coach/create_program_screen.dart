@@ -11,6 +11,7 @@ class CreateProgramScreen extends StatefulWidget {
 
 class _CreateProgramScreenState extends State<CreateProgramScreen> {
   List<CreateExerciseWidget> listDynamic = [];
+  List<CreateExerciseWidget> listCreateExercise = [];
   List<String> data = [];
 
   int vExerciseNum = 1;
@@ -21,6 +22,8 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
 
   CreateExerciseWidget one =
       CreateExerciseWidget(week: 1, session: 1, exerciseNum: 1);
+  CreateExerciseWidget two =
+      CreateExerciseWidget(week: 1, session: 1, exerciseNum: 2);
 
   // addDynamic(int dynamicWeek, int dynamicSession, int dynamicExerciseNum) {
   //   if (data.length != 0) {
@@ -101,26 +104,37 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                       if (state is ProgramLoaded) {
                         return ElevatedButton(
                           onPressed: () {
+                            listCreateExercise.add(one);
+                            listCreateExercise.add(two);
                             // make a list of each exeercise populated
                             // then add each list inisde the exercise using []
-                            context.read<ProgramBloc>().add(
-                                  CreateProgram(
-                                    Program(
-                                      name: 'Test',
-                                      week: 1,
-                                      session: 1,
-                                      exerciseNum: 2,
-                                      exercise: one.controllerGetExText,
-                                      sets:
-                                          int.parse(one.controllerGetSetsText),
-                                      reps:
-                                          int.parse(one.controllerGetRepsText),
-                                      intensity:
-                                          int.parse(one.controllerGetIntText),
-                                      comments: one.controllerGetCommentsText,
+                            for (int i = 0;
+                                i < listCreateExercise.length;
+                                i++) {
+                              context.read<ProgramBloc>().add(
+                                    CreateProgram(
+                                      Program(
+                                        name: listCreateExercise[i]
+                                            .controllerGetExText,
+                                        week: listCreateExercise[i].week,
+                                        session: listCreateExercise[i].session,
+                                        exerciseNum:
+                                            listCreateExercise[i].exerciseNum,
+                                        exercise: listCreateExercise[i]
+                                            .controllerGetExText,
+                                        sets: int.parse(listCreateExercise[i]
+                                            .controllerGetSetsText),
+                                        reps: int.parse(listCreateExercise[i]
+                                            .controllerGetRepsText),
+                                        intensity: int.parse(
+                                            listCreateExercise[i]
+                                                .controllerGetIntText),
+                                        comments: listCreateExercise[i]
+                                            .controllerGetCommentsText,
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                            }
                             Navigator.pop(context);
                           },
                           child: Text('Submit'),
@@ -136,7 +150,7 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                 ),
                 Text('W1 Session 1'),
                 one,
-                CreateExerciseWidget(week: 1, session: 1, exerciseNum: 2),
+                two,
                 // Text('Session 2'),
                 // CreateExerciseWidget(week: 1, session: 2, exerciseNum: 1),
                 // CreateExerciseWidget(week: 1, session: 2, exerciseNum: 2),

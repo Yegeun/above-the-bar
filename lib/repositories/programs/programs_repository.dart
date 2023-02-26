@@ -18,7 +18,7 @@ class ProgramRepository extends BaseProgramsRepository {
         .collection('programs')
         .doc('program name')
         .collection('GPP1') //Name of Program
-        .doc('Exercise') // Name of the Document
+        .doc(program.name) // Name of the Document
         .set(program.toDocument());
   }
 
