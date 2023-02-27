@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Program extends Equatable {
+  final String programName;
   final String name;
   final int week;
   final int session;
@@ -13,6 +14,7 @@ class Program extends Equatable {
   final String comments;
 
   const Program({
+    required this.programName,
     required this.name,
     required this.week,
     required this.session,
@@ -26,6 +28,7 @@ class Program extends Equatable {
 
   @override
   List<Object?> get props => [
+        programName,
         name,
         week,
         session,
@@ -40,6 +43,7 @@ class Program extends Equatable {
   //To write in the firebase
   Map<String, Object> toDocument() {
     return {
+      'programName': programName,
       'name': name,
       'week': week,
       'session': session,

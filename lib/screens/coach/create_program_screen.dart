@@ -20,6 +20,8 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
 
   Icon floatingIcon = Icon(Icons.add);
 
+  TextEditingController controllerProgName = TextEditingController();
+
   CreateExerciseWidget one =
       CreateExerciseWidget(week: 1, session: 1, exerciseNum: 1);
   CreateExerciseWidget two =
@@ -114,6 +116,7 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                               context.read<ProgramBloc>().add(
                                     CreateProgram(
                                       Program(
+                                        programName: controllerProgName.text,
                                         name: listCreateExercise[i]
                                             .controllerGetExText,
                                         week: listCreateExercise[i].week,
@@ -134,7 +137,9 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                                       ),
                                     ),
                                   );
+                              listCreateExercise[i].dispose();
                             }
+
                             Navigator.pop(context);
                           },
                           child: Text('Submit'),
@@ -148,30 +153,35 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                     },
                   ),
                 ),
+                Container(
+                  width: 150,
+                  margin: EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: controllerProgName,
+                    decoration: InputDecoration(hintText: 'Name of Program'),
+                  ),
+                ),
                 Text('W1 Session 1'),
                 one,
                 two,
-                // Text('Session 2'),
-                // CreateExerciseWidget(week: 1, session: 2, exerciseNum: 1),
-                // CreateExerciseWidget(week: 1, session: 2, exerciseNum: 2),
+                // Column(
+                //   children: [
+                //     Text('W2 Session 1'),
+                //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 1),
+                //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 2),
+                //     Text('Session 2'),
+                //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 1),
+                //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 2),
+                //   ],
+                // )
+
+                // data.isEmpty ? dynamicTextField : result,
+                // OutlinedButton(
+                //   onPressed: addDynamic(vSessionNum, vWeekNum, vExerciseNum++),
+                //   child: Text('Add Exercise'),
+                // ),
               ],
             ),
-            // Column(
-            //   children: [
-            //     Text('W2 Session 1'),
-            //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 1),
-            //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 2),
-            //     Text('Session 2'),
-            //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 1),
-            //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 2),
-            //   ],
-            // )
-
-            // data.isEmpty ? dynamicTextField : result,
-            // OutlinedButton(
-            //   onPressed: addDynamic(vSessionNum, vWeekNum, vExerciseNum++),
-            //   child: Text('Add Exercise'),
-            // ),
           ],
         ),
       ),

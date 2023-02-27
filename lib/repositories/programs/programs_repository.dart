@@ -14,10 +14,10 @@ class ProgramRepository extends BaseProgramsRepository {
     print('It has got here ${program.exercise}');
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart')
+        .doc('stuart.martin')
         .collection('programs')
         .doc('program name')
-        .collection('GPP1') //Name of Program
+        .collection(program.programName) //Name of Program
         .doc(program.name) // Name of the Document
         .set(program.toDocument());
   }

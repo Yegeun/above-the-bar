@@ -20,6 +20,14 @@ class CreateExerciseWidget extends StatelessWidget {
   TextEditingController controllerComments = TextEditingController();
   String get controllerGetCommentsText => controllerComments.text;
 
+  void dispose() {
+    _controllerEx.dispose();
+    controllerSets.dispose();
+    controllerReps.dispose();
+    controllerInt.dispose();
+    controllerComments.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
