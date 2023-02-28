@@ -1,5 +1,9 @@
+import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import '../../models/athlete_model.dart';
 
 class AddAthlete extends StatefulWidget {
   @override
@@ -8,8 +12,27 @@ class AddAthlete extends StatefulWidget {
 
 class _AddAthleteState extends State<AddAthlete> {
   String time = '';
+
+  final TextEditingController _controllerName = TextEditingController();
+  String get controllerGetNameText => _controllerName.text;
+  final TextEditingController _controllerEmail = TextEditingController();
+  String get controllerGetEmailText => _controllerEmail.text;
+  final TextEditingController _controllerBlock = TextEditingController();
+  String get controllerGetBlock => _controllerBlock.text;
+  late DateTime date = DateTime.now();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controllerName.dispose();
+    _controllerEmail.dispose();
+    _controllerBlock.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    String text = DateFormat('yyyy-MM-dd').format(date);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Athlete"),
@@ -17,110 +40,83 @@ class _AddAthleteState extends State<AddAthlete> {
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CreateAthleteWidget(),
-          //   BlocBuilder<ProgramBloc, ProgramState>(
-          //   builder: (context, state) {
-          // if (state is ProgramLoading) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
-          // if (state is ProgramLoaded) {
-          //   return ElevatedButton(
-          //       onPressed: () {
-          //     listCreateExercise.add(one);
-          //     listCreateExercise.add(two);
-          //     // make a list of each exercise populated
-          //     // then add each list inside the exercise using []
-          //     for (int i = 0;
-          //     i < listCreateExercise.length;
-          //     i++) {
-          //       context.read<ProgramBloc>().add(
-          //         CreateProgram(
-          //           Program(
-          //           ),
-          //         ),
-          //       );
-          //       listCreateExercise[i].dispose();
-          //     }
+          Column(
+            children: [
+              Container(
+                width: 200,
+                margin: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _controllerName,
+                  decoration: InputDecoration(hintText: 'Name'),
+                ),
+              ),
+              Container(
+                width: 200,
+                margin: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _controllerEmail,
+                  decoration: InputDecoration(hintText: 'Email'),
+                ),
+              ),
+              Container(
+                width: 200,
+                margin: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _controllerBlock,
+                  decoration: InputDecoration(hintText: 'Block'),
+                ),
+              ),
+              Container(
+                width: 200,
+                margin: EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () async {
+                    date = (await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2024)))!;
+                    print(date);
+                    setState(() {
+                      text = DateFormat('yyyy-MM-dd').format(date);
+                    });
+                  },
+                  child: Text(text),
+                ),
+              ),
+              SizedBox(height: 10.0),
+            ],
+          ),
+          BlocBuilder<AthleteBloc, AthleteState>(
+            builder: (context, state) {
+              if (state is AthleteLoading || state is AthleteLoaded) {
+                return ElevatedButton(
+                  onPressed: () {
+                    context.read<AthleteBloc>().add(
+                          CreateAthlete(
+                            Athlete(
+                              name: controllerGetNameText.toLowerCase(),
+                              email: controllerGetEmailText.toLowerCase(),
+                              block: controllerGetBlock.toLowerCase(),
+                              startDate: DateTime.parse(text),
+                            ),
+                          ),
+                        );
+                    print(controllerGetNameText);
+                    print(controllerGetEmailText);
+                    print(controllerGetBlock);
+                    print(text);
+                    dispose();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add Athlete'),
+                );
+              }
+              return const Text('Error');
+            },
+          )
         ],
       ),
-    );
-  }
-}
-
-class CreateAthleteWidget extends StatefulWidget {
-  CreateAthleteWidget({Key? key}) : super(key: key);
-
-  final TextEditingController _controllerName = TextEditingController();
-  String get controllerGetNameText => _controllerName.text;
-  final TextEditingController controllerEmail = TextEditingController();
-  String get controllerGetEmailText => controllerEmail.text;
-  final TextEditingController _controllerBlock = TextEditingController();
-  String get controllerGetBlock => _controllerBlock.text;
-  final TextEditingController _controllerStart = TextEditingController();
-  String get controllerGetStart => _controllerStart.text;
-
-  @override
-  _CreateAthleteWidgetState createState() => _CreateAthleteWidgetState();
-}
-
-class _CreateAthleteWidgetState extends State<CreateAthleteWidget> {
-  late DateTime _date = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    String text = DateFormat('yyyy-MM-dd').format(_date);
-    return Column(
-      children: [
-        Container(
-          width: 200,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: widget._controllerName,
-            decoration: InputDecoration(hintText: 'Name'),
-          ),
-        ),
-        Container(
-          width: 200,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: widget.controllerEmail,
-            decoration: InputDecoration(hintText: 'Email'),
-          ),
-        ),
-        Container(
-          width: 200,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: widget._controllerBlock,
-            decoration: InputDecoration(hintText: 'Block'),
-          ),
-        ),
-        Container(
-          width: 200,
-          margin: EdgeInsets.all(8.0),
-          child: TextButton(
-            onPressed: () async {
-              _date = (await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime(2024)))!;
-              print(_date);
-              setState(() {
-                text = DateFormat('yyyy-MM-dd').format(_date);
-              });
-            },
-            child: Text(text),
-          ),
-        ),
-        SizedBox(height: 10.0),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text("Add Athlete"),
-        ),
-      ],
     );
   }
 }
