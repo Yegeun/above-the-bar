@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Athlete extends Equatable {
@@ -20,6 +21,16 @@ class Athlete extends Equatable {
         block,
         startDate,
       ];
+
+  static Athlete fromSnapshot(DocumentSnapshot snap) {
+    Athlete athlete = Athlete(
+      name: snap['name'],
+      email: snap['email'],
+      block: snap['block'],
+      startDate: snap['startDate'].toDate(),
+    );
+    return athlete;
+  }
 
   //To write in the firebase
   Map<String, Object> toDocument() {
