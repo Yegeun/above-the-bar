@@ -11,10 +11,10 @@ class ProgramRepository extends BaseProgramsRepository {
 
   @override
   Future<void> createNewProgram(Program program) async {
-    print('It has got here ${program.exercise}');
+    print('Program exercise ${program.exercise}');
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin')
+        .doc('stuart.martin') //TODO: Change to login user
         .collection('programs')
         .doc('program name')
         .collection(program.programName) //Name of Program

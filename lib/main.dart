@@ -1,19 +1,7 @@
 import 'package:above_the_bar/bloc/blocs.dart';
-import 'package:above_the_bar/repositories/create_new_exercise/create_new_exercise_repository.dart';
-import 'package:above_the_bar/repositories/exerciselist/exercise_repository.dart';
-import 'package:above_the_bar/repositories/programs/programs_repository.dart';
-import 'package:above_the_bar/screens/athletes/athlete_history.dart';
-import 'package:above_the_bar/screens/athletes/athlete_profile.dart';
-import 'package:above_the_bar/screens/athletes/athlete_program.dart';
-import 'package:above_the_bar/screens/coach/add_athlete.dart';
-import 'package:above_the_bar/screens/coach/assign_athlete.dart';
-import 'package:above_the_bar/screens/coach/athlete_overview.dart';
-import 'package:above_the_bar/screens/coach/coach_profile.dart';
-import 'package:above_the_bar/screens/coach/create_exercise.dart';
-import 'package:above_the_bar/screens/coach/create_program_screen.dart';
-import 'package:above_the_bar/screens/coach/edit_program.dart';
-import 'package:above_the_bar/screens/coach/manage_exercises.dart';
-import 'package:above_the_bar/screens/coach/manage_programs.dart';
+import 'package:above_the_bar/repositories/repositories.dart';
+
+import 'package:above_the_bar/screens/screens.dart';
 
 import 'package:above_the_bar/simple_bloc_observer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,9 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
-import 'screens/coach_home.dart';
-import 'screens/home.dart';
-import 'screens/athlete_home.dart';
 
 bool shouldUseFirestoreEmulator = false;
 
@@ -55,6 +40,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => ProgramBloc(
             programRepository: ProgramRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => AthleteBloc(
+            athleteRepository: AthleteRepository(),
           ),
         ),
       ],
