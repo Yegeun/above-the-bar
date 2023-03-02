@@ -11,8 +11,6 @@ class AddAthlete extends StatefulWidget {
 }
 
 class _AddAthleteState extends State<AddAthlete> {
-  String time = '';
-
   final TextEditingController _controllerName = TextEditingController();
   String get controllerGetNameText => _controllerName.text;
   final TextEditingController _controllerEmail = TextEditingController();
@@ -76,7 +74,6 @@ class _AddAthleteState extends State<AddAthlete> {
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2020),
                         lastDate: DateTime(2024)))!;
-                    print(date);
                     setState(() {
                       text = DateFormat('yyyy-MM-dd').format(date);
                     });
@@ -102,10 +99,6 @@ class _AddAthleteState extends State<AddAthlete> {
                             ),
                           ),
                         );
-                    print(controllerGetNameText);
-                    print(controllerGetEmailText);
-                    print(controllerGetBlock);
-                    print(text);
                     dispose();
                     Navigator.pop(context);
                   },

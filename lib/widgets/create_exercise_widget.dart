@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CreateExerciseWidget extends StatelessWidget {
-  CreateExerciseWidget(
-      {required this.week, required this.session, required this.exerciseNum});
-
   final int week;
   final int session;
   final int exerciseNum;
+
+  CreateExerciseWidget(
+      {required this.week, required this.session, required this.exerciseNum});
 
   final TextEditingController _controllerEx = TextEditingController();
   String get controllerGetExText => _controllerEx.text;

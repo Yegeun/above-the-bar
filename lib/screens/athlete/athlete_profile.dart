@@ -24,7 +24,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                 flex: 1,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/coach/edit');
+                    Navigator.pushNamed(context, '/athlete/edit');
                   },
                   child: Text("Edit Program"),
                 ),
