@@ -19,6 +19,7 @@ class _AthleteHomeState extends State<AthleteHome> {
   List<String> data = [];
 
   late DateTime date = DateTime.now();
+
   //initiate AthleteInput
   AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
   AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
@@ -55,7 +56,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   alignment: Alignment.topCenter,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/history');
+                      Navigator.pushNamed(context, '/athlete/program-viewer');
                     },
                     child: Text("View Program"),
                   ),
@@ -99,54 +100,56 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
               ),
             ],
-          ),//Date
+          ), //Date
           ex1,
           ex2,
           Row(
             children: [
-              BlocBuilder<AthleteDataBloc, AthleteDataState>(builder: (context,state){
-                if(state is AthleteDataLoading || state is AthleteDataLoaded){
+              BlocBuilder<AthleteDataBloc, AthleteDataState>(
+                  builder: (context, state) {
+                if (state is AthleteDataLoading || state is AthleteDataLoaded) {
                   return OutlinedButton(
                       onPressed: () {
                         // Input validation for the Exercises
-                        if(ex1.controllerGetExText == "" || ex2.controllerGetExText == ""){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Please enter an a valid exercise")));
+                        if (ex1.controllerGetExText == "" ||
+                            ex2.controllerGetExText == "") {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("Please enter an a valid exercise")));
                           return;
                         }
 
                         listCreateData.add(ex1);
                         listCreateData.add(ex2);
 
-                        for(int i = 0; i < listCreateData.length; i++) {
-                          context.read<AthleteDataBloc>().add(
-                              CreateAthleteData(
-                                  AthleteDataEntryModel(
-                                    email: "yegeunator@gmail.com",
-                                    date: DateTime.parse(text),
-                                    bw: 61,
-                                    exercise: listCreateData[i].controllerGetExText,
-                                    sets: int.parse(listCreateData[i].controllerGetSetsText),
-                                    reps: int.parse(listCreateData[i].controllerGetRepsText),
-                                    load: int.parse(listCreateData[i].controllerGetIntText),
-                                  )
-                              )
-                          );
+                        for (int i = 0; i < listCreateData.length; i++) {
+                          context
+                              .read<AthleteDataBloc>()
+                              .add(CreateAthleteData(AthleteDataEntryModel(
+                                email: "yegeunator@gmail.com",
+                                date: DateTime.parse(text),
+                                bw: 61,
+                                exercise: listCreateData[i].controllerGetExText,
+                                sets: int.parse(
+                                    listCreateData[i].controllerGetSetsText),
+                                reps: int.parse(
+                                    listCreateData[i].controllerGetRepsText),
+                                load: int.parse(
+                                    listCreateData[i].controllerGetIntText),
+                              )));
                         }
-                        Navigator.pushNamed(context, '/athlete/home');
+                        // Navigator.pop(context);
+                        // Navigator.pushNamed(context, '/athlete/home');
                       },
                       child: Text("Submit Data"));
                 }
                 return Text(
-                'Something went wrong ',
-                style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w600),
+                  'Something went wrong ',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 );
-              }
-              ),
+              }),
             ],
           ),
-
         ],
       ),
     );

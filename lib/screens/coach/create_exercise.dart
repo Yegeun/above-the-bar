@@ -1,8 +1,7 @@
-import 'package:above_the_bar/models/exercise_model.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/bloc/blocs.dart';
+import 'package:above_the_bar/bloc/blocs.dart';
 
 class CreateExercise extends StatefulWidget {
   @override
