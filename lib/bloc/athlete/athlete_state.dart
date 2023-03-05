@@ -11,9 +11,9 @@ abstract class AthleteState extends Equatable {
 class AthleteLoading extends AthleteState {}
 
 class AthleteLoaded extends AthleteState {
-  final List<Athlete> athletes;
+  final List<AthleteModel> athletes;
 
-  const AthleteLoaded({this.athletes = const <Athlete>[]});
+  const AthleteLoaded({this.athletes = const <AthleteModel>[]});
 
   @override
   List<Object> get props => [athletes];

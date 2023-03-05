@@ -91,7 +91,7 @@ class _AddAthleteState extends State<AddAthlete> {
                   onPressed: () {
                     context.read<AthleteBloc>().add(
                           CreateAthlete(
-                            Athlete(
+                            AthleteModel(
                               name: controllerGetNameText.toLowerCase(),
                               email: controllerGetEmailText.toLowerCase(),
                               block: controllerGetBlock.toLowerCase(),

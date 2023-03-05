@@ -11,7 +11,7 @@ abstract class AthleteEvent extends Equatable {
 class LoadAthlete extends AthleteEvent {}
 
 class UpdateAthletes extends AthleteEvent {
-  final List<Athlete> athletes;
+  final List<AthleteModel> athletes;
 
   const UpdateAthletes(this.athletes);
 
@@ -20,7 +20,7 @@ class UpdateAthletes extends AthleteEvent {
 }
 
 class CreateAthlete extends AthleteEvent {
-  final Athlete athlete;
+  final AthleteModel athlete;
 
   const CreateAthlete(this.athlete);
 

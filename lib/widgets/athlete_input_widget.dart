@@ -14,16 +14,15 @@ class AthleteInputWidget extends StatelessWidget {
   }
 
   final TextEditingController _controllerEx = TextEditingController();
-
   String get controllerGetExText => _controllerEx.text;
+
   TextEditingController controllerSets = TextEditingController();
-
   String get controllerGetSetsText => controllerSets.text;
+
   TextEditingController controllerReps = TextEditingController();
-
   String get controllerGetRepsText => controllerReps.text;
-  TextEditingController controllerLoad = TextEditingController();
 
+  TextEditingController controllerLoad = TextEditingController();
   String get controllerGetIntText => controllerLoad.text;
 
   @override

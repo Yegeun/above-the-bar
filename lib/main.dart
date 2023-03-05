@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AthleteDataBloc(
+          create: (_) => AthleteDataBloc(
               athleteDataRepository: AthleteDataRepository(),
           )..add(LoadAthleteData()),
         ),

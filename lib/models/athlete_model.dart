@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Athlete extends Equatable {
+class AthleteModel extends Equatable {
   final String name;
   final String email;
   final String block;
   final DateTime startDate;
 
-  const Athlete({
+  const AthleteModel({
     required this.name,
     required this.email,
     required this.block,
@@ -22,8 +22,8 @@ class Athlete extends Equatable {
         startDate,
       ];
 
-  static Athlete fromSnapshot(DocumentSnapshot snap) {
-    Athlete athlete = Athlete(
+  static AthleteModel fromSnapshot(DocumentSnapshot snap) {
+    AthleteModel athlete = AthleteModel(
       name: snap['name'],
       email: snap['email'],
       block: snap['block'],
