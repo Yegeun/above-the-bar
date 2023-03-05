@@ -1,9 +1,9 @@
-import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../models/athlete_model.dart';
+import 'package:above_the_bar/models/athlete_model.dart';
+import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
 
 class AddAthlete extends StatefulWidget {
   @override

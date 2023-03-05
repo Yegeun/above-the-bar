@@ -1,3 +1,4 @@
+import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
 import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:above_the_bar/repositories/repositories.dart';
 
@@ -28,7 +29,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ExerciseBloc(
+          create: (context) => AthleteDataBloc(
+              athleteDataRepository: AthleteDataRepository(),
+          )..add(LoadAthleteData()),
+        ),
+        BlocProvider(
+          create: (_) => ExerciseBloc(
             exerciseRepository: ExerciseRepository(),
           )..add(LoadExercises()),
         ),

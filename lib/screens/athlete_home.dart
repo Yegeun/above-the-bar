@@ -1,6 +1,9 @@
 import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import '../bloc/athlete_data/athlete_data_bloc.dart';
 
 class AthleteHome extends StatefulWidget {
   late DateTime date = DateTime.now();
@@ -9,6 +12,10 @@ class AthleteHome extends StatefulWidget {
 }
 
 class _AthleteHomeState extends State<AthleteHome> {
+  List<AthleteInputWidget> listDynamic = [];
+  List<AthleteInputWidget> listCreateExercise = [];
+  List<String> data = [];
+
   late DateTime date = DateTime.now();
   AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
   AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
@@ -89,15 +96,32 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
               ),
             ],
-          ),
+          ),//Date
           ex1,
           ex2,
+          Row(
+            children: [
+              BlocBuilder<AthleteDataBloc, AthleteDataState>(builder: (context,state){
+                // if(state is AthleteDataLoading){
+                //   return Center(child: CircularProgressIndicator());
+                // }
+                if(state is AthleteDataLoading){
+                  return OutlinedButton(
+                      onPressed: () {
+                        print(ex1.controllerGetExText);
+                      },
+                      child: Text("Submit Data"));
+                }
+                return Text(
+                'Something went wrong ',
+                style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w600),
+                );
+              }
+              ),
+            ],
+          ),
 
-          OutlinedButton(
-              onPressed: () {
-                print(ex1.controllerGetExText);
-              },
-              child: Text("Submit Data")),
         ],
       ),
     );
