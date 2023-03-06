@@ -6,23 +6,27 @@ class AthleteInputWidget extends StatelessWidget {
 
   AthleteInputWidget({required this.exerciseNum});
 
-  void dispose() {
-    _controllerEx.dispose();
-    controllerSets.dispose();
-    controllerReps.dispose();
-    controllerLoad.dispose();
+  void clear() {
+    _controllerEx.clear();
+    controllerSets.clear();
+    controllerReps.clear();
+    controllerLoad.clear();
   }
 
   final TextEditingController _controllerEx = TextEditingController();
+
   String get controllerGetExText => _controllerEx.text;
 
   TextEditingController controllerSets = TextEditingController();
+
   String get controllerGetSetsText => controllerSets.text;
 
   TextEditingController controllerReps = TextEditingController();
+
   String get controllerGetRepsText => controllerReps.text;
 
   TextEditingController controllerLoad = TextEditingController();
+
   String get controllerGetIntText => controllerLoad.text;
 
   @override

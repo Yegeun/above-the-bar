@@ -20,6 +20,14 @@ class AthleteDataRepository extends BaseAthleteDataRepository {
         .set(entry.toDocument());
   }
 
+  Future<void> delete(String documentId) async {
+    var collection = FirebaseFirestore.instance
+        .collection('athletes')
+        .doc("yegeunator@gmail.com")
+        .collection('data');
+    await collection.doc(documentId).delete();
+  }
+
   @override
   Stream<List<AthleteDataEntryModel>> getDataEntries(email) {
     return _firebaseFirestore

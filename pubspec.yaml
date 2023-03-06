@@ -25,7 +25,6 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.5
   cupertino_icons: ^1.0.2
-  flutter_holo_date_picker: ^1.1.0
   intl: ^0.18.0
 
 

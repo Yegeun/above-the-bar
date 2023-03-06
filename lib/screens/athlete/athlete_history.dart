@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:above_the_bar/models/models.dart';
-import 'package:above_the_bar/bloc/blocs.dart';
+import 'package:intl/intl.dart';
 
 class AthleteHistory extends StatefulWidget {
   @override
@@ -11,6 +11,12 @@ class AthleteHistory extends StatefulWidget {
 }
 
 class _AthleteHistoryState extends State<AthleteHistory> {
+  Future<void> _deleteAthleteData(AthleteDataEntryModel athleteData) async {
+    // Delete the athlete data from the database
+    BlocProvider.of<AthleteDataBloc>(context)
+        .add(DeleteAthleteData(athleteData));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,15 +35,6 @@ class _AthleteHistoryState extends State<AthleteHistory> {
           ),
           Row(
             children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                    "Yegeunator History You can view and delete your entires here"),
-              ),
-            ],
-          ),
-          Row(
-            children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
                 builder: (context, state) {
                   if (state is AthleteDataLoading) {
@@ -48,22 +45,35 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                   if (state is AthleteDataLoaded) {
                     final List<AthleteDataEntryModel> athleteData =
                         state.entries.toList();
-                    print(athleteData.length);
                     return Flexible(
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: athleteData.length,
                         itemBuilder: (context, index) {
+                          // print(athleteData[index].document)
                           return ListTile(
-                            title: Text(athleteData[index].exercise),
+                            title: Text(
+                                '${DateFormat('yyyy-MM-dd').format(athleteData[index].date)} ${athleteData[index].exercise} ${athleteData[index].load} ${athleteData[index].reps}'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                print(athleteData[index].id);
+                                _deleteAthleteData(athleteData[index]);
+                                // setState(() {
+                                //   athleteData.removeAt(index);
+                                // });
+                                UpdateAthleteData(athleteData);
+                                _refreshScreen(context);
+                              },
+                            ),
                           );
                         },
                       ),
                     );
                   } else {
                     return Text(
-                      'Something went wrong ',
+                      'State: $state',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     );
@@ -76,4 +86,18 @@ class _AthleteHistoryState extends State<AthleteHistory> {
       ),
     );
   }
+}
+
+// Define a function to refresh the screen
+void _refreshScreen(BuildContext context) {
+  // Close any blocs
+  // context.read<AthleteDataBloc>().close();
+
+  // Push a new instance of the same screen onto the navigation stack
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (BuildContext context) => AthleteHistory(),
+    ),
+  );
 }

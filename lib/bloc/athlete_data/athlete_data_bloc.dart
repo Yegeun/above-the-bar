@@ -7,6 +7,7 @@ import 'package:above_the_bar/repositories/athlete_data/athlete_data_repository.
 import 'package:flutter/foundation.dart';
 
 part 'athlete_data_event.dart';
+
 part 'athlete_data_state.dart';
 
 class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
@@ -19,6 +20,7 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
     on<LoadAthleteData>(_onLoadAthleteData);
     on<UpdateAthleteData>(_onUpdateAthleteData);
     on<CreateAthleteData>(_onCreateAthleteData);
+    on<DeleteAthleteData>(_onDeleteAthleteData);
   }
 
   void _onLoadAthleteData(
@@ -53,5 +55,25 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
       print(tempAthlete);
     }
     emit(AthleteDataLoaded());
+  }
+
+  void _onDeleteAthleteData(
+    DeleteAthleteData event,
+    Emitter<AthleteDataState> emit,
+  ) async {
+    emit(AthleteDataDeleting());
+    await _athleteDataRepository.delete(event.entryModel.id);
+    emit(AthleteDataDeleted());
+    print('Delete Successful 2');
+    _athleteDataSubscription?.cancel();
+    //TODO - change this to get athlete data for a specific athlete
+    _athleteDataSubscription =
+        _athleteDataRepository.getDataEntries('yegeunator@gmail.com').listen(
+              (entries) => add(
+                UpdateAthleteData(entries),
+              ),
+            );
+
+    // emit(UpdateAthleteData(event.entries));
   }
 }

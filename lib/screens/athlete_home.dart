@@ -6,6 +6,10 @@ import 'package:intl/intl.dart';
 
 import '../bloc/athlete_data/athlete_data_bloc.dart';
 
+//initiate AthleteInput
+AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
+AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
+
 class AthleteHome extends StatefulWidget {
   late DateTime date = DateTime.now();
 
@@ -19,10 +23,6 @@ class _AthleteHomeState extends State<AthleteHome> {
   List<String> data = [];
 
   late DateTime date = DateTime.now();
-
-  //initiate AthleteInput
-  AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
-  AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +138,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                     listCreateData[i].controllerGetIntText),
                               )));
                         }
-                        // Navigator.pop(context);
-                        // Navigator.pushNamed(context, '/athlete/home');
+                        _refreshScreen(context);
                       },
                       child: Text("Submit Data"));
                 }
@@ -154,4 +153,22 @@ class _AthleteHomeState extends State<AthleteHome> {
       ),
     );
   }
+}
+
+// Define a function to refresh the screen
+void _refreshScreen(BuildContext context) {
+  // Close any blocs
+  // context.read<AthleteDataBloc>().close();
+
+  // Clear any text fields
+  ex1.clear();
+  ex2.clear();
+
+  // Push a new instance of the same screen onto the navigation stack
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (BuildContext context) => AthleteHome(),
+    ),
+  );
 }

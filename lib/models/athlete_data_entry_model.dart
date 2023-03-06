@@ -9,6 +9,7 @@ class AthleteDataEntryModel extends Equatable {
   final int sets;
   final int reps;
   final int load;
+  final String id;
 
   const AthleteDataEntryModel({
     required this.email,
@@ -18,10 +19,12 @@ class AthleteDataEntryModel extends Equatable {
     required this.sets,
     required this.reps,
     required this.load,
+    this.id = '',
   });
 
   @override
   List<Object?> get props => [
+        id,
         email, //TODO Probably take this out
         date,
         bw,
@@ -33,6 +36,7 @@ class AthleteDataEntryModel extends Equatable {
 
   static AthleteDataEntryModel fromSnapshot(DocumentSnapshot snap) {
     AthleteDataEntryModel dataEntry = AthleteDataEntryModel(
+      id: snap.id,
       email: snap['email'],
       date: snap['date'].toDate(),
       bw: snap['bw'],
