@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:above_the_bar/models/exercise_model.dart';
 import 'package:above_the_bar/repositories/exerciselist/exercise_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 part 'exercise_event.dart';
+
 part 'exercise_state.dart';
 
 class ExerciseBloc extends Bloc<ExerciseEvent, ExerciseState> {

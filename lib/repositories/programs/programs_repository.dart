@@ -10,7 +10,7 @@ class ProgramRepository extends BaseProgramsRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createNewProgram(Program program) async {
+  Future<void> createNewProgram(ProgramModel program) async {
     print('Program exercise ${program.exercise}');
     await _firebaseFirestore
         .collection('coaches')
@@ -23,8 +23,18 @@ class ProgramRepository extends BaseProgramsRepository {
   }
 
   @override
-  Stream<List<Program>> getProgram() {
-    // TODO: implement getProgram
-    throw UnimplementedError();
+  Stream<List<ProgramModel>> getProgram() {
+    return _firebaseFirestore
+        .collection('coaches')
+        .doc('stuart.martin')
+        .collection('programs')
+        .doc('program name')
+        .collection('GPP1')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => ProgramModel.fromSnapshot(doc))
+          .toList();
+    });
   }
 }

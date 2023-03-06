@@ -1,15 +1,14 @@
-import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
-import 'package:above_the_bar/bloc/blocs.dart';
-import 'package:above_the_bar/repositories/repositories.dart';
-
-import 'package:above_the_bar/screens/screens.dart';
-
 import 'package:above_the_bar/simple_bloc_observer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
+
+import 'package:above_the_bar/bloc/blocs.dart';
+import 'package:above_the_bar/repositories/repositories.dart';
+
+import 'package:above_the_bar/screens/screens.dart';
 
 bool shouldUseFirestoreEmulator = false;
 
@@ -34,6 +33,11 @@ class MyApp extends StatelessWidget {
           )..add(LoadAthleteData()),
         ),
         BlocProvider(
+          create: (_) => AthleteProgramDataBloc(
+            athleteProgramDataRepository: AthleteProgramDataRepository(),
+          )..add(LoadAthleteProgramData()),
+        ),
+        BlocProvider(
           create: (_) => ExerciseBloc(
             exerciseRepository: ExerciseRepository(),
           )..add(LoadExercises()),
@@ -46,7 +50,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => ProgramBloc(
             programRepository: ProgramRepository(),
-          ),
+          )..add(LoadProgram()),
         ),
         BlocProvider(
           create: (_) => AthleteBloc(

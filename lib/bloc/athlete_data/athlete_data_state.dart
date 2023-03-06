@@ -10,19 +10,19 @@ abstract class AthleteDataState extends Equatable {
 
 class AthleteDataLoading extends AthleteDataState {}
 
-class AthleteDataUpdating extends AthleteDataState {
+class AthleteDataLoaded extends AthleteDataState {
   final List<AthleteDataEntryModel> entries;
 
-  const AthleteDataUpdating({this.entries = const <AthleteDataEntryModel>[]});
+  const AthleteDataLoaded({this.entries = const <AthleteDataEntryModel>[]});
 
   @override
   List<Object> get props => [entries];
 }
 
-class AthleteDataLoaded extends AthleteDataState {
+class AthleteDataUpdating extends AthleteDataState {
   final List<AthleteDataEntryModel> entries;
 
-  const AthleteDataLoaded({this.entries = const <AthleteDataEntryModel>[]});
+  const AthleteDataUpdating({this.entries = const <AthleteDataEntryModel>[]});
 
   @override
   List<Object> get props => [entries];

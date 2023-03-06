@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Program extends Equatable {
+class ProgramModel extends Equatable {
   final String programName;
   final String name;
   final int week;
@@ -13,7 +14,7 @@ class Program extends Equatable {
   final int intensity;
   final String comments;
 
-  const Program({
+  const ProgramModel({
     required this.programName,
     required this.name,
     required this.week,
@@ -54,5 +55,21 @@ class Program extends Equatable {
       'intensity': intensity,
       'comments': comments,
     };
+  }
+
+  static ProgramModel fromSnapshot(DocumentSnapshot snap) {
+    ProgramModel program = ProgramModel(
+      programName: snap['programName'],
+      name: snap['name'],
+      week: snap['week'],
+      session: snap['session'],
+      exerciseNum: snap['exerciseNum'],
+      exercise: snap['exercise'],
+      sets: snap['sets'],
+      reps: snap['reps'],
+      intensity: snap['intensity'],
+      comments: snap['comments'],
+    );
+    return program;
   }
 }

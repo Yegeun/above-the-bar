@@ -11,7 +11,7 @@ abstract class ProgramEvent extends Equatable {
 class LoadProgram extends ProgramEvent {}
 
 class UpdateProgram extends ProgramEvent {
-  final List<Program> program;
+  final List<ProgramModel> program;
 
   const UpdateProgram(this.program);
 
@@ -20,7 +20,7 @@ class UpdateProgram extends ProgramEvent {
 }
 
 class CreateProgram extends ProgramEvent {
-  final Program program;
+  final ProgramModel program;
 
   const CreateProgram(this.program);
 

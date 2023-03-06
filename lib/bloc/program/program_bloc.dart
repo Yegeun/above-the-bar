@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 part 'program_event.dart';
+
 part 'program_state.dart';
 
 class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
@@ -16,10 +17,10 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
 
   ProgramBloc({required ProgramRepository programRepository})
       : _programRepository = programRepository,
-        super(ProgramLoaded()) {
+        super(ProgramLoading()) {
     // Changed to Loaded from Loading
     on<LoadProgram>(_onLoadProgram);
-    on<UpdateProgram>(_onUpdatePrograms);
+    on<UpdateProgram>(_onUpdateProgram);
     on<CreateProgram>(_onCreateProgram);
   }
 
@@ -32,12 +33,12 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
         );
   }
 
-  void _onUpdatePrograms(
+  void _onUpdateProgram(
     UpdateProgram event,
     Emitter<ProgramState> emit,
   ) {
     emit(
-      ProgramLoaded(programs: event.program),
+      ProgramLoaded(program: event.program),
     );
   }
 

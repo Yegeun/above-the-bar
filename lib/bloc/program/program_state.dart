@@ -11,10 +11,19 @@ abstract class ProgramState extends Equatable {
 class ProgramLoading extends ProgramState {}
 
 class ProgramLoaded extends ProgramState {
-  final List<Program> programs;
+  final List<ProgramModel> program;
 
-  const ProgramLoaded({this.programs = const <Program>[]});
+  const ProgramLoaded({this.program = const <ProgramModel>[]});
 
   @override
-  List<Object> get props => [programs];
+  List<Object> get props => [program];
 }
+
+// class ProgramUpdating extends ProgramState {
+//   final List<ProgramModel> program;
+//
+//   const ProgramUpdating({this.program = const <ProgramModel>[]});
+//
+//   @override
+//   List<Object> get props => [program];
+// }

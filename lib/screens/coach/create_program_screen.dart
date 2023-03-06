@@ -115,7 +115,7 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                                 i++) {
                               context.read<ProgramBloc>().add(
                                     CreateProgram(
-                                      Program(
+                                      ProgramModel(
                                         programName: controllerProgName.text,
                                         name: listCreateExercise[i]
                                             .controllerGetExText,
