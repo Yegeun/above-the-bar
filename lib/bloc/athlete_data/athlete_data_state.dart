@@ -6,6 +6,7 @@ abstract class AthleteDataState extends Equatable {
 
   @override
   List<Object> get props => [];
+
 }
 
 class AthleteDataLoading extends AthleteDataState {}

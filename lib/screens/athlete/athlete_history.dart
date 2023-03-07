@@ -37,7 +37,9 @@ class _AthleteHistoryState extends State<AthleteHistory> {
             children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
                 builder: (context, state) {
+                  print(state);
                   if (state is AthleteDataLoading) {
+                    _refreshScreen(context);
                     return Center(
                       child: CircularProgressIndicator(),
                     );
@@ -45,6 +47,9 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                   if (state is AthleteDataLoaded) {
                     final List<AthleteDataEntryModel> athleteData =
                         state.entries.toList();
+                    if (athleteData.isEmpty) {
+                      context.read<AthleteDataBloc>().add(LoadAthleteData());
+                    }
                     return Flexible(
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
@@ -72,10 +77,9 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                       ),
                     );
                   } else {
-                    return Text(
-                      'State: $state',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    print("Error");
+                    return Center(
+                      child: Text("Error"),
                     );
                   }
                 },
