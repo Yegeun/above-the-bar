@@ -27,9 +27,10 @@ class _AthleteHistoryState extends State<AthleteHistory> {
         children: [
           Row(
             children: [
+              //centered text
               Expanded(
                 flex: 1,
-                child: Text("History"),
+                child: Center(child: Text("History")),
               ),
             ],
           ),
@@ -51,29 +52,32 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                       context.read<AthleteDataBloc>().add(LoadAthleteData());
                     }
                     return Flexible(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: athleteData.length,
-                        itemBuilder: (context, index) {
-                          // print(athleteData[index].document)
-                          return ListTile(
-                            title: Text(
-                                '${DateFormat('yyyy-MM-dd').format(athleteData[index].date)} ${athleteData[index].exercise} ${athleteData[index].load} ${athleteData[index].reps}'),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                print(athleteData[index].id);
-                                _deleteAthleteData(athleteData[index]);
-                                // setState(() {
-                                //   athleteData.removeAt(index);
-                                // });
-                                UpdateAthleteData(athleteData);
-                                _refreshScreen(context);
-                              },
-                            ),
-                          );
-                        },
+                      child: SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: athleteData.length,
+                          itemBuilder: (context, index) {
+                            // print(athleteData[index].document)
+                            return ListTile(
+                              title: Text(
+                                  '${DateFormat('yyyy-MM-dd').format(athleteData[index].date)} ${athleteData[index].exercise} ${athleteData[index].load} ${athleteData[index].reps}'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  print(athleteData[index].id);
+                                  _deleteAthleteData(athleteData[index]);
+                                  // setState(() {
+                                  //   athleteData.removeAt(index);
+                                  // });
+                                  UpdateAthleteData(athleteData);
+                                  _refreshScreen(context);
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     );
                   } else {
