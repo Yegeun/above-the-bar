@@ -15,11 +15,18 @@ class ProgramRepository extends BaseProgramsRepository {
     await _firebaseFirestore
         .collection('coaches')
         .doc('stuart.martin') //TODO: Change to login user
-        .collection('programs')
-        .doc('program name')
         .collection(program.programName) //Name of Program
-        .doc(program.name) // Name of the Document
+        .doc(
+            'w${program.week.toString()}s${program.session.toString()}e${program.exerciseNum.toString()}') // Name of the Document
         .set(program.toDocument());
+
+    //appends it to a list of programs
+    await _firebaseFirestore
+        .collection('coaches')
+        .doc('stuart.martin') //TODO: Change to login user
+        .collection('programList') //Name of Program
+        .doc(program.programName) // Name of the Document
+        .set({'programName': program.programName});
   }
 
   @override
@@ -28,13 +35,29 @@ class ProgramRepository extends BaseProgramsRepository {
         .collection('coaches')
         .doc('stuart.martin')
         .collection('programs')
-        .doc('program name')
+        .doc('programName')
         .collection('GPP1')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
           .map((doc) => ProgramModel.fromSnapshot(doc))
           .toList();
+    });
+  }
+
+  @override
+  Stream<List<String>> getProgramList() {
+    //write a for loop
+    return _firebaseFirestore
+        .collection('coaches')
+        .doc('stuart.martin')
+        .snapshots()
+        .map((snapshot) {
+      List<String> programList = [];
+      for (var i = 0; i < 3; i++) {
+        programList.add(snapshot.data()!['programs'][i]);
+      }
+      return programList;
     });
   }
 }

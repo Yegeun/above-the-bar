@@ -53,6 +53,11 @@ class MyApp extends StatelessWidget {
           )..add(LoadProgram()),
         ),
         BlocProvider(
+          create: (_) => ProgramListBloc(
+            programListRepository: ProgramRepository(),
+          )..add(LoadProgramList()),
+        ),
+        BlocProvider(
           create: (_) => AthleteBloc(
             athleteRepository: AthleteRepository(),
           ),
