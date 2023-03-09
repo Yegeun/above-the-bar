@@ -51,11 +51,13 @@ class ProgramRepository extends BaseProgramsRepository {
     return _firebaseFirestore
         .collection('coaches')
         .doc('stuart.martin')
+        .collection('programList')
         .snapshots()
         .map((snapshot) {
       List<String> programList = [];
-      for (var i = 0; i < 3; i++) {
-        programList.add(snapshot.data()!['programs'][i]);
+      //return all document ids inside the collection
+      for (var doc in snapshot.docs) {
+        programList.add(doc.id);
       }
       return programList;
     });
