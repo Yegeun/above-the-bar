@@ -48,7 +48,7 @@ class _AthleteProgramState extends State<AthleteProgram> {
                           // print(athleteData[index].document)
                           return ListTile(
                             title: Text(
-                                '${programData[index].exercise} ${programData[index].sets} hell '
+                                '${programData[index].exercise} ${programData[index].sets} something is here '
                                 '${programData[index].intensity} ${programData[index].comments}'),
                           );
                         },

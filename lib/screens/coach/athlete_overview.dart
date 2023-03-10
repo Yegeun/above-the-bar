@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:above_the_bar/models/athlete_model.dart';
+
 class AthleteOverview extends StatefulWidget {
   @override
   State<AthleteOverview> createState() => _AthleteOverviewState();
@@ -8,6 +10,12 @@ class AthleteOverview extends StatefulWidget {
 class _AthleteOverviewState extends State<AthleteOverview> {
   @override
   Widget build(BuildContext context) {
+    //gets data from previous page
+    final athlete = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as AthleteModel;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Athlete Overview"),
@@ -20,7 +28,8 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                 flex: 1,
                 child: Container(
                   alignment: Alignment.center,
-                  child: Text("Athlete Overview"),
+                  child: Text(
+                      "Overview of ${athlete.name} email: ${athlete.email}"),
                 ),
               ),
             ],
@@ -36,7 +45,7 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                     alignment: Alignment.center,
                     child: Text(
                         'Athlete Current Best \n'
-                        'Snatch 80 \n',
+                            'Snatch 80 \n',
                         textAlign: TextAlign.center),
                   ),
                 ),

@@ -14,20 +14,17 @@ class AthleteInputWidget extends StatelessWidget {
   }
 
   final TextEditingController _controllerEx = TextEditingController();
+  TextEditingController controllerSets = TextEditingController();
+  TextEditingController controllerReps = TextEditingController();
+  TextEditingController controllerLoad = TextEditingController();
 
   String get controllerGetExText => _controllerEx.text;
 
-  TextEditingController controllerSets = TextEditingController();
-
   String get controllerGetSetsText => controllerSets.text;
-
-  TextEditingController controllerReps = TextEditingController();
 
   String get controllerGetRepsText => controllerReps.text;
 
-  TextEditingController controllerLoad = TextEditingController();
-
-  String get controllerGetIntText => controllerLoad.text;
+  String get controllerGetLoadText => controllerLoad.text;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerSets,
+            controller: controllerLoad,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Load (KG)'),
             inputFormatters: <TextInputFormatter>[
@@ -60,7 +57,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerReps,
+            controller: controllerSets,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Sets'),
             inputFormatters: <TextInputFormatter>[
@@ -72,7 +69,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerLoad,
+            controller: controllerReps,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Reps'),
             inputFormatters: <TextInputFormatter>[

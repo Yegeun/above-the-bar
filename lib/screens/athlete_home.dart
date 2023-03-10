@@ -135,7 +135,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                 reps: int.parse(
                                     listCreateData[i].controllerGetRepsText),
                                 load: int.parse(
-                                    listCreateData[i].controllerGetIntText),
+                                    listCreateData[i].controllerGetLoadText),
                               )));
                         }
                         _refreshScreen(context);
