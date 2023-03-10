@@ -19,11 +19,11 @@ class AthleteLoaded extends AthleteState {
   List<Object> get props => [athletes];
 }
 
-class AthleteUpdating extends AthleteState {
-  final List<AthleteModel> athletes;
-
-  const AthleteUpdating({this.athletes = const <AthleteModel>[]});
-
-  @override
-  List<Object> get props => [athletes];
-}
+// class AthleteUpdating extends AthleteState {
+//   final List<AthleteModel> athletes;
+//
+//   const AthleteUpdating({this.athletes = const <AthleteModel>[]});
+//
+//   @override
+//   List<Object> get props => [athletes];
+// }

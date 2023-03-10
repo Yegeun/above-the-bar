@@ -122,6 +122,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                       if (kDebugMode) {
                                         print('Delete');
                                       }
+                                      _deleteProgram(programsList[index]);
                                     },
                                     icon: Icon(Icons.delete),
                                   ),

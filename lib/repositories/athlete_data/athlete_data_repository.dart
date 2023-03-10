@@ -20,6 +20,7 @@ class AthleteDataRepository extends BaseAthleteDataRepository {
         .set(entry.toDocument());
   }
 
+  @override
   Future<void> delete(String documentId) async {
     var collection = FirebaseFirestore.instance
         .collection('athletes')
