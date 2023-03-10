@@ -28,6 +28,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (_) => AthleteBloc(
+            athleteRepository: AthleteRepository(),
+          )..add(LoadAthlete()),
+        ),
+        BlocProvider(
           create: (context) => AthleteDataBloc(
             athleteDataRepository: AthleteDataRepository(),
           )..add(LoadAthleteData()),
@@ -56,11 +61,6 @@ class MyApp extends StatelessWidget {
           create: (_) => ProgramListBloc(
             programListRepository: ProgramRepository(),
           )..add(LoadProgramList()),
-        ),
-        BlocProvider(
-          create: (_) => AthleteBloc(
-            athleteRepository: AthleteRepository(),
-          ),
         ),
       ],
       child: MaterialApp(

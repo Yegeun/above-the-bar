@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 import 'package:above_the_bar/repositories/programs/programs_repository.dart';
 import 'package:equatable/equatable.dart';
 

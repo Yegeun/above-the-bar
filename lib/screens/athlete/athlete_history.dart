@@ -98,7 +98,6 @@ class _AthleteHistoryState extends State<AthleteHistory> {
 
 // Define a function to refresh the screen
 void _refreshScreen(BuildContext context) {
-  // Close any blocs
   // context.read<AthleteDataBloc>().close();
 
   // Push a new instance of the same screen onto the navigation stack

@@ -34,8 +34,6 @@ class ProgramRepository extends BaseProgramsRepository {
     return _firebaseFirestore
         .collection('coaches')
         .doc('stuart.martin')
-        .collection('programs')
-        .doc('programName')
         .collection('GPP1')
         .snapshots()
         .map((snapshot) {

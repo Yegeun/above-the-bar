@@ -5,9 +5,9 @@ import 'package:equatable/equatable.dart';
 import 'package:above_the_bar/models/athlete_model.dart';
 import 'package:above_the_bar/repositories/athlete/athlete_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 
 part 'athlete_event.dart';
+
 part 'athlete_state.dart';
 
 class AthleteBloc extends Bloc<AthleteEvent, AthleteState> {
