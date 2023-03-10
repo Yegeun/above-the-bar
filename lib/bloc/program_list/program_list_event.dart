@@ -18,3 +18,12 @@ class UpdateProgramList extends ProgramListEvent {
   @override
   List<Object> get props => [programList];
 }
+
+class DeleteProgram extends ProgramListEvent {
+  final String program;
+
+  const DeleteProgram(this.program);
+
+  @override
+  List<Object> get props => [program];
+}

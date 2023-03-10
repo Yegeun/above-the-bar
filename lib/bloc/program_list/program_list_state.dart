@@ -27,3 +27,19 @@ class ProgramListUpdating extends ProgramListState {
   @override
   List<Object> get props => [programList];
 }
+
+class ProgramListDeleting extends ProgramListState {
+  const ProgramListDeleting();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ProgramListDeleted extends ProgramListState {
+  const ProgramListDeleted({this.programs = const <String>[]});
+
+  final List<String> programs;
+
+  @override
+  List<Object> get props => [programs];
+}

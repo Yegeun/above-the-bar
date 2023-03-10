@@ -19,11 +19,11 @@ class ProgramLoaded extends ProgramState {
   List<Object> get props => [program];
 }
 
-// class ProgramUpdating extends ProgramState {
-//   final List<ProgramModel> program;
-//
-//   const ProgramUpdating({this.program = const <ProgramModel>[]});
-//
-//   @override
-//   List<Object> get props => [program];
-// }
+class ProgramUpdating extends ProgramState {
+  final List<ProgramModel> program;
+
+  const ProgramUpdating({this.program = const <ProgramModel>[]});
+
+  @override
+  List<Object> get props => [program];
+}

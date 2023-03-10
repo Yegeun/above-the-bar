@@ -19,6 +19,7 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     // Changed to Loaded from Loading
     on<LoadProgramList>(_onLoadProgramList);
     on<UpdateProgramList>(_onUpdateProgramList);
+    on<DeleteProgram>(_onDeleteProgram);
   }
 
   void _onLoadProgramList(
@@ -38,5 +39,23 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     emit(
       ProgramListLoaded(programList: event.programList),
     );
+  }
+
+  void _onDeleteProgram(
+    DeleteProgram event,
+    Emitter<ProgramListState> emit,
+  ) async {
+    emit(ProgramListDeleting());
+    await _programListRepository.deleteProgram(event.program);
+    emit(ProgramListDeleted());
+    print('Delete Successful 2');
+    _programListSubscription?.cancel();
+    //TODO - change this to get athlete data for a specific athlete
+    _programListSubscription = _programListRepository.getProgramList().listen(
+          (programList) => add(
+            UpdateProgramList(programList),
+          ),
+        );
+    // emit(UpdateAthleteData(event.entries));
   }
 }

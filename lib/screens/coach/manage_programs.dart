@@ -29,6 +29,11 @@ class _ManageProgramsState extends State<ManagePrograms> {
         });
   }
 
+  Future<void> _deleteProgram(String nameProg) async {
+    // Delete the program from the database
+    BlocProvider.of<ProgramListBloc>(context).add(DeleteProgram(nameProg));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

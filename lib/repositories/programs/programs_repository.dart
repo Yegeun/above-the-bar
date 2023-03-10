@@ -60,4 +60,25 @@ class ProgramRepository extends BaseProgramsRepository {
       return programList;
     });
   }
+
+  @override
+  Future<void> deleteProgram(String documentId) async {
+    final instance = FirebaseFirestore.instance;
+    final batch = instance.batch();
+    var collection = instance
+        .collection('coaches')
+        .doc('stuart.martin')
+        .collection(documentId);
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+
+    var collectionDoc = FirebaseFirestore.instance
+        .collection('coaches')
+        .doc("stuart.martin")
+        .collection('programList');
+    await collectionDoc.doc(documentId).delete();
+  }
 }
