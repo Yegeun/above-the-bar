@@ -16,14 +16,15 @@ class AddAthlete extends StatefulWidget {
 
 class _AddAthleteState extends State<AddAthlete> {
   final TextEditingController _controllerName = TextEditingController();
-
-  String get controllerGetNameText => _controllerName.text;
   final TextEditingController _controllerEmail = TextEditingController();
-
-  String get controllerGetEmailText => _controllerEmail.text;
   final TextEditingController _controllerBlock = TextEditingController();
 
+  String get controllerGetNameText => _controllerName.text;
+
+  String get controllerGetEmailText => _controllerEmail.text;
+
   String get controllerGetBlock => _controllerBlock.text;
+
   late DateTime date = DateTime.now();
 
   @override
@@ -33,6 +34,7 @@ class _AddAthleteState extends State<AddAthlete> {
     _controllerEmail.clear();
     // context.read<AthleteBloc>().add(LoadAthlete());
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,43 +65,43 @@ class _AddAthleteState extends State<AddAthlete> {
                   decoration: InputDecoration(hintText: 'Email'),
                 ),
               ),
-              // BlocBuilder<ProgramListBloc, ProgramListState>(
-              //   //TODO this shoudl adpat for uassign and assign
-              //   builder: (context, state) {
-              //     if (state is ProgramListLoading) {
-              //       return Center(
-              //         child: CircularProgressIndicator(),
-              //       );
-              //     }
-              //     if (state is ProgramListLoaded) {
-              //       final List<String> programsList =
-              //           state.programList.toList();
-              //       programsList.insert(0, 'unassigned');
-              //
-              //       String dropdownValue = programsList[0];
-              //       return DropdownButton(
-              //         key: ValueKey(dropdownValue),
-              //         value: dropdownValue,
-              //         items: programsList
-              //             .map((String program) => DropdownMenuItem(
-              //                   value: program,
-              //                   child: Text(program),
-              //                 ))
-              //             .toList(),
-              //         onChanged: (String? newValue) {
-              //           setState(() {
-              //             dropdownValue = newValue!;
-              //             print(dropdownValue);
-              //           });
-              //         },
-              //       );
-              //     } else {
-              //       return Center(
-              //         child: Text('No Programs'),
-              //       );
-              //     }
-              //   },
-              // ),
+              BlocBuilder<ProgramListBloc, ProgramListState>(
+                //TODO this shoudl adpat for uassign and assign
+                builder: (context, state) {
+                  if (state is ProgramListLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is ProgramListLoaded) {
+                    final List<String> programsList =
+                    state.programList.toList();
+                    programsList.insert(0, 'unassigned');
+
+                    String dropdownValue = programsList[0];
+                    return DropdownButton(
+                      value: dropdownValue,
+                      items: programsList
+                          .map((String program) =>
+                          DropdownMenuItem(
+                            value: program,
+                            child: Text(program),
+                          ))
+                          .toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                          print(dropdownValue);
+                        });
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: Text('No Programs'),
+                    );
+                  }
+                },
+              ),
               Container(
                 width: 200,
                 margin: EdgeInsets.all(8.0),
@@ -126,15 +128,15 @@ class _AddAthleteState extends State<AddAthlete> {
                 return ElevatedButton(
                   onPressed: () {
                     context.read<AthleteBloc>().add(
-                          CreateAthlete(
-                            AthleteModel(
-                              name: controllerGetNameText.toLowerCase(),
-                              email: controllerGetEmailText.toLowerCase(),
-                              block: '',
-                              startDate: DateTime.parse(text),
-                            ),
-                          ),
-                        );
+                      CreateAthlete(
+                        AthleteModel(
+                          name: controllerGetNameText.toLowerCase(),
+                          email: controllerGetEmailText.toLowerCase(),
+                          block: 'gpp1',
+                          startDate: DateTime.parse(text),
+                        ),
+                      ),
+                    );
                     dispose();
                     // Navigation.pop(context);
                     Navigator.push(

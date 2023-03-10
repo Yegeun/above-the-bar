@@ -116,7 +116,8 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                               context.read<ProgramBloc>().add(
                                     CreateProgram(
                                       ProgramModel(
-                                        programName: controllerProgName.text,
+                                        programName: controllerProgName.text
+                                            .toLowerCase(),
                                         name: listCreateExercise[i]
                                             .controllerGetExText,
                                         week: listCreateExercise[i].week,

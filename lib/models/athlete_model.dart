@@ -34,7 +34,7 @@ class AthleteModel extends Equatable {
 
   //To write in the firebase
   Map<String, Object> toDocument() {
-    if (block.isEmpty && startDate.toString().isEmpty) {
+    if (block.toString().isEmpty && startDate.toString().isEmpty) {
       return {
         'name': name,
         'email': email,

@@ -51,7 +51,6 @@ class _CoachHomeState extends State<CoachHome> {
                   }
                   final blockList =
                       athleteList.map((athlete) => athlete.block).toList();
-                  print(blockList);
                   return Flexible(
                     child: SizedBox(
                       height: 200.0,
