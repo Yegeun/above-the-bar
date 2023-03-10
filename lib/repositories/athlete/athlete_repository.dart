@@ -28,7 +28,19 @@ class AthleteRepository extends BaseAthleteRepository {
         .collection('athletes')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => AthleteModel.fromSnapshot(doc)).toList();
+      return snapshot.docs
+          .map((doc) => AthleteModel.fromSnapshot(doc))
+          .toList();
     });
+  }
+
+  @override
+  Future<void> deleteAthlete(AthleteModel athlete) async {
+    await _firebaseFirestore
+        .collection('coaches')
+        .doc('stuart.martin') //TODO: Change to login user
+        .collection('athletes')
+        .doc(athlete.email)
+        .delete();
   }
 }

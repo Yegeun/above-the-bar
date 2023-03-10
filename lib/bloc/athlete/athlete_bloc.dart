@@ -20,30 +20,28 @@ class AthleteBloc extends Bloc<AthleteEvent, AthleteState> {
     on<LoadAthlete>(_onLoadAthletes);
     on<UpdateAthletes>(_onUpdateAthletes);
     on<CreateAthlete>(_onCreateAthlete);
+    on<DeleteAthlete>(_onDeleteAthlete);
   }
 
   void _onLoadAthletes(LoadAthlete event, Emitter<AthleteState> emit) {
     _athleteSubscription?.cancel();
     _athleteSubscription = _athleteRepository.getAthletes().listen(
-          (athletes) => add(
+          (athletes) =>
+          add(
             UpdateAthletes(athletes),
           ),
-        );
+    );
   }
 
-  void _onUpdateAthletes(
-    UpdateAthletes event,
-    Emitter<AthleteState> emit,
-  ) {
+  void _onUpdateAthletes(UpdateAthletes event,
+      Emitter<AthleteState> emit,) {
     emit(
       AthleteLoaded(athletes: event.athletes),
     );
   }
 
-  void _onCreateAthlete(
-    CreateAthlete event,
-    Emitter<AthleteState> emit,
-  ) async {
+  void _onCreateAthlete(CreateAthlete event,
+      Emitter<AthleteState> emit,) async {
     var tempAthlete = event.athlete;
     _athleteSubscription?.cancel();
     await _athleteRepository.createNewAthlete(tempAthlete);
@@ -51,5 +49,19 @@ class AthleteBloc extends Bloc<AthleteEvent, AthleteState> {
       print(tempAthlete);
     }
     emit(AthleteLoaded());
+  }
+
+  void _onDeleteAthlete(DeleteAthlete event,
+      Emitter<AthleteState> emit,) async {
+    emit(AthleteDeleting());
+    await _athleteRepository.deleteAthlete(event.athlete);
+    emit(AthleteDeleted());
+    _athleteSubscription?.cancel();
+    _athleteSubscription = _athleteRepository.getAthletes().listen(
+          (athletes) =>
+          add(
+            UpdateAthletes(athletes),
+          ),
+    );
   }
 }

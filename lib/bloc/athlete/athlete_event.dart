@@ -27,3 +27,12 @@ class CreateAthlete extends AthleteEvent {
   @override
   List<Object> get props => [athlete];
 }
+
+class DeleteAthlete extends AthleteEvent {
+  final AthleteModel athlete;
+
+  const DeleteAthlete(this.athlete);
+
+  @override
+  List<Object> get props => [athlete];
+}
