@@ -8,7 +8,14 @@ abstract class AthleteDataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadAthleteData extends AthleteDataEvent {}
+class LoadAthleteData extends AthleteDataEvent {
+  const LoadAthleteData(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}
 
 class UpdateAthleteData extends AthleteDataEvent {
   final List<AthleteDataEntryModel> entries;

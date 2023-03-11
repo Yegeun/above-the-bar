@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-import 'package:above_the_bar/models/athlete_model.dart';
+import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
+import 'package:above_the_bar/models/models.dart';
 
 class AthleteOverview extends StatefulWidget {
   @override
@@ -11,10 +14,7 @@ class _AthleteOverviewState extends State<AthleteOverview> {
   @override
   Widget build(BuildContext context) {
     //gets data from previous page
-    final athlete = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as AthleteModel;
+    final athlete = ModalRoute.of(context)!.settings.arguments as AthleteModel;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,10 +45,56 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                     alignment: Alignment.center,
                     child: Text(
                         'Athlete Current Best \n'
-                            'Snatch 80 \n',
+                        'Snatch 80 \n',
                         textAlign: TextAlign.center),
                   ),
                 ),
+              ),
+              BlocBuilder<AthleteDataBloc, AthleteDataState>(
+                builder: (context, state) {
+                  print(athlete.email);
+                  context
+                      .read<AthleteDataBloc>()
+                      .add(LoadAthleteData("ukm0613@gmail.com"));
+
+                  if (state is AthleteDataLoading) {
+                    // _refreshScreen(context);
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is AthleteDataLoaded) {
+                    final List<AthleteDataEntryModel> athleteData =
+                        state.entries.toList();
+                    if (athleteData.isEmpty) {
+                      context
+                          .read<AthleteDataBloc>()
+                          .add(LoadAthleteData("ukm0613@gmail.com"));
+                    }
+                    return Flexible(
+                      child: SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: athleteData.length,
+                          itemBuilder: (context, index) {
+                            // print(athleteData[index].document)
+                            return ListTile(
+                              title: Text(
+                                  '${athleteData[index].exercise} ${athleteData[index].load} ${athleteData[index].reps}'),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    print("Error");
+                    return Center(
+                      child: Text("Error"),
+                    );
+                  }
+                },
               ),
               Expanded(
                 flex: 1,

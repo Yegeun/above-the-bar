@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AthleteDataBloc(
             athleteDataRepository: AthleteDataRepository(),
-          )..add(LoadAthleteData()),
+          )..add(LoadAthleteData("example@gmail.com")),
         ),
         BlocProvider(
           create: (_) => AthleteProgramDataBloc(

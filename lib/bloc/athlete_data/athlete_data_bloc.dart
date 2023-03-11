@@ -28,7 +28,7 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
     _athleteDataSubscription?.cancel();
     //TODO - change this to get athlete data for a specific athlete
     _athleteDataSubscription =
-        _athleteDataRepository.getDataEntries('yegeunator@gmail.com').listen(
+        _athleteDataRepository.getDataEntries(event.email).listen(
               (entries) => add(
                 UpdateAthleteData(entries),
               ),
