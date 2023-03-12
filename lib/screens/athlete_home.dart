@@ -158,7 +158,7 @@ class _AthleteHomeState extends State<AthleteHome> {
 // Define a function to refresh the screen
 void _refreshScreen(BuildContext context) {
   // reset bloc to loading state
-  context.read<AthleteDataBloc>().add(LoadAthleteData());
+  context.read<AthleteDataBloc>().add(LoadAthleteData("yegeunator@gmail.com"));
 
   // Clear any text fields
   ex1.clear();

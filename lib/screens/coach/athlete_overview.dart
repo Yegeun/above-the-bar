@@ -71,6 +71,9 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                           .read<AthleteDataBloc>()
                           .add(LoadAthleteData("ukm0613@gmail.com"));
                     }
+
+                    print(
+                        'AthleteData ${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")}');
                     return Flexible(
                       child: SizedBox(
                         height: 300,

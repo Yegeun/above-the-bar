@@ -49,7 +49,9 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                     final List<AthleteDataEntryModel> athleteData =
                         state.entries.toList();
                     if (athleteData.isEmpty) {
-                      context.read<AthleteDataBloc>().add(LoadAthleteData());
+                      context
+                          .read<AthleteDataBloc>()
+                          .add(LoadAthleteData("yegeunator@gmail.com"));
                     }
                     return Flexible(
                       child: SizedBox(
