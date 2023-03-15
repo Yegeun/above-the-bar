@@ -35,6 +35,24 @@ class _AthleteHomeState extends State<AthleteHome> {
       body: Column(
         children: [
           Row(
+            // Button
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: EdgeInsets.only(top: 10.0),
+                  alignment: Alignment.topCenter,
+                  child: IconButton(
+                    icon: Icon(Icons.person),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/athlete/profile');
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
             children: [
               Expanded(
                 flex: 1,
@@ -121,6 +139,7 @@ class _AthleteHomeState extends State<AthleteHome> {
 
                         listCreateData.add(ex1);
                         listCreateData.add(ex2);
+                        print(ex1.controllerGetExText);
 
                         for (int i = 0; i < listCreateData.length; i++) {
                           context

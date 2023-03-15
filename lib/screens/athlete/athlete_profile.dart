@@ -26,7 +26,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/athlete/edit');
                   },
-                  child: Text("Edit Program"),
+                  child: Text("Athlete Profile"),
                 ),
               ),
             ],

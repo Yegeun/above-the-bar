@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:above_the_bar/utilities/constants.dart';
+
 class AthleteInputWidget extends StatelessWidget {
   final int exerciseNum;
 
@@ -39,6 +41,69 @@ class AthleteInputWidget extends StatelessWidget {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Exercise' '${exerciseNum}'),
+          ),
+        ),
+        Container(
+          width: 150,
+          child: RawAutocomplete(
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              if (textEditingValue.text == '') {
+                return const Iterable<String>.empty();
+              } else {
+                List<String> matches = <String>[];
+                matches.addAll(kExerciseList);
+
+                matches.retainWhere((s) {
+                  return s
+                      .toLowerCase()
+                      .contains(textEditingValue.text.toLowerCase());
+                });
+                return matches;
+              }
+            },
+            onSelected: (String selection) {
+              print('You just selected $selection');
+            },
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
+              return TextField(
+                decoration: InputDecoration(border: OutlineInputBorder()),
+                controller: textEditingController,
+                focusNode: focusNode,
+                //
+                onSubmitted: (String value) {
+                  _controllerEx.text = value;
+                },
+              );
+            },
+            optionsViewBuilder: (BuildContext context,
+                void Function(String) onSelected, Iterable<String> options) {
+              return Material(
+                child: SizedBox(
+                  height: 200,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: options.map((opt) {
+                        return InkWell(
+                            onTap: () {
+                              onSelected(opt);
+                            },
+                            child: Container(
+                                padding: EdgeInsets.only(right: 60),
+                                child: Card(
+                                    child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(opt),
+                                ))));
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
         Container(

@@ -74,13 +74,28 @@ class AthleteDataEntryModel extends Equatable {
 
   static List<int> getHighestRecordedWeightAndReps(
       List<AthleteDataEntryModel> dataEntries, String exerciseName) {
-    final filteredEntries =
-        dataEntries.where((entry) => entry.exercise == exerciseName).toList();
-    final highestEntry =
-        filteredEntries.reduce((a, b) => a.load > b.load ? a : b);
-    return [
-      highestEntry.load,
-      highestEntry.reps
-    ]; // you can what you want from highestEntry
+    try {
+      final filteredEntries =
+          dataEntries.where((entry) => entry.exercise == exerciseName).toList();
+      final highestEntry =
+          filteredEntries.reduce((a, b) => a.load > b.load ? a : b);
+      return [
+        highestEntry.load,
+        highestEntry.reps
+      ]; // you can what you want from highestEntry
+    } catch (e) {
+      return [0, 0];
+    }
+  }
+
+  static List<AthleteDataEntryModel> getFilteredExercises(
+      List<AthleteDataEntryModel> dataEntries, String exerciseName) {
+    try {
+      final filteredEntries =
+          dataEntries.where((entry) => entry.exercise == exerciseName).toList();
+      return [...filteredEntries]; // filtered entries
+    } catch (e) {
+      return [];
+    }
   }
 }
