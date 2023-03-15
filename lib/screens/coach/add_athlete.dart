@@ -1,13 +1,11 @@
 import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:above_the_bar/screens/coach_home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:above_the_bar/models/athlete_model.dart';
-import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
-
-import 'package:above_the_bar/bloc/program_list/program_list_bloc.dart';
 
 class AddAthlete extends StatefulWidget {
   @override
@@ -30,11 +28,13 @@ class _AddAthleteState extends State<AddAthlete> {
   @override
   void dispose() {
     super.dispose();
-    _controllerName.clear();
-    _controllerEmail.clear();
-    // context.read<AthleteBloc>().add(LoadAthlete());
   }
 
+  @override
+  void initState() {
+    super.initState();
+    // Set an initial value for _selectedItem
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,24 +75,33 @@ class _AddAthleteState extends State<AddAthlete> {
                   }
                   if (state is ProgramListLoaded) {
                     final List<String> programsList =
-                    state.programList.toList();
+                        state.programList.toList();
                     programsList.insert(0, 'unassigned');
-
                     String dropdownValue = programsList[0];
-                    return DropdownButton(
-                      value: dropdownValue,
-                      items: programsList
-                          .map((String program) =>
-                          DropdownMenuItem(
-                            value: program,
-                            child: Text(program),
-                          ))
-                          .toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                          print(dropdownValue);
-                        });
+
+                    final dropdownBloc =
+                        DropdownBloc<String>(['Item 1', 'Item 2', 'Item 3']);
+                    late String selectedItem = dropdownBloc.items[0];
+                    return StreamBuilder<String>(
+                      stream: dropdownBloc.selectedItemStream,
+                      initialData: selectedItem,
+                      builder: (context, snapshot) {
+                        return DropdownButton<String>(
+                          value: snapshot.data,
+                          onChanged: (item) {
+                            setState(() {
+                              selectedItem = item!;
+                            });
+                            dropdownBloc.setSelectedItem(item!);
+                          },
+                          items: dropdownBloc.items
+                              .map<DropdownMenuItem<String>>((item) {
+                            return DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(item),
+                            );
+                          }).toList(),
+                        );
                       },
                     );
                   } else {
@@ -128,15 +137,15 @@ class _AddAthleteState extends State<AddAthlete> {
                 return ElevatedButton(
                   onPressed: () {
                     context.read<AthleteBloc>().add(
-                      CreateAthlete(
-                        AthleteModel(
-                          name: controllerGetNameText.toLowerCase(),
-                          email: controllerGetEmailText.toLowerCase(),
-                          block: 'gpp1',
-                          startDate: DateTime.parse(text),
-                        ),
-                      ),
-                    );
+                          CreateAthlete(
+                            AthleteModel(
+                              name: controllerGetNameText.toLowerCase(),
+                              email: controllerGetEmailText.toLowerCase(),
+                              block: 'gpp1',
+                              startDate: DateTime.parse(text),
+                            ),
+                          ),
+                        );
                     dispose();
                     // Navigation.pop(context);
                     Navigator.push(
