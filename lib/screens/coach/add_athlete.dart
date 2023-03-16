@@ -77,10 +77,8 @@ class _AddAthleteState extends State<AddAthlete> {
                     final List<String> programsList =
                         state.programList.toList();
                     programsList.insert(0, 'unassigned');
-                    String dropdownValue = programsList[0];
 
-                    final dropdownBloc =
-                        DropdownBloc<String>(['Item 1', 'Item 2', 'Item 3']);
+                    final dropdownBloc = DropdownBloc<String>(programsList);
                     late String selectedItem = dropdownBloc.items[0];
                     return StreamBuilder<String>(
                       stream: dropdownBloc.selectedItemStream,
