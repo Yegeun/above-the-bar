@@ -1,26 +1,79 @@
-List<String> kExerciseList = [
-  "Snatch",
-  "Clean & Jerk",
-  "Total",
-  "Power Snatch",
-  "Hang Snatch",
-  "Block Snatch",
-  "Snatch Deadlift",
-  "Clean",
-  "Hang Clean",
-  "Power Clean",
-  "Block Clean",
-  "Clean Deadlift",
-  "Power Jerk",
-  "Jerk from Rack",
-  "Jerk from Block",
-  "Clean Front Squat Jerk",
-  "Push Press",
-  "Back Squat",
-  "Front Squat",
-  "Strict Row",
-  "Strict Press",
-  "Trunk Hold",
-  "Back Hold",
-  "Side Hold",
+import 'package:above_the_bar/models/exercise_model.dart';
+
+List<Exercise> kExerciseList = [
+  Exercise(
+    name: 'Snatch',
+  ),
+  Exercise(
+    name: 'Clean and Jerk',
+  ),
+  Exercise(
+    name: 'Back Squat',
+  ),
+  Exercise(
+    name: 'Total',
+  ),
+  Exercise(
+    name: 'Power Snatch',
+  ),
+  Exercise(
+    name: 'Hang Snatch',
+  ),
+  Exercise(
+    name: 'Block Snatch',
+  ),
+  Exercise(
+    name: 'Snatch Deadlift',
+  ),
+  Exercise(
+    name: 'Clean',
+  ),
+  Exercise(
+    name: 'Hang Clean',
+  ),
+  Exercise(
+    name: 'Power Clean',
+  ),
+  Exercise(
+    name: 'Block Clean',
+  ),
+  Exercise(
+    name: 'Clean Deadlift',
+  ),
+  Exercise(
+    name: 'Power Jerk',
+  ),
+  Exercise(
+    name: 'Jerk from Rack',
+  ),
+  Exercise(
+    name: 'Jerk from Block',
+  ),
+  Exercise(
+    name: 'Clean Front Squat Jerk',
+  ),
+  Exercise(
+    name: 'Push Press',
+  ),
+  Exercise(
+    name: 'Back Squat',
+  ),
+  Exercise(
+    name: 'Front Squat',
+  ),
+  Exercise(
+    name: 'Strict Row',
+  ),
+  Exercise(
+    name: 'Strict Press',
+  ),
+  Exercise(
+    name: 'Trunk Hold',
+  ),
+  Exercise(
+    name: 'Back Hold',
+  ),
+  Exercise(
+    name: 'Side Hold',
+  ),
 ];

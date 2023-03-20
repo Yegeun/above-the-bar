@@ -140,22 +140,25 @@ class _AthleteHomeState extends State<AthleteHome> {
                         listCreateData.add(ex1);
                         listCreateData.add(ex2);
                         print(ex1.controllerGetExText);
-
+                        print(ex2.controllerGetExText);
                         for (int i = 0; i < listCreateData.length; i++) {
-                          context
-                              .read<AthleteDataBloc>()
-                              .add(CreateAthleteData(AthleteDataEntryModel(
-                                email: "yegeunator@gmail.com",
-                                date: DateTime.parse(text),
-                                bw: 61,
-                                exercise: listCreateData[i].controllerGetExText,
-                                sets: int.parse(
-                                    listCreateData[i].controllerGetSetsText),
-                                reps: int.parse(
-                                    listCreateData[i].controllerGetRepsText),
-                                load: int.parse(
-                                    listCreateData[i].controllerGetLoadText),
-                              )));
+                          context.read<AthleteDataBloc>().add(
+                                CreateAthleteData(
+                                  AthleteDataEntryModel(
+                                    email: "yegeunator@gmail.com",
+                                    date: DateTime.parse(text),
+                                    bw: 61,
+                                    exercise:
+                                        listCreateData[i].controllerGetExText,
+                                    sets: int.parse(listCreateData[i]
+                                        .controllerGetSetsText),
+                                    reps: int.parse(listCreateData[i]
+                                        .controllerGetRepsText),
+                                    load: int.parse(listCreateData[i]
+                                        .controllerGetLoadText),
+                                  ),
+                                ),
+                              );
                         }
                         _refreshScreen(context);
                       },

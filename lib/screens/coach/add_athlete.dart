@@ -89,6 +89,7 @@ class _AddAthleteState extends State<AddAthlete> {
                           onChanged: (item) {
                             setState(() {
                               selectedItem = item!;
+                              _controllerBlock.text = item;
                             });
                             dropdownBloc.setSelectedItem(item!);
                           },
@@ -139,7 +140,7 @@ class _AddAthleteState extends State<AddAthlete> {
                             AthleteModel(
                               name: controllerGetNameText.toLowerCase(),
                               email: controllerGetEmailText.toLowerCase(),
-                              block: 'gpp1',
+                              block: controllerGetBlock.toLowerCase(),
                               startDate: DateTime.parse(text),
                             ),
                           ),

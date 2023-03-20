@@ -51,7 +51,10 @@ class AthleteInputWidget extends StatelessWidget {
                 return const Iterable<String>.empty();
               } else {
                 List<String> matches = <String>[];
-                matches.addAll(kExerciseList);
+                List<String> kExerciseListString = kExerciseList
+                    .map((exercise) => exercise.name.toString())
+                    .toList();
+                matches.addAll(kExerciseListString);
 
                 matches.retainWhere((s) {
                   return s
