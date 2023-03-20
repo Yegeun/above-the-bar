@@ -118,23 +118,20 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                                       ProgramModel(
                                         programName: controllerProgName.text
                                             .toLowerCase(),
-                                        name: listCreateExercise[i]
-                                            .controllerGetExText,
                                         week: listCreateExercise[i].week,
                                         session: listCreateExercise[i].session,
                                         exerciseNum:
                                             listCreateExercise[i].exerciseNum,
                                         exercise: listCreateExercise[i]
-                                            .controllerGetExText,
-                                        sets: int.parse(listCreateExercise[i]
-                                            .controllerGetSetsText),
-                                        reps: int.parse(listCreateExercise[i]
-                                            .controllerGetRepsText),
+                                            .getExerciseName(),
+                                        sets: int.parse(
+                                            listCreateExercise[i].getSets()),
+                                        reps: int.parse(
+                                            listCreateExercise[i].getReps()),
                                         intensity: int.parse(
-                                            listCreateExercise[i]
-                                                .controllerGetIntText),
-                                        comments: listCreateExercise[i]
-                                            .controllerGetCommentsText,
+                                            listCreateExercise[i].getInt()),
+                                        comments:
+                                            listCreateExercise[i].getComments(),
                                       ),
                                     ),
                                   );
@@ -165,17 +162,6 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                 Text('W1 Session 1'),
                 one,
                 two,
-                // Column(
-                //   children: [
-                //     Text('W2 Session 1'),
-                //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 1),
-                //     CreateExerciseWidget(week: 2, session: 1, exerciseNum: 2),
-                //     Text('Session 2'),
-                //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 1),
-                //     CreateExerciseWidget(week: 2, session: 2, exerciseNum: 2),
-                //   ],
-                // )
-
                 // data.isEmpty ? dynamicTextField : result,
                 // OutlinedButton(
                 //   onPressed: addDynamic(vSessionNum, vWeekNum, vExerciseNum++),

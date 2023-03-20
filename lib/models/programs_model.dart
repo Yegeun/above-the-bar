@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 
 class ProgramModel extends Equatable {
   final String programName;
-  final String name;
   final int week;
   final int session;
   final int exerciseNum;
@@ -16,7 +15,6 @@ class ProgramModel extends Equatable {
 
   const ProgramModel({
     required this.programName,
-    required this.name,
     required this.week,
     required this.session,
     required this.exerciseNum,
@@ -30,7 +28,6 @@ class ProgramModel extends Equatable {
   @override
   List<Object?> get props => [
         programName,
-        name,
         week,
         session,
         exerciseNum,
@@ -45,7 +42,6 @@ class ProgramModel extends Equatable {
   Map<String, Object> toDocument() {
     return {
       'programName': programName,
-      'name': name,
       'week': week,
       'session': session,
       'exerciseNum': exerciseNum,
@@ -60,7 +56,6 @@ class ProgramModel extends Equatable {
   static ProgramModel fromSnapshot(DocumentSnapshot snap) {
     ProgramModel program = ProgramModel(
       programName: snap['programName'],
-      name: snap['name'],
       week: snap['week'],
       session: snap['session'],
       exerciseNum: snap['exerciseNum'],
