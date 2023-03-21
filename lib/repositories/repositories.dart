@@ -12,5 +12,3 @@ export 'athlete_pb/base_athlete_pb_repository.dart';
 export 'athlete_pb/athlete_pb_repository.dart';
 export 'programs/base_programs_repository.dart';
 export 'programs/programs_repository.dart';
-export 'auth/base_auth_repository.dart';
-export 'auth/auth_repository.dart';
