@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+const List<Widget> occupation = <Widget>[Text('coach'), Text('athlete')];
+
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
@@ -53,6 +55,7 @@ class SignupView extends StatelessWidget {
               _EmailInput(),
               SizedBox(height: 10),
               _PasswordInput(),
+              SizedBox(height: 10),
               _SignupButton(),
             ],
           ),

@@ -17,6 +17,11 @@ class AuthService {
     });
   }
 
+  UserModel get currentUser {
+    if (_firebaseAuth.currentUser == null) return UserModel.empty;
+    return _firebaseAuth.currentUser!.toUser;
+  }
+
   Future<void> signup({
     required String email,
     required String password,
@@ -45,7 +50,7 @@ class AuthService {
     }
   }
 
-  Future<void> logout({required String email}) async {
+  Future<void> logout() async {
     try {
       await _firebaseAuth.signOut();
     } catch (_) {

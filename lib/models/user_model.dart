@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
@@ -22,4 +21,13 @@ class UserModel extends Equatable {
 
   @override
   List<Object?> get props => [id, fullName, email, occupation];
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'id': id,
+      'fullName': fullName,
+      'email': email,
+      'occupation': occupation,
+    };
+  }
 }

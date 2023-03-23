@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:above_the_bar/screens/login_screen.dart';
+import 'package:above_the_bar/auth_service.dart';
+
+import '../bloc/auth/auth_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (context) {
-      return const HomeScreen();
+      final authStatus = context.select((AuthBloc bloc) => bloc.state.status);
+      print(authStatus);
+      if (authStatus == AuthStatus.unauthenticated) {
+        return const LoginScreen();
+      } else {
+        return const HomeScreen();
+      }
     });
   }
 
@@ -27,13 +36,26 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home Screen'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('Home Screen'),
-          Divider(),
-        ],
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.status == AuthStatus.unauthenticated) {
+            Navigator.push(context, LoginScreen.route());
+          }
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(context.read<AuthBloc>().state.user.email ?? ''),
+            Divider(),
+            ElevatedButton(
+              onPressed: () {
+                context.read<AuthBloc>().add(AuthLogoutRequested());
+              },
+              child: Text('Logout'),
+            )
+          ],
+        ),
       ),
     );
   }
