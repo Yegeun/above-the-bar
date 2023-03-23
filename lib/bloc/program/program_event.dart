@@ -1,6 +1,5 @@
 part of 'program_bloc.dart';
 
-@immutable
 abstract class ProgramEvent extends Equatable {
   const ProgramEvent();
 

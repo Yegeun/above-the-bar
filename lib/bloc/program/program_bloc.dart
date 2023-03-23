@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:above_the_bar/models/programs_model.dart';
-import 'package:above_the_bar/repositories/programs/programs_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:above_the_bar/models/programs_model.dart';
+import 'package:above_the_bar/repositories/programs/programs_repository.dart';
 
 part 'program_event.dart';
 
