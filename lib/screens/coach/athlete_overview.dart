@@ -6,6 +6,12 @@ import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
 
 class AthleteOverview extends StatefulWidget {
+  final AthleteModel athlete;
+
+  const AthleteOverview({super.key, required this.athlete});
+
+  static const routeName = 'coach/athleteOverview';
+
   @override
   State<AthleteOverview> createState() => _AthleteOverviewState();
 }
@@ -13,8 +19,9 @@ class AthleteOverview extends StatefulWidget {
 class _AthleteOverviewState extends State<AthleteOverview> {
   @override
   Widget build(BuildContext context) {
+    AthleteModel athlete = widget.athlete;
     //gets data from previous page
-    final athlete = ModalRoute.of(context)!.settings.arguments as AthleteModel;
+    print(athlete.name);
 
     return Scaffold(
       appBar: AppBar(
@@ -135,10 +142,9 @@ class _AthleteOverviewState extends State<AthleteOverview> {
               Expanded(
                 child: BlocBuilder<AthleteDataBloc, AthleteDataState>(
                   builder: (context, state) {
-                    print(athlete.email);
                     context
                         .read<AthleteDataBloc>()
-                        .add(LoadAthleteData(athlete.email));
+                        .add(LoadAthleteData('yegeunator@gmail.com'));
 
                     if (state is AthleteDataLoading) {
                       // _refreshScreen(context);
@@ -237,11 +243,4 @@ class TableText extends StatelessWidget {
       style: TextStyle(fontFamily: 'SourceSansPro', fontSize: 17),
     );
   }
-}
-
-class SalesData {
-  SalesData(this.year, this.sales);
-
-  final DateTime year;
-  final double sales;
 }
