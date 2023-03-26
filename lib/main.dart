@@ -11,6 +11,7 @@ import 'package:above_the_bar/repositories/repositories.dart';
 import 'package:above_the_bar/screens/screens.dart';
 
 import 'models/user_model.dart';
+import 'models/athlete_model.dart';
 
 bool shouldUseFirestoreEmulator = false;
 
@@ -88,6 +89,11 @@ class MyApp extends StatelessWidget {
                 programListRepository: ProgramRepository(),
               )..add(LoadProgramList()),
             ),
+            BlocProvider(
+              create: (_) => UserBloc(
+                userRepository: UserRepository(),
+              )..add(LoadUser()),
+            ),
           ],
           child: AppView(),
         ),
@@ -149,7 +155,9 @@ class AppView extends StatelessWidget {
             );
           case '/coach/athlete-overview':
             return MaterialPageRoute(
-              builder: (_) => AthleteOverview(),
+              builder: (context) => AthleteOverview(
+                athlete: settings.arguments as AthleteModel,
+              ),
             );
           case '/coach/profile':
             return MaterialPageRoute(

@@ -5,13 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
 import 'package:above_the_bar/bloc/program_list/program_list_bloc.dart';
 
+import 'coach/athlete_overview.dart';
+
 class CoachHome extends StatefulWidget {
   @override
   _CoachHomeState createState() => _CoachHomeState();
 }
 
 class _CoachHomeState extends State<CoachHome> {
-
   Future<void> _deleteAthlete(AthleteModel athlete) async {
     // Delete the program from the database
     BlocProvider.of<AthleteBloc>(context).add(DeleteAthlete(athlete));
@@ -51,12 +52,12 @@ class _CoachHomeState extends State<CoachHome> {
                   );
                 } else if (state is AthleteLoaded) {
                   final List<AthleteModel> athleteList =
-                  state.athletes.toList();
+                      state.athletes.toList();
                   if (athleteList.isEmpty) {
                     context.read<AthleteBloc>().add(LoadAthlete());
                   }
                   final blockList =
-                  athleteList.map((athlete) => athlete.block).toList();
+                      athleteList.map((athlete) => athlete.block).toList();
                   return Flexible(
                     child: SizedBox(
                       height: 200.0,
@@ -111,7 +112,7 @@ class _CoachHomeState extends State<CoachHome> {
                                     }
                                     if (state is ProgramListLoaded) {
                                       final List<String> programsList =
-                                      state.programList.toList();
+                                          state.programList.toList();
                                       if (athleteList[index].block == '') {
                                         return TextButton(
                                             onPressed: () {

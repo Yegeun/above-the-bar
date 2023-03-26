@@ -1,3 +1,5 @@
+import 'package:above_the_bar/models/models.dart';
+
 import 'base_user_repository.dart';
 import 'package:above_the_bar/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,10 +11,22 @@ class UserRepository implements BaseUserRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createUser(UserModel user) async {
+  Future<void> createUser(UserPublicModel user) async {
+    print(user.occupation);
     await _firebaseFirestore
         .collection('users')
-        .doc(user.id)
+        .doc(user.email)
         .set(user.toDocument());
+    if (user.occupation == 'coach') {
+      await _firebaseFirestore
+          .collection('coaches')
+          .doc(user.email)
+          .set(user.toDocument());
+    } else {
+      await _firebaseFirestore
+          .collection('athletes')
+          .doc(user.email)
+          .set(user.toDocument());
+    }
   }
 }
