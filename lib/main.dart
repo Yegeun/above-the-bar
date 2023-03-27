@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => ProgramBloc(
                 programRepository: ProgramRepository(),
-              )..add(LoadProgram()),
+              )..add(LoadProgram('athlete@yegeun.com', 'gpp1')),
             ),
             BlocProvider(
               create: (_) => ProgramListBloc(
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => UserBloc(
                 userRepository: UserRepository(),
-              )..add(LoadUser('example@gmail.com')),
+              )..add(LoadUser('user@yegeun.com')),
             ),
           ],
           child: AppView(),
@@ -127,19 +127,23 @@ class AppView extends StatelessWidget {
             );
           case '/athlete/home':
             return MaterialPageRoute(
-              builder: (_) => AthleteHome(),
+              builder: (_) =>
+                  AthleteHome(athleteEmail: settings.arguments as String),
             );
           case '/athlete/history':
             return MaterialPageRoute(
-              builder: (_) => AthleteHistory(),
+              builder: (_) =>
+                  AthleteHistory(athleteEmail: settings.arguments as String),
             );
           case '/athlete/program-viewer':
             return MaterialPageRoute(
-              builder: (_) => AthleteProgram(),
+              builder: (_) =>
+                  AthleteProgram(athleteEmail: settings.arguments as String),
             );
           case '/athlete/profile':
             return MaterialPageRoute(
-              builder: (_) => AthleteProfile(),
+              builder: (_) =>
+                  AthleteProfile(athleteEmail: settings.arguments as String),
             );
           case '/coach/home':
             return MaterialPageRoute(

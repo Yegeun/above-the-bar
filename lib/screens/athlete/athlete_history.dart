@@ -6,6 +6,10 @@ import 'package:above_the_bar/models/models.dart';
 import 'package:intl/intl.dart';
 
 class AthleteHistory extends StatefulWidget {
+  final String athleteEmail;
+
+  const AthleteHistory({super.key, required this.athleteEmail});
+
   @override
   State<AthleteHistory> createState() => _AthleteHistoryState();
 }
@@ -38,9 +42,8 @@ class _AthleteHistoryState extends State<AthleteHistory> {
             children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
                 builder: (context, state) {
-                  print(state);
                   if (state is AthleteDataLoading) {
-                    _refreshScreen(context);
+                    _refreshScreen(context, widget.athleteEmail);
                     return Center(
                       child: CircularProgressIndicator(),
                     );
@@ -51,7 +54,7 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                     if (athleteData.isEmpty) {
                       context
                           .read<AthleteDataBloc>()
-                          .add(LoadAthleteData("yegeunator@gmail.com"));
+                          .add(LoadAthleteData(widget.athleteEmail));
                     }
                     return Flexible(
                       child: SizedBox(
@@ -68,13 +71,12 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                               trailing: IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () {
-                                  print(athleteData[index].id);
                                   _deleteAthleteData(athleteData[index]);
                                   // setState(() {
                                   //   athleteData.removeAt(index);
                                   // });
                                   UpdateAthleteData(athleteData);
-                                  _refreshScreen(context);
+                                  _refreshScreen(context, widget.athleteEmail);
                                 },
                               ),
                             );
@@ -83,7 +85,6 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                       ),
                     );
                   } else {
-                    print("Error");
                     return Center(
                       child: Text("Error"),
                     );
@@ -99,14 +100,15 @@ class _AthleteHistoryState extends State<AthleteHistory> {
 }
 
 // Define a function to refresh the screen
-void _refreshScreen(BuildContext context) {
+void _refreshScreen(BuildContext context, String athleteEmailString) {
   // context.read<AthleteDataBloc>().close();
 
   // Push a new instance of the same screen onto the navigation stack
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
-      builder: (BuildContext context) => AthleteHistory(),
+      builder: (BuildContext context) =>
+          AthleteHistory(athleteEmail: athleteEmailString),
     ),
   );
 }

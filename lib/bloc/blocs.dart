@@ -8,3 +8,4 @@ export 'program_list/program_list_bloc.dart';
 export 'cupertino_picker/dropdown_bloc.dart';
 export 'auth/auth_bloc.dart';
 export 'user/user_bloc.dart';
+export 'athlete_profile/athlete_profile_bloc.dart';

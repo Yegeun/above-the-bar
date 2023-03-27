@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AthleteProfile extends StatefulWidget {
+  final String athleteEmail;
+
+  const AthleteProfile({super.key, required this.athleteEmail});
+
   @override
   State<AthleteProfile> createState() => _AthleteProfileState();
 }
@@ -16,22 +20,14 @@ class _AthleteProfileState extends State<AthleteProfile> {
       body: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 1,
-                child: Text("Profile"),
-              ),
-              Expanded(
-                flex: 1,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/athlete/edit');
-                  },
-                  child: Text("Athlete Profile"),
-                ),
+              Text(
+                "Profile",
+                style: TextStyle(fontSize: 30.0),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

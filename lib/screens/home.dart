@@ -48,19 +48,11 @@ class HomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(context
-                .read<AuthBloc>()
-                .state
-                .user
-                .occupation ?? ''),
+            Text(context.read<AuthBloc>().state.user.occupation ?? ''),
             Divider(),
             BlocBuilder<UserBloc, UserState>(
               builder: (context, userState) {
-                String _email = context
-                    .read<AuthBloc>()
-                    .state
-                    .user
-                    .email ?? '';
+                String _email = context.read<AuthBloc>().state.user.email ?? '';
                 context.read<UserBloc>().add(LoadUser(_email));
                 if (userState is UserLoading) {
                   return const CircularProgressIndicator();
@@ -70,14 +62,16 @@ class HomeView extends StatelessWidget {
                   if (userState.user.occupation == 'athlete') {
                     return ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/athlete/home');
+                        Navigator.pushNamed(context, '/athlete/home',
+                            arguments: userState.user.email);
                       },
                       child: Text("AthleteHomePage"),
                     );
                   } else if (userState.user.occupation == 'coach') {
                     return ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/coach/home');
+                        Navigator.pushNamed(context, '/coach/home',
+                            arguments: userState.user.email);
                       },
                       child: Text("Coach Homepage"),
                     );

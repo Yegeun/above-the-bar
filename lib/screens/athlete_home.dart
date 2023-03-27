@@ -1,6 +1,7 @@
 import 'package:above_the_bar/models/athlete_data_entry_model.dart';
 import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -11,22 +12,28 @@ AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
 AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
 
 class AthleteHome extends StatefulWidget {
-  late DateTime date = DateTime.now();
+  final String athleteEmail;
+
+  const AthleteHome({super.key, required this.athleteEmail});
+
+  static const routeName = '/athlete/home';
 
   @override
   State<AthleteHome> createState() => _AthleteHomeState();
 }
 
 class _AthleteHomeState extends State<AthleteHome> {
+  late DateTime date = DateTime.now();
+  TextEditingController _controller = TextEditingController();
+
   List<AthleteInputWidget> listDynamic = [];
   List<AthleteInputWidget> listCreateData = [];
   List<String> data = [];
 
-  late DateTime date = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     String text = DateFormat('yyyy-MM-dd').format(date);
+    _controller.text = '61';
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +52,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                   child: IconButton(
                     icon: Icon(Icons.person),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/profile');
+                      Navigator.pushNamed(context, '/athlete/profile',
+                          arguments: widget.athleteEmail);
                     },
                   ),
                 ),
@@ -61,7 +69,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                   alignment: Alignment.topCenter,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/history');
+                      Navigator.pushNamed(context, '/athlete/history',
+                          arguments: widget.athleteEmail);
                     },
                     child: Text("History"),
                   ),
@@ -74,7 +83,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                   alignment: Alignment.topCenter,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/program-viewer');
+                      Navigator.pushNamed(context, '/athlete/program-viewer',
+                          arguments: widget.athleteEmail);
                     },
                     child: Text("View Program"),
                   ),
@@ -117,58 +127,75 @@ class _AthleteHomeState extends State<AthleteHome> {
                   child: Text(text),
                 ),
               ),
+              Container(
+                width: 90,
+                margin: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'BW KG',
+                  ),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^(?:[1-4]?\d{1,2}|200|[0-9])$')),
+                  ],
+                ),
+              ),
             ],
           ), //Date
           ex1,
           ex2,
+          SizedBox(height: 10.0),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
-                  builder: (context, state) {
-                if (state is AthleteDataLoading || state is AthleteDataLoaded) {
-                  return OutlinedButton(
-                      onPressed: () {
-                        // Input validation for the Exercises
-                        if (ex1.controllerGetExText == "" ||
-                            ex2.controllerGetExText == "") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text("Please enter an a valid exercise")));
-                          return;
-                        }
+                builder: (context, state) {
+                  if (state is AthleteDataLoading ||
+                      state is AthleteDataLoaded) {
+                    return OutlinedButton(
+                        onPressed: () {
+                          // Input validation for the Exercises
+                          if (ex1.controllerGetExText == "" ||
+                              ex2.controllerGetExText == "") {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Please enter an a valid exercise")));
+                            return;
+                          }
 
-                        listCreateData.add(ex1);
-                        listCreateData.add(ex2);
-                        print(ex1.controllerGetExText);
-                        print(ex2.controllerGetExText);
-                        for (int i = 0; i < listCreateData.length; i++) {
-                          context.read<AthleteDataBloc>().add(
-                                CreateAthleteData(
-                                  AthleteDataEntryModel(
-                                    email: "yegeunator@gmail.com",
-                                    date: DateTime.parse(text),
-                                    bw: 61,
-                                    exercise:
-                                        listCreateData[i].controllerGetExText,
-                                    sets: int.parse(listCreateData[i]
-                                        .controllerGetSetsText),
-                                    reps: int.parse(listCreateData[i]
-                                        .controllerGetRepsText),
-                                    load: int.parse(listCreateData[i]
-                                        .controllerGetLoadText),
+                          listCreateData.add(ex1);
+                          listCreateData.add(ex2);
+                          for (int i = 0; i < listCreateData.length; i++) {
+                            context.read<AthleteDataBloc>().add(
+                                  CreateAthleteData(
+                                    AthleteDataEntryModel(
+                                      email: widget.athleteEmail,
+                                      date: DateTime.parse(text),
+                                      bw: int.parse(_controller.text),
+                                      exercise:
+                                          listCreateData[i].controllerGetExText,
+                                      sets: int.parse(listCreateData[i]
+                                          .controllerGetSetsText),
+                                      reps: int.parse(listCreateData[i]
+                                          .controllerGetRepsText),
+                                      load: int.parse(listCreateData[i]
+                                          .controllerGetLoadText),
+                                    ),
                                   ),
-                                ),
-                              );
-                        }
-                        _refreshScreen(context);
-                      },
-                      child: Text("Submit Data"));
-                }
-                return Text(
-                  'Something went wrong ',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                );
-              }),
+                                );
+                          }
+                          _refreshScreen(context, widget.athleteEmail);
+                        },
+                        child: Text("Submit Data"));
+                  }
+                  return Text(
+                    'Something went wrong ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  );
+                },
+              ),
             ],
           ),
         ],
@@ -178,9 +205,9 @@ class _AthleteHomeState extends State<AthleteHome> {
 }
 
 // Define a function to refresh the screen
-void _refreshScreen(BuildContext context) {
+void _refreshScreen(BuildContext context, String athleteEmailString) {
   // reset bloc to loading state
-  context.read<AthleteDataBloc>().add(LoadAthleteData("yegeunator@gmail.com"));
+  context.read<AthleteDataBloc>().add(LoadAthleteData(athleteEmailString));
 
   // Clear any text fields
   ex1.clear();
@@ -190,7 +217,9 @@ void _refreshScreen(BuildContext context) {
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
-      builder: (BuildContext context) => AthleteHome(),
+      builder: (BuildContext context) => AthleteHome(
+        athleteEmail: athleteEmailString,
+      ),
     ),
   );
 }

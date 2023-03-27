@@ -23,9 +23,10 @@ class AthleteDataEntryModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         id,
-        email, //TODO Probably take this out
+        email,
         date,
         bw,
         exercise,
@@ -50,7 +51,11 @@ class AthleteDataEntryModel extends Equatable {
 
   //To write in the firebase
   Map<String, Object> toDocument() {
-    if (date.toString().isEmpty || bw.toString().isEmpty) {
+    if (date
+        .toString()
+        .isEmpty || bw
+        .toString()
+        .isEmpty) {
       return {
         'email': email, //TODO Probably take this out
         'date': DateTime.now(),
@@ -76,9 +81,9 @@ class AthleteDataEntryModel extends Equatable {
       List<AthleteDataEntryModel> dataEntries, String exerciseName) {
     try {
       final filteredEntries =
-          dataEntries.where((entry) => entry.exercise == exerciseName).toList();
+      dataEntries.where((entry) => entry.exercise == exerciseName).toList();
       final highestEntry =
-          filteredEntries.reduce((a, b) => a.load > b.load ? a : b);
+      filteredEntries.reduce((a, b) => a.load > b.load ? a : b);
       return [
         highestEntry.load,
         highestEntry.reps
@@ -92,7 +97,7 @@ class AthleteDataEntryModel extends Equatable {
       List<AthleteDataEntryModel> dataEntries, String exerciseName) {
     try {
       final filteredEntries =
-          dataEntries.where((entry) => entry.exercise == exerciseName).toList();
+      dataEntries.where((entry) => entry.exercise == exerciseName).toList();
       return [...filteredEntries]; // filtered entries
     } catch (e) {
       return [];

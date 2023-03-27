@@ -209,6 +209,7 @@ class _SignupButton extends StatelessWidget {
                                         UserPublicModel(
                                           email: state.email.value,
                                           occupation: 'coach',
+                                          coachEmail: 'coach@yegeun.com',
                                         ),
                                       ),
                                     );
@@ -217,9 +218,9 @@ class _SignupButton extends StatelessWidget {
                                 context.read<UserBloc>().add(
                                       CreateUser(
                                         UserPublicModel(
-                                          email: state.email.value,
-                                          occupation: 'athlete',
-                                        ),
+                                            email: state.email.value,
+                                            occupation: 'athlete',
+                                            coachEmail: 'athlete@yegeun.com'),
                                       ),
                                     );
                               }

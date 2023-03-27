@@ -5,6 +5,10 @@ import 'package:above_the_bar/bloc/program/program_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
 
 class AthleteProgram extends StatefulWidget {
+  final String athleteEmail;
+
+  const AthleteProgram({super.key, required this.athleteEmail});
+
   @override
   State<AthleteProgram> createState() => _AthleteProgramState();
 }

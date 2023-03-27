@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:above_the_bar/utilities/constants.dart';
-
 class AthleteInputWidget extends StatelessWidget {
   final int exerciseNum;
 
@@ -44,72 +42,6 @@ class AthleteInputWidget extends StatelessWidget {
           ),
         ),
         Container(
-          width: 150,
-          child: RawAutocomplete(
-            optionsBuilder: (TextEditingValue textEditingValue) {
-              if (textEditingValue.text == '') {
-                return const Iterable<String>.empty();
-              } else {
-                List<String> matches = <String>[];
-                List<String> kExerciseListString = kExerciseList
-                    .map((exercise) => exercise.name.toString())
-                    .toList();
-                matches.addAll(kExerciseListString);
-
-                matches.retainWhere((s) {
-                  return s
-                      .toLowerCase()
-                      .contains(textEditingValue.text.toLowerCase());
-                });
-                return matches;
-              }
-            },
-            onSelected: (String selection) {
-              print('You just selected $selection');
-            },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController textEditingController,
-                FocusNode focusNode,
-                VoidCallback onFieldSubmitted) {
-              return TextField(
-                decoration: InputDecoration(border: OutlineInputBorder()),
-                controller: textEditingController,
-                focusNode: focusNode,
-                //
-                onSubmitted: (String value) {
-                  _controllerEx.text = value;
-                },
-              );
-            },
-            optionsViewBuilder: (BuildContext context,
-                void Function(String) onSelected, Iterable<String> options) {
-              return Material(
-                child: SizedBox(
-                  height: 200,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: options.map((opt) {
-                        return InkWell(
-                            onTap: () {
-                              onSelected(opt);
-                            },
-                            child: Container(
-                                padding: EdgeInsets.only(right: 60),
-                                child: Card(
-                                    child: Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(10),
-                                  child: Text(opt),
-                                ))));
-                      }).toList(),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Container(
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
@@ -117,7 +49,8 @@ class AthleteInputWidget extends StatelessWidget {
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Load (KG)'),
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$')),
             ],
           ),
         ),
@@ -129,7 +62,8 @@ class AthleteInputWidget extends StatelessWidget {
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Sets'),
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:1?[0-9]|20|[0-9])$')),
             ],
           ),
         ),
@@ -141,7 +75,8 @@ class AthleteInputWidget extends StatelessWidget {
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Reps'),
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:1?[0-9]|20|[0-9])$')),
             ],
           ),
         ),

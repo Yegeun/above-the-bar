@@ -4,18 +4,21 @@ import 'package:equatable/equatable.dart';
 class UserPublicModel extends Equatable {
   final String email;
   final String occupation;
+  final String coachEmail;
 
   const UserPublicModel({
     required this.email,
     required this.occupation,
+    required this.coachEmail,
   });
 
   @override
-  List<Object?> get props => [email, occupation];
+  List<Object?> get props => [email, coachEmail, occupation];
 
   Map<String, dynamic> toDocument() {
     return {
       'email': email,
+      'coach': coachEmail,
       'occupation': occupation,
     };
   }
@@ -24,6 +27,7 @@ class UserPublicModel extends Equatable {
     UserPublicModel user = UserPublicModel(
       email: snap['email'],
       occupation: snap['occupation'],
+      coachEmail: snap['coach'],
     );
     return user;
   }

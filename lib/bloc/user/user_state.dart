@@ -7,14 +7,14 @@ abstract class UserState extends Equatable {
   List<Object> get props => [];
 }
 
-class UserLoading extends UserState {
-}
+class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
   final UserPublicModel user;
 
   const UserLoaded(
-      {this.user = const UserPublicModel(email: 'empty', occupation: 'empty')});
+      {this.user = const UserPublicModel(
+          email: 'empty', occupation: 'empty', coachEmail: 'empty')});
 
   @override
   List<Object> get props => [user];
@@ -24,7 +24,8 @@ class UserUpdating extends UserState {
   final UserPublicModel user;
 
   const UserUpdating(
-      {this.user = const UserPublicModel(email: 'empty', occupation: 'empty')});
+      {this.user = const UserPublicModel(
+          email: 'empty', occupation: 'empty', coachEmail: 'empty')});
 
   @override
   List<Object> get props => [user];
