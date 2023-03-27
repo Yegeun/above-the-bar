@@ -7,7 +7,14 @@ abstract class UserEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadUser extends UserEvent {}
+class LoadUser extends UserEvent {
+  const LoadUser(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}
 
 class UpdateUser extends UserEvent {
   final UserPublicModel user;

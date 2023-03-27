@@ -23,14 +23,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<CreateUser>(_onCreateUser);
   }
 
+  void _onLoadUser(LoadUser event, Emitter<UserState> emit) {
+    _userSubscription?.cancel();
+    _userSubscription = _userRepository.getUser(event.email).listen(
+          (user) => add(
+            UpdateUser(user),
+          ),
+        );
+  }
+
   void _onUpdateUser(UpdateUser event, Emitter<UserState> emit) {
     emit(
       UserLoaded(user: event.user),
     );
-  }
-
-  void _onLoadUser(UserEvent event, Emitter<UserState> emit) {
-    _userSubscription?.cancel();
   }
 
   void _onCreateUser(CreateUser event, Emitter<UserState> emit) async {

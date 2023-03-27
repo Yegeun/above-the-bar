@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => UserBloc(
                 userRepository: UserRepository(),
-              )..add(LoadUser()),
+              )..add(LoadUser('example@gmail.com')),
             ),
           ],
           child: AppView(),

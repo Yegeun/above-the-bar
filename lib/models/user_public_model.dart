@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class UserPublicModel extends Equatable {
@@ -17,5 +18,13 @@ class UserPublicModel extends Equatable {
       'email': email,
       'occupation': occupation,
     };
+  }
+
+  static UserPublicModel fromSnapshot(DocumentSnapshot snap) {
+    UserPublicModel user = UserPublicModel(
+      email: snap['email'],
+      occupation: snap['occupation'],
+    );
+    return user;
   }
 }

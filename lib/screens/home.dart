@@ -5,6 +5,8 @@ import 'package:above_the_bar/screens/login_screen.dart';
 import 'package:above_the_bar/auth_service.dart';
 
 import '../bloc/auth/auth_bloc.dart';
+import '../bloc/user/user_bloc.dart';
+import '../models/user_public_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -46,39 +48,77 @@ class HomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(context.read<AuthBloc>().state.user.email ?? ''),
+            Text(context
+                .read<AuthBloc>()
+                .state
+                .user
+                .occupation ?? ''),
             Divider(),
-            ElevatedButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(AuthLogoutRequested());
+            BlocBuilder<UserBloc, UserState>(
+              builder: (context, userState) {
+                String _email = context
+                    .read<AuthBloc>()
+                    .state
+                    .user
+                    .email ?? '';
+                context.read<UserBloc>().add(LoadUser(_email));
+                if (userState is UserLoading) {
+                  return const CircularProgressIndicator();
+                }
+                if (userState is UserLoaded) {
+                  print(userState.user);
+                  if (userState.user.occupation == 'athlete') {
+                    return ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/athlete/home');
+                      },
+                      child: Text("AthleteHomePage"),
+                    );
+                  } else if (userState.user.occupation == 'coach') {
+                    return ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/coach/home');
+                      },
+                      child: Text("Coach Homepage"),
+                    );
+                  } else {
+                    return const Text('No user loaded');
+                  }
+                }
+                return const Text('');
+                // ElevatedButton(
+                //   onPressed: () {
+                //     context.read<AuthBloc>().add(AuthLogoutRequested());
+                //   },
+                //   child: Text('Logout'),
+                // ),
+                // Expanded(
+                //   flex: 1,
+                //   child: Container(
+                //     padding: EdgeInsets.only(bottom: 50.0),
+                //     alignment: Alignment.bottomCenter,
+                //     child: TextButton(
+                //       onPressed: () {
+                //         Navigator.pushNamed(context, '/athlete/home');
+                //       },
+                //       child: Text("AthleteHomePage"),
+                //     ),
+                //   ),
+                // ),
+                // Expanded(
+                //   flex: 1,
+                //   child: Container(
+                //     padding: EdgeInsets.only(bottom: 50.0),
+                //     alignment: Alignment.bottomCenter,
+                //     child: TextButton(
+                //       onPressed: () {
+                //         Navigator.pushNamed(context, '/coach/home');
+                //       },
+                //       child: Text("Coach Homepage"),
+                //     ),
+                //   ),
+                // ),
               },
-              child: Text('Logout'),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.only(bottom: 50.0),
-                alignment: Alignment.bottomCenter,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/athlete/home');
-                  },
-                  child: Text("AthleteHomePage"),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.only(bottom: 50.0),
-                alignment: Alignment.bottomCenter,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/coach/home');
-                  },
-                  child: Text("Coach Homepage"),
-                ),
-              ),
             ),
           ],
         ),

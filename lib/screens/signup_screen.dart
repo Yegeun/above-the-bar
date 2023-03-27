@@ -1,11 +1,15 @@
 import 'package:above_the_bar/auth_service.dart';
 import 'package:above_the_bar/cubit/signup/signup_cubit.dart';
+import 'package:above_the_bar/models/models.dart';
 import 'package:above_the_bar/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../bloc/user/user_bloc.dart';
+
 const List<Widget> occupation = <Widget>[Text('coach'), Text('athlete')];
+final List<bool> selectedOccupation = <bool>[true, false];
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -26,6 +30,8 @@ class SignupScreen extends StatelessWidget {
 class SignupView extends StatelessWidget {
   const SignupView({super.key});
 
+  static const String _title = 'Occuaption';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +47,8 @@ class SignupView extends StatelessWidget {
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                  content: Text(state.errorMessage ?? 'Sign Up Failure'),
+                  content: Text(state.errorMessage ??
+                      'Sign Up Failure because of ${state.errorMessage}'),
                 ),
               );
           }
@@ -55,10 +62,71 @@ class SignupView extends StatelessWidget {
               _EmailInput(),
               SizedBox(height: 10),
               _PasswordInput(),
+              ToggleButtonsOccupation(title: _title),
               SizedBox(height: 10),
               _SignupButton(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ToggleButtonsOccupation extends StatefulWidget {
+  const ToggleButtonsOccupation({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<ToggleButtonsOccupation> createState() => _ToggleButtonOccupation();
+}
+
+class _ToggleButtonOccupation extends State<ToggleButtonsOccupation> {
+  List<bool> get getSelectedOccupation => selectedOccupation;
+
+  List<bool> setOccupation(List<bool> selectedOccupation) {
+    selectedOccupation[0] = selectedOccupation[0];
+    selectedOccupation[1] = selectedOccupation[1];
+    return selectedOccupation;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // ToggleButtons with a single selection.
+            Text('ROLE', style: theme.textTheme.titleSmall),
+            const SizedBox(height: 5),
+            ToggleButtons(
+              onPressed: (int index) {
+                setState(() {
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < selectedOccupation.length; i++) {
+                    selectedOccupation[i] = i == index;
+                  }
+                  (selectedOccupation);
+                });
+              },
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              selectedBorderColor: Colors.red[700],
+              selectedColor: Colors.white,
+              fillColor: Colors.red[200],
+              color: Colors.red[400],
+              constraints: const BoxConstraints(
+                minHeight: 40.0,
+                minWidth: 80.0,
+              ),
+              isSelected: selectedOccupation,
+              children: occupation,
+            )
+          ],
         ),
       ),
     );
@@ -123,14 +191,46 @@ class _SignupButton extends StatelessWidget {
       builder: (context, state) {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
-            : ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(210, 50),
-                ),
-                onPressed: state.status.isValidated
-                    ? () => context.read<SignupCubit>().signUpFormSubmitted()
-                    : null,
-                child: const Text('Sign Up'),
+            : BlocBuilder<UserBloc, UserState>(
+                builder: (context, userState) {
+                  if (userState is UserLoaded || userState is UserLoading) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(210, 50),
+                      ),
+                      onPressed: state.status.isValidated
+                          ? () {
+                              context.read<SignupCubit>().signUpFormSubmitted();
+                              if (_ToggleButtonOccupation()
+                                  .getSelectedOccupation[0]) {
+                                print('coach');
+                                context.read<UserBloc>().add(
+                                      CreateUser(
+                                        UserPublicModel(
+                                          email: state.email.value,
+                                          occupation: 'coach',
+                                        ),
+                                      ),
+                                    );
+                              } else {
+                                print('athlete');
+                                context.read<UserBloc>().add(
+                                      CreateUser(
+                                        UserPublicModel(
+                                          email: state.email.value,
+                                          occupation: 'athlete',
+                                        ),
+                                      ),
+                                    );
+                              }
+                            }
+                          : null,
+                      child: const Text('Sign Up'),
+                    );
+                  } else {
+                    return Text('Error Occurred');
+                  }
+                },
               );
       },
     );

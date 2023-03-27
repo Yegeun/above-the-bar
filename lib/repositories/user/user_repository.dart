@@ -29,4 +29,13 @@ class UserRepository implements BaseUserRepository {
           .set(user.toDocument());
     }
   }
+
+  @override
+  Stream<UserPublicModel> getUser(String email) {
+    return _firebaseFirestore
+        .collection('users')
+        .doc(email)
+        .snapshots()
+        .map((docSnapshot) => UserPublicModel.fromSnapshot(docSnapshot));
+  }
 }
