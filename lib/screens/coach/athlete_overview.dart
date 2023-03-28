@@ -10,7 +10,7 @@ class AthleteOverview extends StatefulWidget {
 
   const AthleteOverview({super.key, required this.athlete});
 
-  static const routeName = 'coach/athleteOverview';
+  static const routeName = 'coach/athlete-overview';
 
   @override
   State<AthleteOverview> createState() => _AthleteOverviewState();
@@ -21,8 +21,6 @@ class _AthleteOverviewState extends State<AthleteOverview> {
   Widget build(BuildContext context) {
     AthleteModel athlete = widget.athlete;
     //gets data from previous page
-    print(athlete.name);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Athlete Overview"),
@@ -45,10 +43,9 @@ class _AthleteOverviewState extends State<AthleteOverview> {
             children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
                 builder: (context, state) {
-                  print(athlete.email);
-                  context
-                      .read<AthleteDataBloc>()
-                      .add(LoadAthleteData(athlete.email));
+                  // context
+                  //     .read<AthleteDataBloc>()
+                  //     .add(LoadAthleteData(athlete.email));
 
                   if (state is AthleteDataLoading) {
                     // _refreshScreen(context);
@@ -106,28 +103,28 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                                       '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Snatch")[1]}'),
                             ],
                           ),
-                          TableRow(
-                            children: [
-                              TableText(text: 'Back Squat'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[0]} kg'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[1]}'),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableText(text: 'Front Squat'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[0]} kg'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[1]}'),
-                            ],
-                          ),
+                          // TableRow(
+                          //   children: [
+                          //     TableText(text: 'Back Squat'),
+                          //     TableText(
+                          //         text:
+                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[0]} kg'),
+                          //     TableText(
+                          //         text:
+                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[1]}'),
+                          //   ],
+                          // ),
+                          // TableRow(
+                          //   children: [
+                          //     TableText(text: 'Front Squat'),
+                          //     TableText(
+                          //         text:
+                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[0]} kg'),
+                          //     TableText(
+                          //         text:
+                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[1]}'),
+                          //   ],
+                          // ),
                         ],
                       ),
                     );
@@ -144,10 +141,9 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                   builder: (context, state) {
                     context
                         .read<AthleteDataBloc>()
-                        .add(LoadAthleteData('yegeunator@gmail.com'));
+                        .add(LoadAthleteData(athlete.email));
 
                     if (state is AthleteDataLoading) {
-                      // _refreshScreen(context);
                       return Center(
                         child: CircularProgressIndicator(),
                       );
@@ -201,7 +197,7 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                                   dashArray: [2],
                                   dataSource: AthleteDataEntryModel
                                       .getFilteredExercises(
-                                          athleteData, "Clean and Jerk"),
+                                          athleteData, "Snatch"),
                                   xValueMapper:
                                       (AthleteDataEntryModel data, _) =>
                                           data.date,

@@ -26,7 +26,9 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
 
   void _onLoadProgram(LoadProgram event, Emitter<ProgramState> emit) {
     _programSubscription?.cancel();
-    _programSubscription = _programRepository.getProgram().listen(
+    _programSubscription = _programRepository
+        .getProgram(event.athleteEmail, event.coachEmail)
+        .listen(
           (programs) => add(
             UpdateProgram(programs),
           ),

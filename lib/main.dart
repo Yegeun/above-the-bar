@@ -62,12 +62,17 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (context) => AthleteDataBloc(
                 athleteDataRepository: AthleteDataRepository(),
-              )..add(LoadAthleteData("example@gmail.com")),
+              )..add(LoadAthleteData("athletedata@yegeun.com")),
             ),
             BlocProvider(
               create: (_) => AthleteProgramDataBloc(
                 athleteProgramDataRepository: AthleteProgramDataRepository(),
               )..add(LoadAthleteProgramData()),
+            ),
+            BlocProvider(
+              create: (_) => AthleteProfileBloc(
+                athleteProfileRepository: AthleteProfileRepository(),
+              )..add(LoadAthleteProfile('athleteprofile@yegeun.com')),
             ),
             BlocProvider(
               create: (_) => ExerciseBloc(
@@ -82,7 +87,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => ProgramBloc(
                 programRepository: ProgramRepository(),
-              )..add(LoadProgram('athlete@yegeun.com', 'gpp1')),
+              )..add(LoadProgram('program@yegeun.com', 'gpp1')),
             ),
             BlocProvider(
               create: (_) => ProgramListBloc(

@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:above_the_bar/repositories/athlete_profile/athlete_profile_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:above_the_bar/models/athlete_profile_model.dart';
 
 part 'athlete_profile_event.dart';
 
@@ -7,9 +11,41 @@ part 'athlete_profile_state.dart';
 
 class AthleteProfileBloc
     extends Bloc<AthleteProfileEvent, AthleteProfileState> {
-  AthleteProfileBloc() : super(AthleteProfileInitial()) {
-    on<AthleteProfileEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+  final AthleteProfileRepository _athleteProfileRepository;
+  StreamSubscription? _athleteProfileSubscription;
+
+  AthleteProfileBloc(
+      {required AthleteProfileRepository athleteProfileRepository})
+      : _athleteProfileRepository = athleteProfileRepository,
+        super(AthleteProfileLoading()) {
+    on<LoadAthleteProfile>(_onLoadAthleteProfile);
+    on<UpdateAthleteProfile>(_onUpdateAthleteProfile);
+    on<CreateAthleteProfile>(_onCreateAthleteProfile);
+  }
+
+  void _onLoadAthleteProfile(
+      LoadAthleteProfile event, Emitter<AthleteProfileState> emit) {
+    _athleteProfileSubscription?.cancel();
+    _athleteProfileSubscription =
+        _athleteProfileRepository.getProfile(event.email).listen(
+              (athleteProfile) => add(
+                UpdateAthleteProfile(athleteProfile),
+              ),
+            );
+  }
+
+  void _onUpdateAthleteProfile(
+      UpdateAthleteProfile event, Emitter<AthleteProfileState> emit) {
+    emit(
+      AthleteProfileLoaded(athleteProfile: event.athleteProfile),
+    );
+  }
+
+  void _onCreateAthleteProfile(
+      CreateAthleteProfile event, Emitter<AthleteProfileState> emit) async {
+    var tempAthleteProfile = event.athleteProfile;
+    _athleteProfileSubscription?.cancel();
+    await _athleteProfileRepository.updateProfile(tempAthleteProfile);
+    emit(AthleteProfileLoaded());
   }
 }

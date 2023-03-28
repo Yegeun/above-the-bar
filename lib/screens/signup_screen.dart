@@ -2,6 +2,7 @@ import 'package:above_the_bar/auth_service.dart';
 import 'package:above_the_bar/cubit/signup/signup_cubit.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:above_the_bar/screens/home.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -48,7 +49,7 @@ class SignupView extends StatelessWidget {
               ..showSnackBar(
                 SnackBar(
                   content: Text(state.errorMessage ??
-                      'Sign Up Failure because of ${state.errorMessage}'),
+                      'Sign Up Failure - Email already in use'),
                 ),
               );
           }
@@ -200,29 +201,35 @@ class _SignupButton extends StatelessWidget {
                       ),
                       onPressed: state.status.isValidated
                           ? () {
-                              context.read<SignupCubit>().signUpFormSubmitted();
-                              if (_ToggleButtonOccupation()
-                                  .getSelectedOccupation[0]) {
-                                print('coach');
-                                context.read<UserBloc>().add(
-                                      CreateUser(
-                                        UserPublicModel(
-                                          email: state.email.value,
-                                          occupation: 'coach',
-                                          coachEmail: 'coach@yegeun.com',
+                              try {
+                                context
+                                    .read<SignupCubit>()
+                                    .signUpFormSubmitted();
+                                if (_ToggleButtonOccupation()
+                                    .getSelectedOccupation[0]) {
+                                  print('coach');
+                                  context.read<UserBloc>().add(
+                                        CreateUser(
+                                          UserPublicModel(
+                                            email: state.email.value,
+                                            occupation: 'coach',
+                                            coachEmail: 'coach',
+                                          ),
                                         ),
-                                      ),
-                                    );
-                              } else {
-                                print('athlete');
-                                context.read<UserBloc>().add(
-                                      CreateUser(
-                                        UserPublicModel(
+                                      );
+                                } else {
+                                  print('athlete');
+                                  context.read<UserBloc>().add(
+                                        CreateUser(UserPublicModel(
                                             email: state.email.value,
                                             occupation: 'athlete',
-                                            coachEmail: 'athlete@yegeun.com'),
-                                      ),
-                                    );
+                                            coachEmail: 'unassigned')),
+                                      );
+                                }
+                              } catch (e) {
+                                if (kDebugMode) {
+                                  print(e);
+                                }
                               }
                             }
                           : null,

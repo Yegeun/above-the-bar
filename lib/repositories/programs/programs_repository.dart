@@ -30,11 +30,11 @@ class ProgramRepository extends BaseProgramsRepository {
   }
 
   @override
-  Stream<List<ProgramModel>> getProgram() {
+  Stream<List<ProgramModel>> getProgram(athleteEmail, coachEmail) {
     return _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin')
-        .collection('GPP1')
+        .doc(coachEmail)
+        .collection(athleteEmail) // otherwise known as the coach's program id
         .snapshots()
         .map((snapshot) {
       return snapshot.docs

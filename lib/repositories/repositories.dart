@@ -14,3 +14,5 @@ export 'programs/base_programs_repository.dart';
 export 'programs/programs_repository.dart';
 export 'user/base_user_repository.dart';
 export 'user/user_repository.dart';
+export 'athlete_profile/base_athlete_profile_repository.dart';
+export 'athlete_profile/athlete_profile_repository.dart';

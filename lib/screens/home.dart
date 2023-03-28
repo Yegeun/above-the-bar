@@ -6,7 +6,6 @@ import 'package:above_the_bar/auth_service.dart';
 
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/user/user_bloc.dart';
-import '../models/user_public_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
