@@ -152,7 +152,9 @@ class AppView extends StatelessWidget {
             );
           case '/coach/home':
             return MaterialPageRoute(
-              builder: (_) => CoachHome(),
+              builder: (_) => CoachHome(
+                coachEmail: 'coach@yegeun.com',
+              ),
             );
           case '/coach/manage-programs':
             return MaterialPageRoute(
@@ -186,7 +188,9 @@ class AppView extends StatelessWidget {
             );
           case '/coach/add-athlete':
             return MaterialPageRoute(
-              builder: (_) => AddAthlete(),
+              builder: (_) => AddAthlete(
+                coachEmail: 'coach@yegeun.com',
+              ),
             );
           case '/coach/assign-athlete':
             return MaterialPageRoute(
