@@ -47,7 +47,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                   Text(
                     "Profile Page",
                     style:
-                    TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.0),
@@ -80,13 +80,8 @@ class _AthleteProfileState extends State<AthleteProfile> {
                             hintText: 'Weight Class',
                             border: OutlineInputBorder(),
                             contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10.0),
+                                EdgeInsets.symmetric(horizontal: 10.0),
                           ),
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$'),
-                            ),
-                          ],
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -113,15 +108,17 @@ class _AthleteProfileState extends State<AthleteProfile> {
                       OutlinedButton(
                           onPressed: () {
                             context.read<AthleteProfileBloc>().add(
-                                UpdateAthleteProfile(
-                                    AthleteProfileModel(
-                                        email: athleteProfile.email,
-                                        weightClass: double.parse(
-                                            _weightController.text),
-                                        coachEmail: _coachEmailController.text)
-                                )
-                            );
-                          }, child: Text('Update Profile')),
+                                CreateAthleteProfile(AthleteProfileModel(
+                                    email: athleteProfile.email,
+                                    weightClass:
+                                        double.parse(_weightController.text),
+                                    coachEmail: _coachEmailController.text)));
+
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Profile Updated Successfully'),
+                            ));
+                          },
+                          child: Text('Update Profile')),
                     ],
                   ),
                 ],

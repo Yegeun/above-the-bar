@@ -17,7 +17,7 @@ class AthleteProfileBloc
   AthleteProfileBloc(
       {required AthleteProfileRepository athleteProfileRepository})
       : _athleteProfileRepository = athleteProfileRepository,
-        super(AthleteProfileLoading()) {
+        super(AthleteProfileLoaded()) {
     on<LoadAthleteProfile>(_onLoadAthleteProfile);
     on<UpdateAthleteProfile>(_onUpdateAthleteProfile);
     on<CreateAthleteProfile>(_onCreateAthleteProfile);

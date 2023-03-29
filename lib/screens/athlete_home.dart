@@ -12,9 +12,9 @@ AthleteInputWidget ex1 = AthleteInputWidget(exerciseNum: 1);
 AthleteInputWidget ex2 = AthleteInputWidget(exerciseNum: 2);
 
 class AthleteHome extends StatefulWidget {
-  final String athleteEmail;
+  final String userEmail;
 
-  const AthleteHome({super.key, required this.athleteEmail});
+  const AthleteHome({super.key, required this.userEmail});
 
   static const routeName = '/athlete/home';
 
@@ -53,7 +53,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                     icon: Icon(Icons.person),
                     onPressed: () {
                       Navigator.pushNamed(context, '/athlete/profile',
-                          arguments: widget.athleteEmail);
+                          arguments: widget.userEmail);
                     },
                   ),
                 ),
@@ -70,7 +70,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   child: TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/athlete/history',
-                          arguments: widget.athleteEmail);
+                          arguments: widget.userEmail);
                     },
                     child: Text("History"),
                   ),
@@ -84,7 +84,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   child: TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/athlete/program-viewer',
-                          arguments: widget.athleteEmail);
+                          arguments: widget.userEmail);
                     },
                     child: Text("View Program"),
                   ),
@@ -171,7 +171,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                             context.read<AthleteDataBloc>().add(
                                   CreateAthleteData(
                                     AthleteDataEntryModel(
-                                      email: widget.athleteEmail,
+                                      email: widget.userEmail,
                                       date: DateTime.parse(text),
                                       bw: int.parse(_controller.text),
                                       exercise:
@@ -186,7 +186,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                   ),
                                 );
                           }
-                          _refreshScreen(context, widget.athleteEmail);
+                          _refreshScreen(context, widget.userEmail);
                         },
                         child: Text("Submit Data"));
                   }
@@ -218,7 +218,7 @@ void _refreshScreen(BuildContext context, String athleteEmailString) {
     context,
     MaterialPageRoute(
       builder: (BuildContext context) => AthleteHome(
-        athleteEmail: athleteEmailString,
+        userEmail: athleteEmailString,
       ),
     ),
   );

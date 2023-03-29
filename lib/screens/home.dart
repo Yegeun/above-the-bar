@@ -73,9 +73,9 @@ class HomeView extends StatelessWidget {
             if (userState is UserLoaded) {
               print(userState.user);
               if (userState.user.occupation == 'athlete') {
-                return AthleteHome(athleteEmail: userState.user.email);
+                return AthleteHome(userEmail: userState.user.email);
               } else if (userState.user.occupation == 'coach') {
-                return CoachHome(coachEmail: userState.user.email);
+                return CoachHome(userEmail: userState.user.email);
               } else {
                 return Container();
               }

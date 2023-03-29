@@ -8,9 +8,9 @@ import 'package:above_the_bar/bloc/program_list/program_list_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 class CoachHome extends StatefulWidget {
-  final String coachEmail;
+  final String userEmail;
 
-  const CoachHome({super.key, required this.coachEmail});
+  const CoachHome({super.key, required this.userEmail});
 
   @override
   State<CoachHome> createState() => _CoachHomeState();
@@ -159,7 +159,7 @@ class _CoachHomeState extends State<CoachHome> {
             child: FloatingActionButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/coach/add-athlete',
-                    arguments: widget.coachEmail);
+                    arguments: widget.userEmail);
               },
               backgroundColor: Colors.blue,
               child: const Icon(Icons.add),

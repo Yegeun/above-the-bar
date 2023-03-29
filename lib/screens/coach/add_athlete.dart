@@ -6,14 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:above_the_bar/models/athlete_model.dart';
+import '../../models/athlete_profile_model.dart';
 
 final List<String> athleteList = [];
 String addAthleteEmail = '';
 
 class AddAthlete extends StatefulWidget {
-  final String coachEmail;
+  final String userEmail;
 
-  const AddAthlete({super.key, required this.coachEmail});
+  const AddAthlete({super.key, required this.userEmail});
 
   @override
   State<AddAthlete> createState() => _AddAthleteState();
@@ -62,9 +63,13 @@ class _AddAthleteState extends State<AddAthlete> {
                 margin: EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _controllerName,
-                  decoration: InputDecoration(hintText: 'Name'),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Athlete Name',
+                  ),
                 ),
               ),
+              SizedBox(height: 10),
               BlocBuilder<AthleteListBloc, AthleteListState>(
                 builder: (context, state) {
                   if (state is AthleteListLoading) {
@@ -96,14 +101,17 @@ class _AddAthleteState extends State<AddAthlete> {
                             print('You just selected $selection');
                           }
                           _controllerEmail.text = selection;
+                          addAthleteEmail = selection;
                         },
                         fieldViewBuilder: (BuildContext context,
                             TextEditingController textEditingController,
                             FocusNode focusNode,
                             VoidCallback onFieldSubmitted) {
                           return TextField(
-                            decoration:
-                                InputDecoration(border: OutlineInputBorder()),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Athlete Email',
+                            ),
                             controller: textEditingController,
                             focusNode: focusNode,
                             //
@@ -146,58 +154,56 @@ class _AddAthleteState extends State<AddAthlete> {
                   return Container();
                 },
               ),
-
-              // Container(
-              //   width: 200,
-              //   margin: EdgeInsets.all(8.0),
-              //   child: TextFormField(
-              //     controller: _controllerEmail,
-              //     decoration: InputDecoration(hintText: 'Email'),
-              //   ),
-              // ),
-              BlocBuilder<ProgramListBloc, ProgramListState>(
-                builder: (context, state) {
-                  if (state is ProgramListLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is ProgramListLoaded) {
-                    final List<String> programsList =
-                        state.programList.toList();
-                    programsList.insert(0, 'unassigned');
-
-                    final dropdownBloc = DropdownBloc<String>(programsList);
-                    late String selectedItem = dropdownBloc.items[0];
-                    return StreamBuilder<String>(
-                      stream: dropdownBloc.selectedItemStream,
-                      initialData: selectedItem,
-                      builder: (context, snapshot) {
-                        return DropdownButton<String>(
-                          value: snapshot.data,
-                          onChanged: (item) {
-                            setState(() {
-                              selectedItem = item!;
-                              _controllerBlock.text = item;
-                            });
-                            dropdownBloc.setSelectedItem(item!);
-                          },
-                          items: dropdownBloc.items
-                              .map<DropdownMenuItem<String>>((item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(item),
-                            );
-                          }).toList(),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text('Block: ', style: TextStyle(fontSize: 20)),
+                  SizedBox(width: 10),
+                  BlocBuilder<ProgramListBloc, ProgramListState>(
+                    builder: (context, state) {
+                      if (state is ProgramListLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
                         );
-                      },
-                    );
-                  } else {
-                    return Center(
-                      child: Text('No Programs'),
-                    );
-                  }
-                },
+                      }
+                      if (state is ProgramListLoaded) {
+                        final List<String> programsList =
+                            state.programList.toList();
+                        programsList.insert(0, 'unassigned');
+
+                        final dropdownBloc = DropdownBloc<String>(programsList);
+                        late String selectedItem = dropdownBloc.items[0];
+                        return StreamBuilder<String>(
+                          stream: dropdownBloc.selectedItemStream,
+                          initialData: selectedItem,
+                          builder: (context, snapshot) {
+                            return DropdownButton<String>(
+                              value: snapshot.data,
+                              onChanged: (item) {
+                                setState(() {
+                                  selectedItem = item!;
+                                  _controllerBlock.text = item;
+                                });
+                                dropdownBloc.setSelectedItem(item!);
+                              },
+                              items: dropdownBloc.items
+                                  .map<DropdownMenuItem<String>>((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: Text('No Programs'),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
               // BlocBuilder<AthleteData>()
               Container(
@@ -218,46 +224,73 @@ class _AddAthleteState extends State<AddAthlete> {
                 ),
               ),
               SizedBox(height: 10.0),
-              BlocBuilder<AthleteBloc, AthleteState>(
-                builder: (context, state) {
-                  if (state is AthleteLoading || state is AthleteLoaded) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        print(controllerGetEmailText.toLowerCase());
-                        if (athleteList
-                            .contains(controllerGetEmailText.toLowerCase())) {
-                          context.read<AthleteBloc>().add(
-                                CreateAthlete(
-                                  AthleteModel(
-                                    name: controllerGetNameText.toLowerCase(),
-                                    email: controllerGetEmailText.toLowerCase(),
-                                    //TODO email vaildation for the Sign up form
-                                    block: controllerGetBlock.toLowerCase(),
-                                    startDate: DateTime.parse(text),
-                                  ),
-                                ),
-                              );
-                          dispose();
-                          // Navigation.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CoachHome(coachEmail: widget.coachEmail),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Athlete does not exist'),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Add Athlete'),
+              BlocBuilder<AthleteProfileBloc, AthleteProfileState>(
+                builder: (context, profileState) {
+                  if (profileState is AthleteProfileLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
                   }
-                  return const Text('Error');
+                  if (profileState is AthleteProfileLoaded) {
+                    return BlocBuilder<AthleteBloc, AthleteState>(
+                      builder: (context, state) {
+                        if (state is AthleteLoaded || state is AthleteLoading) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              print(controllerGetEmailText);
+                              if (athleteList.contains(
+                                  controllerGetEmailText.toLowerCase())) {
+                                context.read<AthleteProfileBloc>().add(
+                                      LoadAthleteProfile(
+                                          addAthleteEmail.toLowerCase()),
+                                    );
+                                context.read<AthleteProfileBloc>().add(
+                                      CreateAthleteProfile(
+                                        AthleteProfileModel(
+                                          email: addAthleteEmail.toLowerCase(),
+                                          weightClass: profileState
+                                              .athleteProfile.weightClass,
+                                          coachEmail: widget.userEmail,
+                                        ),
+                                      ),
+                                    );
+                                context.read<AthleteBloc>().add(
+                                      CreateAthlete(
+                                        AthleteModel(
+                                          name: controllerGetNameText
+                                              .toLowerCase(),
+                                          email: addAthleteEmail.toLowerCase(),
+                                          block:
+                                              controllerGetBlock.toLowerCase(),
+                                          startDate: DateTime.parse(text),
+                                        ),
+                                      ),
+                                    );
+                                dispose();
+                                // Navigation.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CoachHome(userEmail: widget.userEmail),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Athlete does not exist'),
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text('Add Athlete'),
+                          );
+                        }
+                        return const Text('Error');
+                      },
+                    );
+                  }
+                  return Container();
                 },
               ),
             ],
