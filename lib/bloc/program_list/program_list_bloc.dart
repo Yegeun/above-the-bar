@@ -50,7 +50,6 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     emit(ProgramListDeleted());
     print('Delete Successful 2');
     _programListSubscription?.cancel();
-    //TODO - change this to get athlete data for a specific athlete
     _programListSubscription = _programListRepository.getProgramList().listen(
           (programList) => add(
             UpdateProgramList(programList),

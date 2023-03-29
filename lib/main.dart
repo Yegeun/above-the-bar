@@ -75,6 +75,11 @@ class MyApp extends StatelessWidget {
               )..add(LoadAthleteProfile('athleteprofile@yegeun.com')),
             ),
             BlocProvider(
+              create: (_) => AthleteListBloc(
+                athleteListRepository: AthleteProfileRepository(),
+              )..add(LoadAthleteList()),
+            ),
+            BlocProvider(
               create: (_) => ExerciseBloc(
                 exerciseRepository: ExerciseRepository(),
               )..add(LoadExercises()),

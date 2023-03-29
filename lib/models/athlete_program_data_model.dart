@@ -16,7 +16,7 @@ class AthleteProgramDataModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        email, //TODO Probably take this out
+        email,
         id,
         startDate,
         programName,

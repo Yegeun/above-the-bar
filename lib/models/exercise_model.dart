@@ -19,16 +19,4 @@ class Exercise extends Equatable {
     );
     return exercise;
   }
-
-  static List<Exercise> exercises = [
-    Exercise(
-      name: 'Snatch',
-    ),
-    Exercise(
-      name: 'Clean and Jerk',
-    ),
-    Exercise(
-      name: 'Back Squat',
-    ),
-  ];
 }

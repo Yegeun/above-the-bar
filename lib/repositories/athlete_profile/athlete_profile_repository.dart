@@ -25,4 +25,25 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
         .snapshots()
         .map((docSnapshot) => AthleteProfileModel.fromSnapshot(docSnapshot));
   }
+
+  @override
+  Stream<List<String>> getAthleteList() {
+    //write a for loop
+    return _firebaseFirestore
+        .collection('athletes')
+        .snapshots()
+        .map((snapshot) {
+      List<String> athleteList = [];
+      //return all document ids inside the collection
+      for (var doc in snapshot.docs) {
+        athleteList.add(doc.id);
+      }
+      return athleteList;
+    });
+  }
+
+  @override
+  Future<void> deleteAthlete(String email) async {
+    await _firebaseFirestore.collection('athletes').doc(email).delete();
+  }
 }

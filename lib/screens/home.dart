@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:above_the_bar/screens/login_screen.dart';
-import 'package:above_the_bar/auth_service.dart';
 
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/user/user_bloc.dart';
+import 'athlete_home.dart';
+import 'coach_home.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,28 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocBuilder<UserBloc, UserState>(
+      builder: (context, userState) {
+        if (userState is UserLoading) {
+          return const CircularProgressIndicator();
+        }
+        if (userState is UserLoaded) {
+          print(userState.user);
+          if (userState.user.occupation == 'athlete') {
+            Navigator.pushNamed(context, '/athlete/home',
+                arguments: userState.user.email);
+            return Container(); // Return an empty container so that nothing is displayed before navigating
+          } else if (userState.user.occupation == 'coach') {
+            Navigator.pushNamed(context, '/coach/home',
+                arguments: userState.user.email);
+            return Container(); // Return an empty container so that nothing is displayed before navigating
+          } else {
+            return Container();
+          }
+        }
+        return Container(); // Return an empty
+      },
+    );
     return const HomeView();
   }
 }
@@ -34,86 +57,31 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.status == AuthStatus.unauthenticated) {
             Navigator.push(context, LoginScreen.route());
           }
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(context.read<AuthBloc>().state.user.occupation ?? ''),
-            Divider(),
-            BlocBuilder<UserBloc, UserState>(
-              builder: (context, userState) {
-                String _email = context.read<AuthBloc>().state.user.email ?? '';
-                context.read<UserBloc>().add(LoadUser(_email));
-                if (userState is UserLoading) {
-                  return const CircularProgressIndicator();
-                }
-                if (userState is UserLoaded) {
-                  print(userState.user);
-                  if (userState.user.occupation == 'athlete') {
-                    return ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/athlete/home',
-                            arguments: userState.user.email);
-                      },
-                      child: Text("AthleteHomePage"),
-                    );
-                  } else if (userState.user.occupation == 'coach') {
-                    return ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/coach/home',
-                            arguments: userState.user.email);
-                      },
-                      child: Text("Coach Homepage"),
-                    );
-                  } else {
-                    return const Text('No user loaded');
-                  }
-                }
-                return const Text('');
-                // ElevatedButton(
-                //   onPressed: () {
-                //     context.read<AuthBloc>().add(AuthLogoutRequested());
-                //   },
-                //   child: Text('Logout'),
-                // ),
-                // Expanded(
-                //   flex: 1,
-                //   child: Container(
-                //     padding: EdgeInsets.only(bottom: 50.0),
-                //     alignment: Alignment.bottomCenter,
-                //     child: TextButton(
-                //       onPressed: () {
-                //         Navigator.pushNamed(context, '/athlete/home');
-                //       },
-                //       child: Text("AthleteHomePage"),
-                //     ),
-                //   ),
-                // ),
-                // Expanded(
-                //   flex: 1,
-                //   child: Container(
-                //     padding: EdgeInsets.only(bottom: 50.0),
-                //     alignment: Alignment.bottomCenter,
-                //     child: TextButton(
-                //       onPressed: () {
-                //         Navigator.pushNamed(context, '/coach/home');
-                //       },
-                //       child: Text("Coach Homepage"),
-                //     ),
-                //   ),
-                // ),
-              },
-            ),
-          ],
+        child: BlocBuilder<UserBloc, UserState>(
+          builder: (context, userState) {
+            String _email = context.read<AuthBloc>().state.user.email ?? '';
+            context.read<UserBloc>().add(LoadUser(_email));
+            if (userState is UserLoading) {
+              return const CircularProgressIndicator();
+            }
+            if (userState is UserLoaded) {
+              print(userState.user);
+              if (userState.user.occupation == 'athlete') {
+                return AthleteHome(athleteEmail: userState.user.email);
+              } else if (userState.user.occupation == 'coach') {
+                return CoachHome(coachEmail: userState.user.email);
+              } else {
+                return Container();
+              }
+            }
+            return Container(); // Return an empty
+          },
         ),
       ),
     );
