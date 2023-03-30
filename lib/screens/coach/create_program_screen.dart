@@ -14,6 +14,8 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
   List<CreateExerciseWidget> listCreateExercise = [];
   List<String> data = [];
 
+  bool _isVisible = false;
+
   int vExerciseNum = 1;
   int vSessionNum = 1;
   int vWeekNum = 1;
@@ -27,60 +29,13 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
   CreateExerciseWidget two =
       CreateExerciseWidget(week: 1, session: 1, exerciseNum: 2);
 
-  // addDynamic(int dynamicWeek, int dynamicSession, int dynamicExerciseNum) {
-  //   if (data.length != 0) {
-  //     floatingIcon = Icon(Icons.add);
-  //
-  //     data = [];
-  //     listDynamic = [];
-  //     print('if');
-  //   }
-  //   setState(() {});
-  //   if (listDynamic.length >= 20) {
-  //     return;
-  //   }
-  //   listDynamic.add(
-  //     CreateExerciseWidget(
-  //       week: dynamicWeek,
-  //       session: dynamicSession,
-  //       exerciseNum: dynamicExerciseNum,
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
-    Widget result = Flexible(
-      flex: 1,
-      child: Card(
-        child: ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (_, index) {
-            return Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 10.0),
-                    child: Text("${index + 1} : ${data[index]}"),
-                  ),
-                  Divider(),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
+    List<Widget> weekTitles = [];
 
-    Widget dynamicTextField = Flexible(
-      flex: 2,
-      child: ListView.builder(
-        itemCount: listDynamic.length,
-        itemBuilder: (_, index) => listDynamic[index],
-      ),
-    );
+    for (int i = 1; i <= 4; i++) {
+      weekTitles.add(Text('W$i Session 1'));
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -88,11 +43,16 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
       ),
       body: InteractiveViewer(
         boundaryMargin: const EdgeInsets.all(2.0),
-        minScale: 0.1,
-        maxScale: 2.0,
+        minScale: 0.2,
+        maxScale: 1.0,
         constrained: false,
-        child: Row(
+        child: Column(
           children: [
+            WeekTextInputList(
+              numWeeks: 4,
+              sessionsPerWeek: 5,
+              exercisesPerSession: 4,
+            ),
             Column(
               children: [
                 Center(
@@ -104,43 +64,47 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                         );
                       }
                       if (state is ProgramLoaded) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            listCreateExercise.add(one);
-                            listCreateExercise.add(two);
-                            // make a list of each exeercise populated
-                            // then add each list inisde the exercise using []
-                            for (int i = 0;
-                                i < listCreateExercise.length;
-                                i++) {
-                              context.read<ProgramBloc>().add(
-                                    CreateProgram(
-                                      ProgramModel(
-                                        programName: controllerProgName.text
-                                            .toLowerCase(),
-                                        week: listCreateExercise[i].week,
-                                        session: listCreateExercise[i].session,
-                                        exerciseNum:
-                                            listCreateExercise[i].exerciseNum,
-                                        exercise: listCreateExercise[i]
-                                            .getExerciseName(),
-                                        sets: int.parse(
-                                            listCreateExercise[i].getSets()),
-                                        reps: int.parse(
-                                            listCreateExercise[i].getReps()),
-                                        intensity: int.parse(
-                                            listCreateExercise[i].getInt()),
-                                        comments:
-                                            listCreateExercise[i].getComments(),
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              listCreateExercise.add(one);
+                              listCreateExercise.add(two);
+                              // make a list of each exercise populated
+                              // then add each list insdie the exercise using []
+                              for (int i = 0;
+                                  i < listCreateExercise.length;
+                                  i++) {
+                                context.read<ProgramBloc>().add(
+                                      CreateProgram(
+                                        ProgramModel(
+                                          programName: controllerProgName.text
+                                              .toLowerCase(),
+                                          week: listCreateExercise[i].week,
+                                          session:
+                                              listCreateExercise[i].session,
+                                          exerciseNum:
+                                              listCreateExercise[i].exerciseNum,
+                                          exercise: listCreateExercise[i]
+                                              .getExerciseName(),
+                                          sets: int.parse(
+                                              listCreateExercise[i].getSets()),
+                                          reps: int.parse(
+                                              listCreateExercise[i].getReps()),
+                                          intensity: int.parse(
+                                              listCreateExercise[i].getInt()),
+                                          comments: listCreateExercise[i]
+                                              .getComments(),
+                                        ),
                                       ),
-                                    ),
-                                  );
-                              listCreateExercise[i].dispose();
-                            }
+                                    );
+                                listCreateExercise[i].dispose();
+                              }
 
-                            Navigator.pop(context);
-                          },
-                          child: Text('Submit'),
+                              Navigator.pop(context);
+                            },
+                            child: Text('Submit'),
+                          ),
                         );
                       }
                       return Text(
@@ -159,19 +123,183 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
                     decoration: InputDecoration(hintText: 'Name of Program'),
                   ),
                 ),
-                Text('W1 Session 1'),
-                one,
+                Visibility(visible: _isVisible, child: one),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _isVisible = !_isVisible;
+                      });
+                    },
+                    child: Text(_isVisible ? 'Delete' : 'Add Exercise')),
                 two,
-                // data.isEmpty ? dynamicTextField : result,
-                // OutlinedButton(
-                //   onPressed: addDynamic(vSessionNum, vWeekNum, vExerciseNum++),
-                //   child: Text('Add Exercise'),
-                // ),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class WeekTextInputList extends StatefulWidget {
+  final int numWeeks;
+  final int sessionsPerWeek;
+  final int exercisesPerSession;
+
+  WeekTextInputList({
+    required this.numWeeks,
+    required this.sessionsPerWeek,
+    required this.exercisesPerSession,
+  });
+
+  @override
+  _WeekTextInputListState createState() => _WeekTextInputListState();
+}
+
+class _WeekTextInputListState extends State<WeekTextInputList> {
+  List<List<List<List<TextEditingController>>>> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < widget.numWeeks; i++) {
+      List<List<List<TextEditingController>>> weekSessions = [];
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        List<List<TextEditingController>> sessionExercises = [];
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
+          List<TextEditingController> exerciseFields = [];
+          exerciseFields.add(TextEditingController()); // Exercise
+          exerciseFields.add(TextEditingController()); // Sets
+          exerciseFields.add(TextEditingController()); // Reps
+          exerciseFields.add(TextEditingController()); // Load(KG)
+          exerciseFields.add(TextEditingController()); // Comments
+          sessionExercises.add(exerciseFields);
+        }
+        weekSessions.add(sessionExercises);
+      }
+      _controllers.add(weekSessions);
+    }
+  }
+
+  void _copyWeek(int weekIndex) {
+    if (weekIndex > 0) {
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
+          _controllers[weekIndex][j][k][0].text =
+              _controllers[weekIndex - 1][j][k][0].text;
+          _controllers[weekIndex][j][k][1].text =
+              _controllers[weekIndex - 1][j][k][1].text;
+          _controllers[weekIndex][j][k][2].text =
+              _controllers[weekIndex - 1][j][k][2].text;
+          _controllers[weekIndex][j][k][3].text =
+              _controllers[weekIndex - 1][j][k][3].text;
+          _controllers[weekIndex][j][k][4].text =
+              _controllers[weekIndex - 1][j][k][4].text;
+        }
+      }
+    }
+  }
+
+  void _deleteWeek(int weekIndex) {
+    setState(() {
+      _controllers.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> weekFields = [];
+
+    for (int i = 0; i < widget.numWeeks; i++) {
+      List<Widget> sessionFields = [];
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        List<Widget> exerciseFields = [];
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
+          exerciseFields.add(
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      child: TextField(
+                        controller: _controllers[i][j][k][0],
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'W${i + 1} S${j + 1} Ex ${k + 1}'),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 100,
+                      child: TextField(
+                        controller: _controllers[i][j][k][1],
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Sets'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }
+        sessionFields.add(
+          Column(
+            children: exerciseFields,
+          ),
+        );
+      }
+      weekFields.add(
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Week ${i + 1}'),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.content_copy),
+                      onPressed: () {
+                        _copyWeek(i);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteWeek(i);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: sessionFields,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: weekFields,
+    );
+  }
+
+  @override
+  void dispose() {
+    for (var i = 0; i < _controllers.length; i++) {
+      for (var j = 0; j < _controllers[i].length; j++) {
+        for (var k = 0; k < _controllers[i][j].length; k++) {
+          for (var l = 0; l < _controllers[i][j][k].length; l++) {
+            _controllers[i][j][k][l].dispose();
+          }
+        }
+      }
+    }
+    super.dispose();
   }
 }
