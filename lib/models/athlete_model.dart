@@ -49,4 +49,13 @@ class AthleteModel extends Equatable {
       'startDate': startDate,
     };
   }
+
+  AthleteModel copyWith({required String block}) {
+    return AthleteModel(
+      name: name,
+      email: email,
+      block: block,
+      startDate: startDate,
+    );
+  }
 }

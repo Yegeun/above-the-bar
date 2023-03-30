@@ -6,6 +6,9 @@ import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
 import 'package:above_the_bar/bloc/program_list/program_list_bloc.dart';
 
 import '../bloc/auth/auth_bloc.dart';
+import '../bloc/cupertino_picker/dropdown_bloc.dart';
+
+String _outlineTextButton = 'Assign Program';
 
 class CoachHome extends StatefulWidget {
   final String userEmail;
@@ -102,40 +105,69 @@ class _CoachHomeState extends State<CoachHome> {
                                           "Delete ${athleteList[index].name}");
                                     },
                                   ),
-                                  Text(
-                                    "GPP1 Week 1 Session 1",
-                                    style: TextStyle(
-                                      fontSize: 10.0,
-                                    ),
-                                  ),
                                   BlocBuilder<ProgramListBloc,
                                       ProgramListState>(
-                                    //TODO this shoudl adpat for uassign and assign
-                                    builder: (context, state) {
-                                      if (state is ProgramListLoading) {
+                                    builder: (context, programState) {
+                                      if (programState is ProgramListLoading) {
                                         return Center(
                                           child: CircularProgressIndicator(),
                                         );
                                       }
-                                      if (state is ProgramListLoaded) {
+                                      if (programState is ProgramListLoaded) {
                                         final List<String> programsList =
-                                            state.programList.toList();
-                                        if (athleteList[index].block == '') {
-                                          return TextButton(
-                                              onPressed: () {
-                                                Placeholder();
+                                            programState.programList.toList();
+                                        programsList.insert(0, 'unassigned');
+
+                                        final dropdownBloc =
+                                            DropdownBloc<String>(programsList);
+
+                                        String selectedItem =
+                                            athleteList[index].block;
+                                        print(selectedItem);
+                                        return StreamBuilder<String>(
+                                          stream:
+                                              dropdownBloc.selectedItemStream,
+                                          initialData: selectedItem,
+                                          builder: (context, snapshot) {
+                                            return DropdownButton<String>(
+                                              value: snapshot.data,
+                                              onChanged: (item) {
+                                                context
+                                                    .read<AthleteBloc>()
+                                                    .add(CreateAthlete(
+                                                      athleteList[index]
+                                                          .copyWith(
+                                                              block: item!),
+                                                    ));
+                                                setState(() {
+                                                  selectedItem = item!;
+                                                });
+                                                dropdownBloc
+                                                    .setSelectedItem(item!);
                                               },
-                                              child: Text('Assign Program'));
-                                        } else {
-                                          return Text(athleteList[index].block);
-                                        }
-                                      } else {
-                                        return Center(
-                                          child: Text('Error'),
+                                              items: dropdownBloc.items.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (item) {
+                                                return DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(item),
+                                                );
+                                              }).toList(),
+                                            );
+                                          },
                                         );
+
+                                        //   return Container(
+                                        //       width: 150,
+                                        //       child:
+                                        //           Text(athleteList[index].block));
                                       }
+                                      return Container();
                                     },
                                   ),
+                                  // OutlinedButton(
+                                  //     onPressed: () {},
+                                  //     child: Text('Assign New Program')),
                                 ],
                               ),
                             );
