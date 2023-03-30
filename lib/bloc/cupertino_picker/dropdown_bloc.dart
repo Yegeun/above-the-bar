@@ -1,14 +1,14 @@
 import 'dart:async';
 
-class DropdownBloc<T> {
-  final List<T> items;
-  final _selectedItemController = StreamController<T>();
+class DropdownBloc<String> {
+  final List<String> items;
+  final _selectedItemController = StreamController<String>();
 
   DropdownBloc(this.items);
 
-  Stream<T> get selectedItemStream => _selectedItemController.stream;
+  Stream<String> get selectedItemStream => _selectedItemController.stream;
 
-  void setSelectedItem(T item) {
+  void setSelectedItem(String item) {
     _selectedItemController.add(item);
   }
 

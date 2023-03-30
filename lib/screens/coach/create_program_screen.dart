@@ -49,9 +49,9 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
         child: Column(
           children: [
             WeekTextInputList(
-              numWeeks: 4,
-              sessionsPerWeek: 5,
-              exercisesPerSession: 4,
+              numWeeks: 2,
+              sessionsPerWeek: 2,
+              exercisesPerSession: 2,
             ),
             Column(
               children: [
@@ -158,26 +158,34 @@ class WeekTextInputList extends StatefulWidget {
 
 class _WeekTextInputListState extends State<WeekTextInputList> {
   List<List<List<List<TextEditingController>>>> _controllers = [];
+  List<List<List<List<String>>>> dropdownValueState = [];
 
   @override
   void initState() {
     super.initState();
     for (int i = 0; i < widget.numWeeks; i++) {
       List<List<List<TextEditingController>>> weekSessions = [];
+      List<List<List<String>>> dropdownValueWeek = [];
       for (int j = 0; j < widget.sessionsPerWeek; j++) {
         List<List<TextEditingController>> sessionExercises = [];
+        List<List<String>> dropdownValueSession = [];
         for (int k = 0; k < widget.exercisesPerSession; k++) {
           List<TextEditingController> exerciseFields = [];
+          List<String> dropdownValueExercise = [];
           exerciseFields.add(TextEditingController()); // Exercise
           exerciseFields.add(TextEditingController()); // Sets
           exerciseFields.add(TextEditingController()); // Reps
           exerciseFields.add(TextEditingController()); // Load(KG)
           exerciseFields.add(TextEditingController()); // Comments
           sessionExercises.add(exerciseFields);
+          dropdownValueExercise.add('Unselected');
+          dropdownValueSession.add(dropdownValueExercise);
         }
         weekSessions.add(sessionExercises);
+        dropdownValueWeek.add(dropdownValueSession);
       }
       _controllers.add(weekSessions);
+      dropdownValueState.add(dropdownValueWeek);
     }
   }
 
@@ -201,9 +209,12 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
   }
 
   void _deleteWeek(int weekIndex) {
-    setState(() {
-      _controllers.clear();
-    });
+    _controllers.removeAt(weekIndex);
+    setState(
+      () {
+        weekIndex--;
+      },
+    );
   }
 
   @override
@@ -214,19 +225,52 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
       List<Widget> sessionFields = [];
       for (int j = 0; j < widget.sessionsPerWeek; j++) {
         List<Widget> exerciseFields = [];
+        exerciseFields.add(
+          Row(
+            children: [
+              SizedBox(height: 5),
+              Text('Week ${i + 1} Session ${j + 1}'),
+              SizedBox(height: 5),
+              // IconButton(
+              //   icon: Icon(Icons.copy),
+              //   onPressed: () => _copyWeek(i),
+              // ),
+              // IconButton(
+              //   icon: Icon(Icons.delete),
+              //   onPressed: () => _deleteWeek(i),
+              // ),
+            ],
+          ),
+        );
         for (int k = 0; k < widget.exercisesPerSession; k++) {
           exerciseFields.add(
             Column(
               children: [
                 Row(
                   children: [
+                    DropdownButton(
+                        value: dropdownValueState[i][j][k][0],
+                        items: ['Unselected', 'Snatch', 'Clean and Jerk']
+                            .map((String items) {
+                          return DropdownMenuItem<String>(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _controllers[i][j][k][0].text = newValue.toString();
+                            dropdownValueState[i][j][k][0] =
+                                newValue.toString();
+                          });
+                        }),
                     Container(
                       width: 100,
                       child: TextField(
                         controller: _controllers[i][j][k][0],
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'W${i + 1} S${j + 1} Ex ${k + 1}'),
+                            labelText: 'Ex ${k + 1}'),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -238,6 +282,35 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                             border: OutlineInputBorder(), labelText: 'Sets'),
                       ),
                     ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 100,
+                      child: TextField(
+                        controller: _controllers[i][j][k][2],
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Reps'),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 100,
+                      child: TextField(
+                        controller: _controllers[i][j][k][3],
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Load'),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 100,
+                      child: TextField(
+                        controller: _controllers[i][j][k][4],
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Comments'),
+                      ),
+                    ),
+                    SizedBox(width: 20),
                   ],
                 ),
               ],
