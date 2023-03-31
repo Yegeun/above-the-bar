@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/bloc/blocs.dart';
 import 'package:above_the_bar/widgets/create_exercise_widget.dart';
@@ -119,7 +120,14 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                       child: TextField(
                         controller: _controllers[i][j][k][1],
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(), labelText: 'Sets'),
+                          border: OutlineInputBorder(),
+                          labelText: 'Sets',
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^(?:1?\d|20|\d)$'))
+                        ],
                       ),
                     ),
                     SizedBox(width: 10),
@@ -129,6 +137,11 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                         controller: _controllers[i][j][k][2],
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Reps'),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^(?:1?\d|20|\d)$'))
+                        ],
                       ),
                     ),
                     SizedBox(width: 10),
@@ -137,7 +150,13 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                       child: TextField(
                         controller: _controllers[i][j][k][3],
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(), labelText: 'Load'),
+                            border: OutlineInputBorder(),
+                            labelText: 'Percentage'),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^(?:1?\d|500|\d)$'))
+                        ],
                       ),
                     ),
                     SizedBox(width: 10),
