@@ -123,7 +123,6 @@ class _CoachHomeState extends State<CoachHome> {
 
                                         String selectedItem =
                                             athleteList[index].block;
-                                        print(selectedItem);
                                         return StreamBuilder<String>(
                                           stream:
                                               dropdownBloc.selectedItemStream,
@@ -194,6 +193,7 @@ class _CoachHomeState extends State<CoachHome> {
                     arguments: widget.userEmail);
               },
               backgroundColor: Colors.blue,
+              heroTag: null, //herotag is null
               child: const Icon(Icons.add),
             ),
           ),

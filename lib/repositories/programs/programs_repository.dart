@@ -11,7 +11,6 @@ class ProgramRepository extends BaseProgramsRepository {
 
   @override
   Future<void> createNewProgram(ProgramModel program) async {
-    print('Program exercise ${program.exercise}');
     await _firebaseFirestore
         .collection('coaches')
         .doc('stuart.martin') //TODO: Change to login user
