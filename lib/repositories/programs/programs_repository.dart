@@ -80,4 +80,27 @@ class ProgramRepository extends BaseProgramsRepository {
         .collection('programList');
     await collectionDoc.doc(documentId).delete();
   }
+
+  @override
+  Future<void> copyProgram(
+      String copyDocumentId, String newCopyDocumentId) async {
+    final instance = FirebaseFirestore.instance;
+    final batch = instance.batch();
+    var collection = instance
+        .collection('coaches')
+        .doc('stuart.martin')
+        .collection(copyDocumentId);
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      batch.set(doc.reference, doc.data());
+    }
+    await batch.commit();
+    var collectionDoc = FirebaseFirestore.instance
+        .collection('coaches')
+        .doc("stuart.martin")
+        .collection('programList');
+    await collectionDoc
+        .doc(newCopyDocumentId)
+        .set({'programName': newCopyDocumentId});
+  }
 }

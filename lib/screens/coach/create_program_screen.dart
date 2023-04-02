@@ -8,6 +8,15 @@ import 'package:above_the_bar/widgets/create_exercise_widget.dart';
 List<ProgramModel> _programModelList = [];
 
 class CreateProgramScreen extends StatefulWidget {
+  final List<String> createProgramScreenProgramName;
+
+  const CreateProgramScreen({
+    Key? key,
+    required this.createProgramScreenProgramName,
+  }) : super(key: key);
+
+  static const routeName = '/coach/create-program';
+
   @override
   State<CreateProgramScreen> createState() => _CreateProgramScreenState();
 }
@@ -16,26 +25,23 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
   List<CreateExerciseWidget> listDynamic = [];
   List<CreateExerciseWidget> listCreateExercise = [];
   List<String> data = [];
-  String programName = 'gpp1';
 
   TextEditingController controllerProgName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     List<Widget> weekTitles = [];
-    List<ProgramModel> programList = [];
 
     for (int i = 1; i <= 4; i++) {
       weekTitles.add(Text('W$i Session 1'));
     }
-    final TransformationController _transformationController =
-        TransformationController();
     WeekTextInputList weekTextInputList = WeekTextInputList(
-      numWeeks: 2,
-      sessionsPerWeek: 2,
-      exercisesPerSession: 2,
-      inputProgramName: programName,
+      inputProgramName: widget.createProgramScreenProgramName[0],
+      numWeeks: int.parse(widget.createProgramScreenProgramName[1]),
+      sessionsPerWeek: int.parse(widget.createProgramScreenProgramName[2]),
+      exercisesPerSession: int.parse(widget.createProgramScreenProgramName[3]),
     );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Program"),
@@ -60,9 +66,6 @@ class WeekTextInputList extends StatefulWidget {
 
   @override
   _WeekTextInputListState createState() => _WeekTextInputListState();
-
-  final _WeekTextInputListState _weekTextInputListState =
-      _WeekTextInputListState();
 }
 
 class _WeekTextInputListState extends State<WeekTextInputList> {

@@ -1,6 +1,7 @@
 import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 String _name = 'Program Name';
@@ -11,8 +12,7 @@ class ManagePrograms extends StatefulWidget {
 }
 
 class _ManageProgramsState extends State<ManagePrograms> {
-  Future<void> _displayTextInputDialog(
-      BuildContext context, String name) async {
+  Future<void> _displayCopyDialog(BuildContext context, String name) async {
     final TextEditingController controllerName =
         TextEditingController(text: '$name 1');
     return showDialog(
@@ -25,13 +25,179 @@ class _ManageProgramsState extends State<ManagePrograms> {
               controller: controllerName,
               decoration: InputDecoration(hintText: "Name"), // preload
             ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('COPY'),
+                onPressed: () {
+                  if (kDebugMode) {
+                    print('Copy $name to ${controllerName.text}');
+                  }
+                  // _copyProgram(name, controllerName.text);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           );
         });
+  }
+
+  Future<void> _displayCreateDialog(BuildContext context) async {
+    final TextEditingController controllerProgramName =
+        TextEditingController(text: 'Program Name');
+    final TextEditingController controllerWeeks = TextEditingController();
+    final TextEditingController controllerSession = TextEditingController();
+    final TextEditingController controllerExercises = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        void dispose() {
+          controllerProgramName.dispose();
+          controllerWeeks.dispose();
+          controllerSession.dispose();
+          controllerExercises.dispose();
+          super.dispose();
+        }
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Create Program',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                TextField(
+                  onChanged: (value) {},
+                  controller: controllerProgramName,
+                  decoration: InputDecoration(
+                    hintText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  //TODO need to check if an exercise program NAme already exists// preload
+                ),
+                SizedBox(height: 10.0),
+                TextField(
+                  onChanged: (value) {},
+                  controller: controllerWeeks,
+                  decoration: InputDecoration(
+                    hintText: 'Number of Weeks',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^(?:1?\d|20|0)$'),
+                    ),
+                  ],
+                  // preload
+                ),
+                SizedBox(height: 10.0),
+                TextField(
+                  onChanged: (value) {},
+                  controller: controllerSession,
+                  decoration: InputDecoration(
+                    hintText: 'Session',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^(?:1?\d|20|0)$'),
+                    ),
+                  ],
+                  // preload
+                ),
+                SizedBox(height: 10.0),
+                TextField(
+                  onChanged: (value) {},
+                  controller: controllerExercises,
+                  decoration: InputDecoration(
+                    hintText: 'Exercises',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^(?:1?\d|20|0)$'),
+                    ),
+                  ],
+                  // preload
+                ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'CANCEL',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(width: 10.0),
+                    ElevatedButton(
+                      child: Text('CREATE'),
+                      onPressed: () {
+                        List<String> _programList = [
+                          controllerProgramName.text,
+                          controllerWeeks.text,
+                          controllerSession.text,
+                          controllerExercises.text,
+                        ];
+                        navigateToCreateProgram(_programList);
+                        Navigator.of(context).pop();
+                        dispose();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _deleteProgram(String nameProg) async {
     // Delete the program from the database
     BlocProvider.of<ProgramListBloc>(context).add(DeleteProgram(nameProg));
+  }
+
+  Future<void> _copyProgram(String nameProg, String newNameProg) async {
+    // Copy the program from the database
+    BlocProvider.of<ProgramListBloc>(context)
+        .add(CopyProgram(nameProg, newNameProg));
+  }
+
+  navigateToCreateProgram(List<String> diaCreateProgram) {
+    Navigator.pushNamed(
+      context,
+      '/coach/create-program',
+      arguments: diaCreateProgram,
+    );
   }
 
   @override
@@ -49,7 +215,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/coach/create-program');
+                      _displayCreateDialog(context);
                     },
                     child: Text(
                       'Create Program',
@@ -113,7 +279,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                       if (kDebugMode) {
                                         print('Copy $_name');
                                       }
-                                      _displayTextInputDialog(context, _name);
+                                      _displayCopyDialog(context, _name);
                                     },
                                     icon: Icon(Icons.copy),
                                   ),

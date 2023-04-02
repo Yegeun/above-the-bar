@@ -65,20 +65,7 @@ class _WeekTextInputListStatep extends State<WeekTextInputListp> {
   void _deleteWeek(int weekIndex) {
     _controllers.removeAt(weekIndex);
     setState(
-      () {
-        // if (weekIndex >= 0 && weekIndex < _controllers.length) {
-        //   _controllers.removeAt(weekIndex);
-        //   for (int i = weekIndex; i < _controllers.length; i++) {
-        //     for (int j = 0; j < widget.sessionsPerWeek; j++) {
-        //       for (int k = 0; k < widget.exercisesPerSession; k++) {
-        //         for (int l = 0; l < 2; l++) {
-        //           _controllers[i][j][k][l].text = _controllers[i][j][k][l].text;
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-      },
+      () {},
     );
   }
 
@@ -87,7 +74,6 @@ class _WeekTextInputListStatep extends State<WeekTextInputListp> {
     List<Widget> weekFields = [];
 
     for (int i = 0; i < widget.numWeeks; i++) {
-      List<Widget> sessionFields = [];
       for (int j = 0; j < widget.sessionsPerWeek; j++) {
         List<Widget> exerciseFields = [];
         exerciseFields.add(

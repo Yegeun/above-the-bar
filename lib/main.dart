@@ -183,9 +183,12 @@ class AppView extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => EditProgram(),
             );
-          case '/coach/create-program':
+          case CreateProgramScreen.routeName:
             return MaterialPageRoute(
-              builder: (_) => CreateProgramScreen(),
+              builder: (_) => CreateProgramScreen(
+                createProgramScreenProgramName:
+                    settings.arguments as List<String>,
+              ),
             );
           case '/coach/create-exercise':
             return MaterialPageRoute(
