@@ -30,7 +30,7 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
         .getProgram(event.athleteEmail, event.coachEmail)
         .listen(
           (programs) => add(
-            UpdateProgram(programs),
+            UpdateProgram(programs, event.coachEmail),
           ),
         );
   }
@@ -50,7 +50,7 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
   ) async {
     var tempProgram = event.program;
     _programSubscription?.cancel();
-    await _programRepository.createNewProgram(tempProgram);
+    await _programRepository.createNewProgram(tempProgram, event.coachEmail);
     if (kDebugMode) {
       print(tempProgram);
     }

@@ -12,20 +12,24 @@ class ProgramListLoading extends ProgramListState {}
 
 class ProgramListLoaded extends ProgramListState {
   final List<String> programList;
+  final String coachEmail;
 
-  const ProgramListLoaded({this.programList = const <String>[]});
+  const ProgramListLoaded(
+      {this.programList = const <String>[], this.coachEmail = ''});
 
   @override
-  List<Object> get props => [programList];
+  List<Object> get props => [programList, coachEmail];
 }
 
 class ProgramListUpdating extends ProgramListState {
   final List<String> programList;
+  final String coachEmail;
 
-  const ProgramListUpdating({this.programList = const <String>[]});
+  const ProgramListUpdating(
+      {this.programList = const <String>[], this.coachEmail = ''});
 
   @override
-  List<Object> get props => [programList];
+  List<Object> get props => [programList, coachEmail];
 }
 
 class ProgramListDeleting extends ProgramListState {
@@ -36,12 +40,14 @@ class ProgramListDeleting extends ProgramListState {
 }
 
 class ProgramListDeleted extends ProgramListState {
-  const ProgramListDeleted({this.programs = const <String>[]});
+  const ProgramListDeleted(
+      {this.programs = const <String>[], this.coachEmail = ''});
 
   final List<String> programs;
+  final String coachEmail;
 
   @override
-  List<Object> get props => [programs];
+  List<Object> get props => [programs, coachEmail];
 }
 
 class ProgramListCopying extends ProgramListState {
@@ -52,10 +58,14 @@ class ProgramListCopying extends ProgramListState {
 }
 
 class ProgramListCopied extends ProgramListState {
-  const ProgramListCopied({this.programs = const <String>[]});
+  const ProgramListCopied(
+      {this.programs = const <String>[], this.copyPrograms = const<String>[
+      ], this.coachEmail = ''});
 
   final List<String> programs;
+  final List<String> copyPrograms;
+  final String coachEmail;
 
   @override
-  List<Object> get props => [programs];
+  List<Object> get props => [programs, coachEmail];
 }

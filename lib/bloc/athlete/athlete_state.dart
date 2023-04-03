@@ -12,8 +12,10 @@ class AthleteLoading extends AthleteState {}
 
 class AthleteLoaded extends AthleteState {
   final List<AthleteModel> athletes;
+  final String coachEmail;
 
-  const AthleteLoaded({this.athletes = const <AthleteModel>[]});
+  const AthleteLoaded(
+      {this.athletes = const <AthleteModel>[], this.coachEmail = ''});
 
   @override
   List<Object> get props => [athletes];
@@ -21,8 +23,10 @@ class AthleteLoaded extends AthleteState {
 
 class AthleteUpdating extends AthleteState {
   final List<AthleteModel> athletes;
+  final String coachEmail;
 
-  const AthleteUpdating({this.athletes = const <AthleteModel>[]});
+  const AthleteUpdating(
+      {this.athletes = const <AthleteModel>[], this.coachEmail = ''});
 
   @override
   List<Object> get props => [athletes];
@@ -36,10 +40,12 @@ class AthleteDeleting extends AthleteState {
 }
 
 class AthleteDeleted extends AthleteState {
-  const AthleteDeleted({this.athletes = const <AthleteModel>[]});
-
   final List<AthleteModel> athletes;
+  final String coachEmail;
+
+  const AthleteDeleted(
+      {this.athletes = const <AthleteModel>[], this.coachEmail = ''});
 
   @override
-  List<Object> get props => [athletes];
+  List<Object> get props => [athletes, coachEmail];
 }

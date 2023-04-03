@@ -26,11 +26,12 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
   void _onLoadProgramList(
       LoadProgramList event, Emitter<ProgramListState> emit) {
     _programListSubscription?.cancel();
-    _programListSubscription = _programListRepository.getProgramList().listen(
-          (programList) => add(
-            UpdateProgramList(programList),
-          ),
-        );
+    _programListSubscription =
+        _programListRepository.getProgramList(event.coachEmail).listen(
+              (programList) => add(
+                UpdateProgramList(programList, event.coachEmail),
+              ),
+            );
   }
 
   void _onUpdateProgramList(
@@ -38,7 +39,8 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     Emitter<ProgramListState> emit,
   ) {
     emit(
-      ProgramListLoaded(programList: event.programList),
+      ProgramListLoaded(
+          programList: event.programList, coachEmail: event.coachEmail),
     );
   }
 
@@ -47,15 +49,16 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     Emitter<ProgramListState> emit,
   ) async {
     emit(ProgramListDeleting());
-    await _programListRepository.deleteProgram(event.program);
+    await _programListRepository.deleteProgram(event.program, event.coachEmail);
     emit(ProgramListDeleted());
     print('Delete Successful 2');
     _programListSubscription?.cancel();
-    _programListSubscription = _programListRepository.getProgramList().listen(
-          (programList) => add(
-            UpdateProgramList(programList),
-          ),
-        );
+    _programListSubscription =
+        _programListRepository.getProgramList(event.coachEmail).listen(
+              (programList) => add(
+                UpdateProgramList(programList, event.coachEmail),
+              ),
+            );
     // emit(UpdateAthleteData(event.entries));
   }
 
@@ -64,14 +67,16 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     Emitter<ProgramListState> emit,
   ) async {
     emit(ProgramListCopying());
-    await _programListRepository.copyProgram(event.program, event.copyProgram);
+    await _programListRepository.copyProgram(
+        event.program, event.copyProgram, event.coachEmail);
     emit(ProgramListCopied());
     print('Copy Successful');
     _programListSubscription?.cancel();
-    _programListSubscription = _programListRepository.getProgramList().listen(
-          (programList) => add(
-            UpdateProgramList(programList),
-          ),
-        );
+    _programListSubscription =
+        _programListRepository.getProgramList(event.coachEmail).listen(
+              (programList) => add(
+                UpdateProgramList(programList, event.coachEmail),
+              ),
+            );
   }
 }

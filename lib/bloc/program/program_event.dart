@@ -19,18 +19,20 @@ class LoadProgram extends ProgramEvent {
 
 class UpdateProgram extends ProgramEvent {
   final List<ProgramModel> program;
+  final String coachEmail;
 
-  const UpdateProgram(this.program);
+  const UpdateProgram(this.program, this.coachEmail);
 
   @override
-  List<Object> get props => [program];
+  List<Object> get props => [program, coachEmail];
 }
 
 class CreateProgram extends ProgramEvent {
   final ProgramModel program;
+  final String coachEmail;
 
-  const CreateProgram(this.program);
+  const CreateProgram(this.program, this.coachEmail);
 
   @override
-  List<Object> get props => [program];
+  List<Object> get props => [program, coachEmail];
 }

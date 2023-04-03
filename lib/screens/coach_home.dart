@@ -22,11 +22,15 @@ class CoachHome extends StatefulWidget {
 class _CoachHomeState extends State<CoachHome> {
   Future<void> _deleteAthlete(AthleteModel athlete) async {
     // Delete the program from the database
-    BlocProvider.of<AthleteBloc>(context).add(DeleteAthlete(athlete));
+    BlocProvider.of<AthleteBloc>(context)
+        .add(DeleteAthlete(athlete, widget.userEmail));
   }
 
   @override
   Widget build(BuildContext context) {
+    //loads in the coach's athletes
+    context.read<ProgramListBloc>().add(LoadProgramList(widget.userEmail));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Coach Programming App"),
@@ -42,7 +46,8 @@ class _CoachHomeState extends State<CoachHome> {
                   alignment: Alignment.topCenter,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/coach/manage-programs');
+                      Navigator.pushNamed(context, '/coach/manage-programs',
+                          arguments: widget.userEmail);
                     },
                     child: Text("Manage Programs"),
                   ),
@@ -59,10 +64,15 @@ class _CoachHomeState extends State<CoachHome> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is AthleteLoaded) {
+                    context
+                        .read<AthleteBloc>()
+                        .add(LoadAthlete(widget.userEmail));
                     final List<AthleteModel> athleteList =
                         state.athletes.toList();
                     if (athleteList.isEmpty) {
-                      context.read<AthleteBloc>().add(LoadAthlete());
+                      context
+                          .read<AthleteBloc>()
+                          .add(LoadAthlete(widget.userEmail));
                     }
                     final blockList =
                         athleteList.map((athlete) => athlete.block).toList();
@@ -116,7 +126,9 @@ class _CoachHomeState extends State<CoachHome> {
                                       if (programState is ProgramListLoaded) {
                                         final List<String> programsList =
                                             programState.programList.toList();
+
                                         programsList.insert(0, 'unassigned');
+                                        print(programsList);
 
                                         final dropdownBloc =
                                             DropdownBloc<String>(programsList);
@@ -131,13 +143,12 @@ class _CoachHomeState extends State<CoachHome> {
                                             return DropdownButton<String>(
                                               value: snapshot.data,
                                               onChanged: (item) {
-                                                context
-                                                    .read<AthleteBloc>()
-                                                    .add(CreateAthlete(
-                                                      athleteList[index]
-                                                          .copyWith(
-                                                              block: item!),
-                                                    ));
+                                                context.read<AthleteBloc>().add(
+                                                    CreateAthlete(
+                                                        athleteList[index]
+                                                            .copyWith(
+                                                                block: item!),
+                                                        widget.userEmail));
                                                 setState(() {
                                                   selectedItem = item!;
                                                 });

@@ -7,6 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 String _name = 'Program Name';
 
 class ManagePrograms extends StatefulWidget {
+  final String manageProgramsCoachEmail;
+
+  const ManagePrograms({
+    Key? key,
+    required this.manageProgramsCoachEmail,
+  }) : super(key: key);
+
   @override
   State<ManagePrograms> createState() => _ManageProgramsState();
 }
@@ -14,7 +21,7 @@ class ManagePrograms extends StatefulWidget {
 class _ManageProgramsState extends State<ManagePrograms> {
   Future<void> _displayCopyDialog(BuildContext context, String name) async {
     final TextEditingController controllerName =
-        TextEditingController(text: '$name 1');
+    TextEditingController(text: '$name 1');
     return showDialog(
         context: context,
         builder: (context) {
@@ -24,6 +31,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
               onChanged: (value) {},
               controller: controllerName,
               decoration: InputDecoration(hintText: "Name"), // preload
+              //TODO check if name already exists
             ),
             actions: <Widget>[
               TextButton(
@@ -35,10 +43,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
               TextButton(
                 child: Text('COPY'),
                 onPressed: () {
-                  if (kDebugMode) {
-                    print('Copy $name to ${controllerName.text}');
-                  }
-                  // _copyProgram(name, controllerName.text);
+                  _copyProgram(name, controllerName.text);
                   Navigator.of(context).pop();
                 },
               ),
@@ -49,7 +54,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
 
   Future<void> _displayCreateDialog(BuildContext context) async {
     final TextEditingController controllerProgramName =
-        TextEditingController(text: 'Program Name');
+    TextEditingController(text: 'Program Name');
     final TextEditingController controllerWeeks = TextEditingController();
     final TextEditingController controllerSession = TextEditingController();
     final TextEditingController controllerExercises = TextEditingController();
@@ -166,6 +171,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                           controllerSession.text,
                           controllerExercises.text,
                         ];
+                        _programList.add(widget.manageProgramsCoachEmail);
                         navigateToCreateProgram(_programList);
                         Navigator.of(context).pop();
                         dispose();
@@ -183,13 +189,14 @@ class _ManageProgramsState extends State<ManagePrograms> {
 
   Future<void> _deleteProgram(String nameProg) async {
     // Delete the program from the database
-    BlocProvider.of<ProgramListBloc>(context).add(DeleteProgram(nameProg));
+    BlocProvider.of<ProgramListBloc>(context)
+        .add(DeleteProgram(nameProg, widget.manageProgramsCoachEmail));
   }
 
   Future<void> _copyProgram(String nameProg, String newNameProg) async {
     // Copy the program from the database
-    BlocProvider.of<ProgramListBloc>(context)
-        .add(CopyProgram(nameProg, newNameProg));
+    BlocProvider.of<ProgramListBloc>(context).add(
+        CopyProgram(nameProg, newNameProg, widget.manageProgramsCoachEmail));
   }
 
   navigateToCreateProgram(List<String> diaCreateProgram) {
@@ -245,6 +252,9 @@ class _ManageProgramsState extends State<ManagePrograms> {
             children: [
               BlocBuilder<ProgramListBloc, ProgramListState>(
                 builder: (context, state) {
+                  context
+                      .read<ProgramListBloc>()
+                      .add(LoadProgramList(widget.manageProgramsCoachEmail));
                   if (state is ProgramListLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -252,7 +262,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   }
                   if (state is ProgramListLoaded) {
                     final List<String> programsList =
-                        state.programList.toList();
+                    state.programList.toList();
                     return Flexible(
                       child: SizedBox(
                         height: 300,

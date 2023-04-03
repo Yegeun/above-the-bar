@@ -8,32 +8,42 @@ abstract class ProgramListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadProgramList extends ProgramListEvent {}
+class LoadProgramList extends ProgramListEvent {
+  final String coachEmail;
+
+  const LoadProgramList(this.coachEmail);
+
+  @override
+  List<Object> get props => [coachEmail];
+}
 
 class UpdateProgramList extends ProgramListEvent {
   final List<String> programList;
+  final String coachEmail;
 
-  const UpdateProgramList(this.programList);
+  const UpdateProgramList(this.programList, this.coachEmail);
 
   @override
-  List<Object> get props => [programList];
+  List<Object> get props => [programList, coachEmail];
 }
 
 class DeleteProgram extends ProgramListEvent {
   final String program;
+  final String coachEmail;
 
-  const DeleteProgram(this.program);
+  const DeleteProgram(this.program, this.coachEmail);
 
   @override
-  List<Object> get props => [program];
+  List<Object> get props => [program, coachEmail];
 }
 
 class CopyProgram extends ProgramListEvent {
   final String program;
   final String copyProgram;
+  final String coachEmail;
 
-  const CopyProgram(this.program, this.copyProgram);
+  const CopyProgram(this.program, this.copyProgram, this.coachEmail);
 
   @override
-  List<Object> get props => [program, copyProgram];
+  List<Object> get props => [program, copyProgram, coachEmail];
 }

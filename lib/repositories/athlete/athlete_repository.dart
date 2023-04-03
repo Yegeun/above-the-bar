@@ -10,21 +10,22 @@ class AthleteRepository extends BaseAthleteRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createNewAthlete(AthleteModel athlete) async {
+  Future<void> createNewAthlete(
+      AthleteModel athlete, String athleteCoachEmail) async {
     print('Athlete name ${athlete.name} ');
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin')
+        .doc(athleteCoachEmail)
         .collection('athletes')
         .doc(athlete.email)
         .set(athlete.toDocument());
   }
 
   @override
-  Stream<List<AthleteModel>> getAthletes() {
+  Stream<List<AthleteModel>> getAthletes(String athleteCoachEmail) {
     return _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin')
+        .doc(athleteCoachEmail)
         .collection('athletes')
         .snapshots()
         .map((snapshot) {
@@ -35,10 +36,11 @@ class AthleteRepository extends BaseAthleteRepository {
   }
 
   @override
-  Future<void> deleteAthlete(AthleteModel athlete) async {
+  Future<void> deleteAthlete(
+      AthleteModel athlete, String athleteCoachEmail) async {
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin') //TODO: Change to login user
+        .doc(athleteCoachEmail)
         .collection('athletes')
         .doc(athlete.email)
         .delete();

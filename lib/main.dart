@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => AthleteBloc(
                 athleteRepository: AthleteRepository(),
-              )..add(LoadAthlete()),
+              )..add(LoadAthlete('stuart.martin')),
             ),
             BlocProvider(
               create: (context) => AthleteDataBloc(
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => ProgramListBloc(
                 programListRepository: ProgramRepository(),
-              )..add(LoadProgramList()),
+              )..add(LoadProgramList('stuart.martin')),
             ),
             BlocProvider(
               create: (_) => UserBloc(
@@ -163,7 +163,8 @@ class AppView extends StatelessWidget {
             );
           case '/coach/manage-programs':
             return MaterialPageRoute(
-              builder: (_) => ManagePrograms(),
+              builder: (_) => ManagePrograms(
+                  manageProgramsCoachEmail: settings.arguments as String),
             );
           case '/coach/manage-exercises':
             return MaterialPageRoute(
@@ -186,9 +187,8 @@ class AppView extends StatelessWidget {
           case CreateProgramScreen.routeName:
             return MaterialPageRoute(
               builder: (_) => CreateProgramScreen(
-                createProgramScreenProgramName:
-                    settings.arguments as List<String>,
-              ),
+                  createProgramScreenProgramName:
+                      settings.arguments as List<String>),
             );
           case '/coach/create-exercise':
             return MaterialPageRoute(

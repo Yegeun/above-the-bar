@@ -264,6 +264,7 @@ class _AddAthleteState extends State<AddAthlete> {
                                               controllerGetBlock.toLowerCase(),
                                           startDate: DateTime.parse(text),
                                         ),
+                                        widget.userEmail,
                                       ),
                                     );
                                 dispose();

@@ -10,10 +10,10 @@ class ProgramRepository extends BaseProgramsRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createNewProgram(ProgramModel program) async {
+  Future<void> createNewProgram(ProgramModel program, String coachEmail) async {
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin') //TODO: Change to login user
+        .doc(coachEmail)
         .collection(program.programName) //Name of Program
         .doc(
             'w${program.week.toString()}s${program.session.toString()}e${program.exerciseNum.toString()}') // Name of the Document
@@ -22,7 +22,7 @@ class ProgramRepository extends BaseProgramsRepository {
     //appends it to a list of programs this should also get the last program and add 1 to it
     await _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin') //TODO: Change to login user
+        .doc(coachEmail)
         .collection('programList') //Name of Program
         .doc(program.programName) // Name of the Document
         .set({
@@ -48,11 +48,11 @@ class ProgramRepository extends BaseProgramsRepository {
   }
 
   @override
-  Stream<List<String>> getProgramList() {
+  Stream<List<String>> getProgramList(String coachEmail) {
     //write a for loop
     return _firebaseFirestore
         .collection('coaches')
-        .doc('stuart.martin')
+        .doc(coachEmail)
         .collection('programList')
         .snapshots()
         .map((snapshot) {
@@ -66,13 +66,11 @@ class ProgramRepository extends BaseProgramsRepository {
   }
 
   @override
-  Future<void> deleteProgram(String documentId) async {
+  Future<void> deleteProgram(String documentId, String coachEmail) async {
     final instance = FirebaseFirestore.instance;
     final batch = instance.batch();
-    var collection = instance
-        .collection('coaches')
-        .doc('stuart.martin')
-        .collection(documentId);
+    var collection =
+        instance.collection('coaches').doc(coachEmail).collection(documentId);
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
       batch.delete(doc.reference);
@@ -81,31 +79,52 @@ class ProgramRepository extends BaseProgramsRepository {
 
     var collectionDoc = FirebaseFirestore.instance
         .collection('coaches')
-        .doc("stuart.martin")
+        .doc(coachEmail)
         .collection('programList');
     await collectionDoc.doc(documentId).delete();
   }
 
   @override
-  Future<void> copyProgram(
-      String copyDocumentId, String newCopyDocumentId) async {
-    final instance = FirebaseFirestore.instance;
-    final batch = instance.batch();
-    var collection = instance
+  Future<void> copyProgram(String copyDocumentId, String newCopyDocumentId,
+      String coachEmail) async {
+    // Get a reference to the original collection
+    CollectionReference originalCollection = FirebaseFirestore.instance
         .collection('coaches')
-        .doc('stuart.martin')
+        .doc(coachEmail)
         .collection(copyDocumentId);
-    var snapshots = await collection.get();
-    for (var doc in snapshots.docs) {
-      batch.set(doc.reference, doc.data());
+
+    // Get a reference to the new collection
+    CollectionReference newCollection = FirebaseFirestore.instance
+        .collection('coaches')
+        .doc(coachEmail)
+        .collection(newCopyDocumentId);
+
+    // Get the documents from the original collection
+    QuerySnapshot originalDocuments = await originalCollection.get();
+
+    // Loop through the original documents and copy them to the new collection
+    for (var doc in originalDocuments.docs) {
+      // Get the data from the original document
+      Object? data = doc.data();
+
+      // Set the new document ID
+      String newDocumentId =
+          doc.id.replaceAll(copyDocumentId, newCopyDocumentId);
+
+      // Add the document to the new collection
+      await newCollection.doc(newDocumentId).set(data as Map<String, dynamic>);
     }
-    await batch.commit();
+
+    //copy the program list
     var collectionDoc = FirebaseFirestore.instance
         .collection('coaches')
-        .doc("stuart.martin")
+        .doc(coachEmail)
         .collection('programList');
-    await collectionDoc
-        .doc(newCopyDocumentId)
-        .set({'programName': newCopyDocumentId});
+
+    var originalDoc = await collectionDoc.doc(copyDocumentId).get();
+    var originalData = originalDoc.data();
+
+    var newDoc = collectionDoc.doc(newCopyDocumentId);
+    await newDoc.set(originalData!);
   }
 }

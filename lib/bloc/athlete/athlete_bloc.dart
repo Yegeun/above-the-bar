@@ -25,43 +25,49 @@ class AthleteBloc extends Bloc<AthleteEvent, AthleteState> {
 
   void _onLoadAthletes(LoadAthlete event, Emitter<AthleteState> emit) {
     _athleteSubscription?.cancel();
-    _athleteSubscription = _athleteRepository.getAthletes().listen(
-          (athletes) =>
-          add(
-            UpdateAthletes(athletes),
-          ),
-    );
+    _athleteSubscription =
+        _athleteRepository.getAthletes(event.coachEmail).listen(
+              (athletes) => add(
+                UpdateAthletes(athletes, event.coachEmail),
+              ),
+            );
   }
 
-  void _onUpdateAthletes(UpdateAthletes event,
-      Emitter<AthleteState> emit,) {
+  void _onUpdateAthletes(
+    UpdateAthletes event,
+    Emitter<AthleteState> emit,
+  ) {
     emit(
-      AthleteLoaded(athletes: event.athletes),
+      AthleteLoaded(athletes: event.athletes, coachEmail: event.coachEmail),
     );
   }
 
-  void _onCreateAthlete(CreateAthlete event,
-      Emitter<AthleteState> emit,) async {
+  void _onCreateAthlete(
+    CreateAthlete event,
+    Emitter<AthleteState> emit,
+  ) async {
     var tempAthlete = event.athlete;
     _athleteSubscription?.cancel();
-    await _athleteRepository.createNewAthlete(tempAthlete);
+    await _athleteRepository.createNewAthlete(tempAthlete, event.coachEmail);
     if (kDebugMode) {
       print(tempAthlete);
     }
     emit(AthleteLoaded());
   }
 
-  void _onDeleteAthlete(DeleteAthlete event,
-      Emitter<AthleteState> emit,) async {
+  void _onDeleteAthlete(
+    DeleteAthlete event,
+    Emitter<AthleteState> emit,
+  ) async {
     emit(AthleteDeleting());
-    await _athleteRepository.deleteAthlete(event.athlete);
+    await _athleteRepository.deleteAthlete(event.athlete, event.coachEmail);
     emit(AthleteDeleted());
     _athleteSubscription?.cancel();
-    _athleteSubscription = _athleteRepository.getAthletes().listen(
-          (athletes) =>
-          add(
-            UpdateAthletes(athletes),
-          ),
-    );
+    _athleteSubscription =
+        _athleteRepository.getAthletes(event.coachEmail).listen(
+              (athletes) => add(
+                UpdateAthletes(athletes, event.coachEmail),
+              ),
+            );
   }
 }
