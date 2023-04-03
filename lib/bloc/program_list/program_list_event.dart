@@ -27,3 +27,13 @@ class DeleteProgram extends ProgramListEvent {
   @override
   List<Object> get props => [program];
 }
+
+class CopyProgram extends ProgramListEvent {
+  final String program;
+  final String copyProgram;
+
+  const CopyProgram(this.program, this.copyProgram);
+
+  @override
+  List<Object> get props => [program, copyProgram];
+}

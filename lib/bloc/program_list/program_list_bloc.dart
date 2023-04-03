@@ -20,6 +20,7 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     on<LoadProgramList>(_onLoadProgramList);
     on<UpdateProgramList>(_onUpdateProgramList);
     on<DeleteProgram>(_onDeleteProgram);
+    on<CopyProgram>(_onCopyProgram);
   }
 
   void _onLoadProgramList(
@@ -56,5 +57,21 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
           ),
         );
     // emit(UpdateAthleteData(event.entries));
+  }
+
+  void _onCopyProgram(
+    CopyProgram event,
+    Emitter<ProgramListState> emit,
+  ) async {
+    emit(ProgramListCopying());
+    await _programListRepository.copyProgram(event.program, event.copyProgram);
+    emit(ProgramListCopied());
+    print('Copy Successful');
+    _programListSubscription?.cancel();
+    _programListSubscription = _programListRepository.getProgramList().listen(
+          (programList) => add(
+            UpdateProgramList(programList),
+          ),
+        );
   }
 }

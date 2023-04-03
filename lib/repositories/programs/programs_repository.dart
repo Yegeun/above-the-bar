@@ -19,13 +19,18 @@ class ProgramRepository extends BaseProgramsRepository {
             'w${program.week.toString()}s${program.session.toString()}e${program.exerciseNum.toString()}') // Name of the Document
         .set(program.toDocument());
 
-    //appends it to a list of programs
+    //appends it to a list of programs this should also get the last program and add 1 to it
     await _firebaseFirestore
         .collection('coaches')
         .doc('stuart.martin') //TODO: Change to login user
         .collection('programList') //Name of Program
         .doc(program.programName) // Name of the Document
-        .set({'programName': program.programName});
+        .set({
+      'programName': program.programName,
+      'weeks': program.week,
+      'sessions': program.session,
+      'exercises': program.exerciseNum
+    });
   }
 
   @override
