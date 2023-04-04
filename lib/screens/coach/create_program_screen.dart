@@ -3,7 +3,6 @@ import 'package:above_the_bar/models/models.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/bloc/blocs.dart';
-import 'package:above_the_bar/widgets/create_exercise_widget.dart';
 
 List<ProgramModel> _programModelList = [];
 
@@ -146,7 +145,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                         controller: _controllers[i][j][k][3],
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Percentage'),
+                            labelText: 'Intensity %'),
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(

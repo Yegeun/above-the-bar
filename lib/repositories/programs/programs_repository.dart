@@ -39,7 +39,8 @@ class ProgramRepository extends BaseProgramsRepository {
     return _firebaseFirestore
         .collection('coaches')
         .doc(coachEmail)
-        .collection(athleteEmail) // otherwise known as the coach's program id
+        .collection(
+            athleteEmail) // otherwise known as the coach's program id? why did I name it athleteEmail?
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
