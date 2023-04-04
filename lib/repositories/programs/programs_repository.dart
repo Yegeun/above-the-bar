@@ -35,6 +35,7 @@ class ProgramRepository extends BaseProgramsRepository {
 
   @override
   Stream<List<ProgramModel>> getProgram(athleteEmail, coachEmail) {
+    //from the athlete email get the program id
     return _firebaseFirestore
         .collection('coaches')
         .doc(coachEmail)

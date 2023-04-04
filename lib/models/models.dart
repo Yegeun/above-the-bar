@@ -8,3 +8,4 @@ export 'athlete_program_data_model.dart';
 export 'user_model.dart';
 export 'user_public_model.dart';
 export 'athlete_profile_model.dart';
+export 'program_details_model.dart';

@@ -59,8 +59,9 @@ class ProgramListCopying extends ProgramListState {
 
 class ProgramListCopied extends ProgramListState {
   const ProgramListCopied(
-      {this.programs = const <String>[], this.copyPrograms = const<String>[
-      ], this.coachEmail = ''});
+      {this.programs = const <String>[],
+      this.copyPrograms = const <String>[],
+      this.coachEmail = ''});
 
   final List<String> programs;
   final List<String> copyPrograms;

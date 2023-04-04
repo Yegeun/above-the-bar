@@ -95,6 +95,11 @@ class MyApp extends StatelessWidget {
               )..add(LoadProgram('program@yegeun.com', 'gpp1')),
             ),
             BlocProvider(
+              create: (_) => ProgramDetailsBloc(
+                programDetailsRepository: ProgramDetailsRepository(),
+              )..add(LoadProgramDetails('programDetails@yegeun.com', 'gpp1')),
+            ),
+            BlocProvider(
               create: (_) => ProgramListBloc(
                 programListRepository: ProgramRepository(),
               )..add(LoadProgramList('stuart.martin')),
@@ -182,7 +187,8 @@ class AppView extends StatelessWidget {
             );
           case '/coach/edit':
             return MaterialPageRoute(
-              builder: (_) => EditProgram(),
+              builder: (_) => EditProgram(
+                  editProgramProgramName: settings.arguments as List<String>),
             );
           case CreateProgramScreen.routeName:
             return MaterialPageRoute(
@@ -199,10 +205,6 @@ class AppView extends StatelessWidget {
               builder: (_) => AddAthlete(
                 userEmail: settings.arguments as String,
               ),
-            );
-          case '/coach/assign-athlete':
-            return MaterialPageRoute(
-              builder: (_) => AssignAthlete(),
             );
           default:
             return MaterialPageRoute(

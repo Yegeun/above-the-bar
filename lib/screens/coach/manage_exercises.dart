@@ -10,7 +10,7 @@ class _ManageExercisesState extends State<ManageExercises> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Programs"),
+        title: const Text("Manage Exercises"),
       ),
       body: Column(
         children: [

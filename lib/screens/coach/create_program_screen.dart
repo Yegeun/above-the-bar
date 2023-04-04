@@ -22,19 +22,8 @@ class CreateProgramScreen extends StatefulWidget {
 }
 
 class _CreateProgramScreenState extends State<CreateProgramScreen> {
-  List<CreateExerciseWidget> listDynamic = [];
-  List<CreateExerciseWidget> listCreateExercise = [];
-  List<String> data = [];
-
-  TextEditingController controllerProgName = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> weekTitles = [];
-
-    for (int i = 1; i <= 4; i++) {
-      weekTitles.add(Text('W$i Session 1'));
-    }
     WeekTextInputList weekTextInputList = WeekTextInputList(
       inputProgramName: widget.createProgramScreenProgramName[0],
       numWeeks: int.parse(widget.createProgramScreenProgramName[1]),
@@ -79,7 +68,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
   Widget build(BuildContext context) {
     List<Widget> weekFields = [];
     final TransformationController _transformationController =
-    TransformationController();
+        TransformationController();
 
     for (int i = 0; i < widget.numWeeks; i++) {
       List<Widget> sessionFields = [];
@@ -276,7 +265,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
         for (int k = 0; k < widget.exercisesPerSession; k++) {
           setState(() {
             dropdownValueState[weekIndex][j][k][0] =
-            dropdownValueState[weekIndex - 1][j][k][0];
+                dropdownValueState[weekIndex - 1][j][k][0];
           });
           _controllers[weekIndex][j][k][0].text =
               _controllers[weekIndex - 1][j][k][0].text;
@@ -305,10 +294,9 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
           String comments = _controllers[i][j][k][4].text;
           setState(() {
             if (exerciseName != 'Select Exercise' &&
-                (sets != '' || reps != '') ||
+                    (sets != '' || reps != '') ||
                 intensity != '') {
               //checker if the text boxes are filled in
-
             }
             _programModelList.add(ProgramModel(
               programName: handleSubmitProgramName.toLowerCase(),
@@ -328,11 +316,11 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
     print('ProgramModelList: $_programModelList');
     for (int i = 0; i < _programModelList.length; i++) {
       context.read<ProgramBloc>().add(
-        CreateProgram(
-          _programModelList[i],
-          widget.weekCoachEmail,
-        ),
-      );
+            CreateProgram(
+              _programModelList[i],
+              widget.weekCoachEmail,
+            ),
+          );
     }
     return _programModelList;
   }

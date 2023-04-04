@@ -6,6 +6,7 @@ export 'athlete_program_data/athlete_program_data_bloc.dart';
 export 'create_new_exercise/create_new_exercise_bloc.dart';
 export 'exerciselist/exercise_bloc.dart';
 export 'program/program_bloc.dart';
+export 'program_details/program_details_bloc.dart';
 export 'program_list/program_list_bloc.dart';
 export 'cupertino_picker/dropdown_bloc.dart';
 export 'auth/auth_bloc.dart';

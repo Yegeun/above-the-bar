@@ -2,7 +2,6 @@ export 'home.dart';
 export 'coach_home.dart';
 export 'athlete_home.dart';
 export 'coach/add_athlete.dart';
-export 'coach/assign_athlete.dart';
 export 'coach/athlete_overview.dart';
 export 'coach/coach_profile.dart';
 export 'coach/create_exercise.dart';
