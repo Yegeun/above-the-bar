@@ -1,3 +1,6 @@
+import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
+import 'package:above_the_bar/bloc/program/program_bloc.dart';
+
 import 'package:above_the_bar/models/athlete_data_entry_model.dart';
 import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 import 'package:flutter/material.dart';
@@ -76,21 +79,49 @@ class _AthleteHomeState extends State<AthleteHome> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.only(top: 10.0),
-                  alignment: Alignment.topCenter,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/program-viewer',
-                          arguments: widget.userEmail);
-                    },
-                    child: Text("View Program"),
-                  ),
-                ),
-              ),
             ],
+          ),
+          BlocBuilder<AthleteProfileBloc, AthleteProfileState>(
+            builder: (context, athleteState) {
+              context
+                  .read<AthleteProfileBloc>()
+                  .add(LoadAthleteProfile(widget.userEmail));
+              if (athleteState is AthleteProfileLoaded) {
+                return BlocBuilder<ProgramBloc, ProgramState>(
+                    builder: (context, programState) {
+                  context.read<ProgramBloc>().add(LoadProgram(
+                      athleteState.athleteProfile.programId,
+                      athleteState.athleteProfile.coachEmail));
+                  if (programState is ProgramLoaded) {
+                    return Column(
+                      children: [
+                        Text(
+                          'Exercise 1 ${programState.program[0].exercise}',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Container(
+                          alignment: Alignment.topCenter,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/athlete/program-viewer',
+                                  arguments: programState.program);
+                            },
+                            child: Text("Program Viewer"),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                });
+              }
+              return Text(
+                'Something went wrong ',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              );
+            },
           ),
           Row(
             children: [
@@ -143,7 +174,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
               ),
             ],
-          ), //Date
+          ),
+          //Date
           ex1,
           ex2,
           SizedBox(height: 10.0),

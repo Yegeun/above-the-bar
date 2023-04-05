@@ -1,6 +1,5 @@
 import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
 import 'package:above_the_bar/models/athlete_model.dart';
-import 'package:above_the_bar/models/athlete_profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -100,16 +99,16 @@ class _CoachHomeState extends State<CoachHome> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/coach/edit',
-                                        arguments: athleteList[index],
-                                      );
-                                    },
-                                  ),
+                                  // IconButton(
+                                  //   icon: Icon(Icons.edit),
+                                  //   onPressed: () {
+                                  //     Navigator.pushNamed(
+                                  //       context,
+                                  //       '/coach/edit',
+                                  //       arguments: athleteList[index],
+                                  //     );
+                                  //   },
+                                  // ),
                                   IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () {

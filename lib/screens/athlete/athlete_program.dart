@@ -1,10 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:above_the_bar/bloc/program/program_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
 
 class AthleteProgram extends StatefulWidget {
@@ -40,7 +34,11 @@ class _AthleteProgramState extends State<AthleteProgram> {
         exerciseFields.add(
           Row(
             children: [
-              Text('Exercise'),
+              Container(
+                padding: const EdgeInsets.only(left: 10.0),
+                width: 150,
+                child: Text('Exercise'),
+              ),
               SizedBox(width: 10),
               Container(
                 width: 100,
@@ -67,38 +65,37 @@ class _AthleteProgramState extends State<AthleteProgram> {
         );
         for (int k = 0; k < viewProgram[i][j].length; k++) {
           exerciseFields.add(
-            Column(
+            Row(
               children: [
-                Row(
-                  children: [
-                    Text(viewProgram[i][j][k].exercise),
-                    SizedBox(width: 10),
-                    Container(
-                      width: 100,
-                      child: Text(viewProgram[i][j][k].sets.toString()),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      width: 100,
-                      child: Text(viewProgram[i][j][k].reps.toString()),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      width: 100,
-                      child: Text(viewProgram[i][j][k].intensity.toString()),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      width: 100,
-                      child: Text(viewProgram[i][j][k].comments.toString()),
-                    ),
-                    SizedBox(width: 20),
-                  ],
+                Container(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  width: 150,
+                  child: Text(viewProgram[i][j][k].exercise.toString()),
                 ),
+                SizedBox(width: 10),
+                Container(
+                  width: 100,
+                  child: Text(viewProgram[i][j][k].sets.toString()),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  width: 100,
+                  child: Text(viewProgram[i][j][k].reps.toString()),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  width: 100,
+                  child: Text(viewProgram[i][j][k].intensity.toString()),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  width: 100,
+                  child: Text(viewProgram[i][j][k].comments.toString()),
+                ),
+                SizedBox(width: 20),
               ],
             ),
           );
-          ex++;
         }
         sessionFields.add(
           Column(
