@@ -10,8 +10,7 @@ import 'package:above_the_bar/repositories/repositories.dart';
 
 import 'package:above_the_bar/screens/screens.dart';
 
-import 'models/user_model.dart';
-import 'models/athlete_model.dart';
+import 'package:above_the_bar/models/models.dart';
 
 bool shouldUseFirestoreEmulator = false;
 
@@ -152,8 +151,8 @@ class AppView extends StatelessWidget {
             );
           case '/athlete/program-viewer':
             return MaterialPageRoute(
-              builder: (_) =>
-                  AthleteProgram(athleteEmail: settings.arguments as String),
+              builder: (_) => AthleteProgram(
+                  program: settings.arguments as List<ProgramModel>),
             );
           case '/athlete/profile':
             return MaterialPageRoute(

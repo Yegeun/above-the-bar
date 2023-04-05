@@ -21,16 +21,15 @@ class _AthleteProfileState extends State<AthleteProfile> {
   @override
   Widget build(BuildContext context) {
     print(widget.athleteEmail);
-
+    context
+        .read<AthleteProfileBloc>()
+        .add(LoadAthleteProfile(widget.athleteEmail));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Athlete Profile"),
       ),
       body: BlocBuilder<AthleteProfileBloc, AthleteProfileState>(
         builder: (context, state) {
-          context
-              .read<AthleteProfileBloc>()
-              .add(LoadAthleteProfile(widget.athleteEmail));
           if (state is AthleteProfileLoading) {
             return const CircularProgressIndicator();
           }

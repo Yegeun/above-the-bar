@@ -23,7 +23,7 @@ class AthleteProfileModel extends Equatable {
       'email': email,
       'coach': coachEmail,
       'weightClass': weightClass,
-      'programId': programId,
+      'block': programId,
       'startDate': startDate
     };
   }
@@ -33,7 +33,7 @@ class AthleteProfileModel extends Equatable {
         email: snap['email'],
         weightClass: snap['weightClass'],
         coachEmail: snap['coach'],
-        programId: snap['programId'],
+        programId: snap['block'],
         startDate: snap['startDate'].toDate());
     return user;
   }

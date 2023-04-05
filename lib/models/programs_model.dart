@@ -67,4 +67,57 @@ class ProgramModel extends Equatable {
     );
     return program;
   }
+
+  static List<List<List<ProgramModel>>> getWeeksSessionsExercises(
+      List<ProgramModel> programs) {
+    List<List<List<ProgramModel>>> weeksSessionsExercises = [];
+
+    // Group programs by week
+    Map<int, List<ProgramModel>> programsByWeek = groupProgramsByWeek(programs);
+
+    // For each week, group programs by session
+    programsByWeek.forEach((week, weekPrograms) {
+      Map<int, List<ProgramModel>> programsBySession =
+          groupProgramsBySession(weekPrograms);
+
+      // Create list of sessions for this week
+      List<List<ProgramModel>> weekSessions = [];
+
+      // For each session, add list of programs to list of sessions
+      programsBySession.forEach((session, sessionPrograms) {
+        weekSessions.add(sessionPrograms);
+      });
+
+      // Add list of sessions to list of weeks
+      weeksSessionsExercises.add(weekSessions);
+    });
+
+    return weeksSessionsExercises;
+  }
+
+  static Map<int, List<ProgramModel>> groupProgramsByWeek(
+      List<ProgramModel> programs) {
+    Map<int, List<ProgramModel>> programsByWeek = {};
+    for (var program in programs) {
+      if (programsByWeek.containsKey(program.week)) {
+        programsByWeek[program.week]!.add(program);
+      } else {
+        programsByWeek[program.week] = [program];
+      }
+    }
+    return programsByWeek;
+  }
+
+  static Map<int, List<ProgramModel>> groupProgramsBySession(
+      List<ProgramModel> programs) {
+    Map<int, List<ProgramModel>> programsBySession = {};
+    for (var program in programs) {
+      if (programsBySession.containsKey(program.session)) {
+        programsBySession[program.session]!.add(program);
+      } else {
+        programsBySession[program.session] = [program];
+      }
+    }
+    return programsBySession;
+  }
 }
