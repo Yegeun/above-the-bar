@@ -14,6 +14,12 @@ class AthleteProgram extends StatefulWidget {
 }
 
 class _AthleteProgramState extends State<AthleteProgram> {
+  Future<void> _loadProgram() async {
+    context.read<ProgramBloc>().add(
+          LoadProgram('gpp1', 'athleteEmail'),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:above_the_bar/repositories/athlete_profile/athlete_profile_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:const_date_time/const_date_time.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:above_the_bar/models/athlete_profile_model.dart';
 
@@ -21,6 +23,7 @@ class AthleteProfileBloc
     on<LoadAthleteProfile>(_onLoadAthleteProfile);
     on<UpdateAthleteProfile>(_onUpdateAthleteProfile);
     on<CreateAthleteProfile>(_onCreateAthleteProfile);
+    on<UpdateCreateAthleteProfile>(_onUpdateCreateAthleteProfile);
   }
 
   void _onLoadAthleteProfile(
@@ -46,6 +49,16 @@ class AthleteProfileBloc
     var tempAthleteProfile = event.athleteProfile;
     _athleteProfileSubscription?.cancel();
     await _athleteProfileRepository.updateProfile(tempAthleteProfile);
+    emit(AthleteProfileLoaded());
+  }
+
+  void _onUpdateCreateAthleteProfile(UpdateCreateAthleteProfile event,
+      Emitter<AthleteProfileState> emit) async {
+    _athleteProfileSubscription?.cancel();
+
+    await _athleteProfileRepository.updateCoachProfile(
+        event.email, event.blockId, event.startDate);
+    emit(AthleteProfileCreateUpdated());
     emit(AthleteProfileLoaded());
   }
 }

@@ -17,9 +17,68 @@ class AthleteOverview extends StatefulWidget {
 }
 
 class _AthleteOverviewState extends State<AthleteOverview> {
+  String _selectedExercise = 'Select Exercise';
+
   @override
   Widget build(BuildContext context) {
     AthleteModel athlete = widget.athlete;
+
+    SfCartesianChart _buildChart(
+        String selectedExercise, List<AthleteDataEntryModel> athleteData) {
+      String titleText;
+      String seriesName;
+      List<AthleteDataEntryModel> filteredData;
+      if (selectedExercise == 'Snatch') {
+        titleText = 'Snatch Progress';
+        seriesName = 'Snatch';
+        filteredData =
+            AthleteDataEntryModel.getFilteredExercises(athleteData, "Snatch");
+      } else if (selectedExercise == 'Clean and Jerk') {
+        titleText = 'Clean and Jerk Progress';
+        seriesName = 'Clean and Jerk';
+        filteredData = AthleteDataEntryModel.getFilteredExercises(
+            athleteData, "Clean and Jerk");
+      } else {
+        titleText = 'Athlete Progress';
+        seriesName = 'Clean and Jerk';
+        filteredData = AthleteDataEntryModel.getFilteredExercises(
+            athleteData, "Clean and Jerk");
+      }
+
+      return SfCartesianChart(
+          title: ChartTitle(text: titleText),
+          legend: Legend(isVisible: true, position: LegendPosition.top),
+          primaryXAxis: DateTimeAxis(),
+          primaryYAxis: NumericAxis(
+            edgeLabelPlacement: EdgeLabelPlacement.shift,
+            labelFormat: '{value}kg',
+          ),
+          trackballBehavior: TrackballBehavior(
+              enable: true,
+              activationMode: ActivationMode.singleTap,
+              tooltipSettings: InteractiveTooltip(
+                  enable: true, format: 'point.x : point.y kg')),
+          series: <ChartSeries>[
+            // Renders line chart
+            LineSeries<AthleteDataEntryModel, DateTime>(
+              name: seriesName,
+              dataSource: filteredData,
+              xValueMapper: (AthleteDataEntryModel data, _) => data.date,
+              yValueMapper: (AthleteDataEntryModel data, _) => data.load,
+              dataLabelSettings: DataLabelSettings(
+                  isVisible: true, labelAlignment: ChartDataLabelAlignment.top),
+            ),
+            LineSeries<AthleteDataEntryModel, DateTime>(
+                name: 'Weight',
+                color: Colors.red,
+                dashArray: [2],
+                dataSource: AthleteDataEntryModel.getFilteredExercises(
+                    athleteData, selectedExercise),
+                xValueMapper: (AthleteDataEntryModel data, _) => data.date,
+                yValueMapper: (AthleteDataEntryModel data, _) => data.bw),
+          ]);
+    }
+
     //gets data from previous page
     return Scaffold(
       appBar: AppBar(
@@ -27,20 +86,39 @@ class _AthleteOverviewState extends State<AthleteOverview> {
       ),
       body: Column(
         children: [
+          //Athlete Overview Header Card
           Row(
             children: [
               Expanded(
                 flex: 1,
                 child: Container(
                   alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Colors.indigo, Colors.blue],
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Text(
-                      "Overview of ${athlete.name} email: ${athlete.email}"),
+                    "Overview of: ${athlete.name} | Email: ${athlete.email}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
+
           Row(
             children: [
+              // Table with Athlete Data
               BlocBuilder<AthleteDataBloc, AthleteDataState>(
                 builder: (context, state) {
                   // context
@@ -136,6 +214,20 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                   }
                 },
               ),
+              DropdownButton(
+                  value: _selectedExercise,
+                  items: ['Select Exercise', 'Snatch', 'Clean and Jerk']
+                      .map((String items) {
+                    return DropdownMenuItem<String>(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedExercise = newValue.toString();
+                    });
+                  }),
               Expanded(
                 child: BlocBuilder<AthleteDataBloc, AthleteDataState>(
                   builder: (context, state) {
@@ -158,54 +250,7 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                       }
                       print(
                           'AthleteData ${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")}');
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: SfCartesianChart(
-                            title: ChartTitle(text: 'Athlete Progress'),
-                            legend: Legend(
-                                isVisible: true, position: LegendPosition.top),
-                            primaryXAxis: DateTimeAxis(),
-                            primaryYAxis: NumericAxis(
-                              edgeLabelPlacement: EdgeLabelPlacement.shift,
-                              labelFormat: '{value}kg',
-                            ),
-                            trackballBehavior: TrackballBehavior(
-                                enable: true,
-                                activationMode: ActivationMode.singleTap,
-                                tooltipSettings: InteractiveTooltip(
-                                    enable: true,
-                                    format: 'point.x : point.y kg')),
-                            series: <ChartSeries>[
-                              // Renders line chart
-                              LineSeries<AthleteDataEntryModel, DateTime>(
-                                name: 'Clean and Jerk',
-                                dataSource:
-                                    AthleteDataEntryModel.getFilteredExercises(
-                                        athleteData, "Clean and Jerk"),
-                                xValueMapper: (AthleteDataEntryModel data, _) =>
-                                    data.date,
-                                yValueMapper: (AthleteDataEntryModel data, _) =>
-                                    data.load,
-                                dataLabelSettings: DataLabelSettings(
-                                    isVisible: true,
-                                    labelAlignment:
-                                        ChartDataLabelAlignment.top),
-                              ),
-                              LineSeries<AthleteDataEntryModel, DateTime>(
-                                  name: 'Weight',
-                                  color: Colors.red,
-                                  dashArray: [2],
-                                  dataSource: AthleteDataEntryModel
-                                      .getFilteredExercises(
-                                          athleteData, "Snatch"),
-                                  xValueMapper:
-                                      (AthleteDataEntryModel data, _) =>
-                                          data.date,
-                                  yValueMapper:
-                                      (AthleteDataEntryModel data, _) =>
-                                          data.bw),
-                            ]),
-                      );
+                      return _buildChart('Snatch', athleteData);
                     } else {
                       print("Error");
                       return Center(

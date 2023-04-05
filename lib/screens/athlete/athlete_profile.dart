@@ -107,12 +107,18 @@ class _AthleteProfileState extends State<AthleteProfile> {
                     children: [
                       OutlinedButton(
                           onPressed: () {
-                            context.read<AthleteProfileBloc>().add(
-                                CreateAthleteProfile(AthleteProfileModel(
-                                    email: athleteProfile.email,
-                                    weightClass:
-                                        double.parse(_weightController.text),
-                                    coachEmail: _coachEmailController.text)));
+                            context
+                                .read<AthleteProfileBloc>()
+                                .add(CreateAthleteProfile(
+                                  AthleteProfileModel(
+                                      email: athleteProfile.email,
+                                      weightClass:
+                                          double.parse(_weightController.text),
+                                      coachEmail: _coachEmailController.text,
+                                      programId: state.athleteProfile.programId,
+                                      startDate:
+                                          state.athleteProfile.startDate),
+                                ));
 
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Profile Updated Successfully'),

@@ -247,11 +247,14 @@ class _AddAthleteState extends State<AddAthlete> {
                                 context.read<AthleteProfileBloc>().add(
                                       CreateAthleteProfile(
                                         AthleteProfileModel(
-                                          email: addAthleteEmail.toLowerCase(),
-                                          weightClass: profileState
-                                              .athleteProfile.weightClass,
-                                          coachEmail: widget.userEmail,
-                                        ),
+                                            email:
+                                                addAthleteEmail.toLowerCase(),
+                                            weightClass: profileState
+                                                .athleteProfile.weightClass,
+                                            coachEmail: widget.userEmail,
+                                            programId: controllerGetBlock
+                                                .toLowerCase(),
+                                            startDate: DateTime.parse(text)),
                                       ),
                                     );
                                 context.read<AthleteBloc>().add(

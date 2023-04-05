@@ -25,19 +25,58 @@ class _AthleteHistoryState extends State<AthleteHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Athlete History"),
-      ),
-      body: Column(
-        children: [
-          Row(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black, // Change the color here
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigate back to the previous screen
+          },
+        ),
+        title: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[300]!, Colors.blue[700]!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[500]!,
+                blurRadius: 10.0,
+                spreadRadius: 2.0,
+                offset: Offset(2.0, 2.0),
+              )
+            ],
+          ),
+          child: Row(
             children: [
-              //centered text
               Expanded(
                 flex: 1,
-                child: Center(child: Text("History")),
+                child: Center(
+                  child: Text(
+                    "HISTORY",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 28.0,
+                      letterSpacing: 2.0,
+                      color: Colors.white,
+                      fontFamily: 'Helvetica Neue',
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
+        ),
+      ),
+      body: Column(
+        children: [
           Row(
             children: [
               BlocBuilder<AthleteDataBloc, AthleteDataState>(

@@ -18,6 +18,15 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
   }
 
   @override
+  Future<void> updateCoachProfile(
+      String email, String blockId, DateTime startDate) async {
+    await _firebaseFirestore
+        .collection('athletes')
+        .doc(email)
+        .update({'block': blockId, 'startDate': startDate});
+  }
+
+  @override
   Stream<AthleteProfileModel> getProfile(String email) {
     return _firebaseFirestore
         .collection('athletes')

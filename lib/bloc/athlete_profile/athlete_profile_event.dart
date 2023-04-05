@@ -33,3 +33,14 @@ class CreateAthleteProfile extends AthleteProfileEvent {
   @override
   List<Object> get props => [athleteProfile];
 }
+
+class UpdateCreateAthleteProfile extends AthleteProfileEvent {
+  const UpdateCreateAthleteProfile(this.email, this.blockId, this.startDate);
+
+  final String email;
+  final String blockId;
+  final DateTime startDate;
+
+  @override
+  List<Object> get props => [email, blockId, startDate];
+}

@@ -1,4 +1,6 @@
+import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
 import 'package:above_the_bar/models/athlete_model.dart';
+import 'package:above_the_bar/models/athlete_profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +32,7 @@ class _CoachHomeState extends State<CoachHome> {
   Widget build(BuildContext context) {
     //loads in the coach's athletes
     context.read<ProgramListBloc>().add(LoadProgramList(widget.userEmail));
+    DateTime _startDate = DateTime.now();
 
     return Scaffold(
       appBar: AppBar(
@@ -149,11 +152,20 @@ class _CoachHomeState extends State<CoachHome> {
                                                             .copyWith(
                                                                 block: item!),
                                                         widget.userEmail));
+                                                context
+                                                    .read<AthleteProfileBloc>()
+                                                    .add(
+                                                      UpdateCreateAthleteProfile(
+                                                          athleteList[index]
+                                                              .email,
+                                                          item,
+                                                          _startDate),
+                                                    );
                                                 setState(() {
-                                                  selectedItem = item!;
+                                                  selectedItem = item;
                                                 });
                                                 dropdownBloc
-                                                    .setSelectedItem(item!);
+                                                    .setSelectedItem(item);
                                               },
                                               items: dropdownBloc.items.map<
                                                       DropdownMenuItem<String>>(
