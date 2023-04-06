@@ -300,8 +300,17 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      if (kDebugMode) {
-                                        print('Delete');
+                                      if (programsList[index] == 'gpp1') {
+                                        //TODO this needs to be dynamic
+                                        //TODO need to check if the program is in use
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Cannot delete this program'),
+                                          ),
+                                        );
+                                        return;
                                       }
                                       _deleteProgram(programsList[index]);
                                     },

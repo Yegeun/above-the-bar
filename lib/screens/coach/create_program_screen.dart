@@ -90,6 +90,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                 Row(
                   children: [
                     SizedBox(width: 5),
+                    //Where the data is being written
                     Text('EX ${k + 1}'),
                     SizedBox(width: 3),
                     DropdownButton(
@@ -149,7 +150,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              RegExp(r'^(?:1?\d|500|\d)$'))
+                              RegExp(r'^(?:100|[1-9][0-9]?|0)$'))
                         ],
                       ),
                     ),

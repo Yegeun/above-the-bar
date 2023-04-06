@@ -128,15 +128,15 @@ class _CoachHomeState extends State<CoachHome> {
                                       if (programState is ProgramListLoaded) {
                                         final List<String> programsList =
                                             programState.programList.toList();
-
                                         programsList.insert(0, 'unassigned');
-                                        print(programsList);
-
                                         final dropdownBloc =
                                             DropdownBloc<String>(programsList);
-
-                                        String selectedItem =
-                                            athleteList[index].block;
+                                        String selectedItem = 'unassigned';
+                                        if (programsList.contains(
+                                            athleteList[index].block)) {
+                                          selectedItem =
+                                              athleteList[index].block;
+                                        }
                                         return StreamBuilder<String>(
                                           stream:
                                               dropdownBloc.selectedItemStream,

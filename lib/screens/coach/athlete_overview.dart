@@ -17,7 +17,7 @@ class AthleteOverview extends StatefulWidget {
 }
 
 class _AthleteOverviewState extends State<AthleteOverview> {
-  String _selectedExercise = 'Select Exercise';
+  String _selectedExercise = 'Snatch';
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Text(
-                    "Overview of: ${athlete.name} | Email: ${athlete.email}",
+                    "Name: ${athlete.name} | Email: ${athlete.email}",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24.0,
