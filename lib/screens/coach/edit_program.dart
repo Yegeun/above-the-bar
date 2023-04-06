@@ -104,6 +104,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                 ),
               );
               for (int k = 0; k < widget.exercisesPerSession; k++) {
+                _controllers[i][j][k][0].text = state.program[ex].exercise;
                 _controllers[i][j][k][1].text =
                     state.program[ex].sets.toString();
                 _controllers[i][j][k][2].text =
@@ -182,7 +183,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(?:1?\d|500|\d)$'))
+                                    RegExp(r'^(?:100|[1-9][0-9]?|0)$'))
                               ],
                             ),
                           ),

@@ -109,7 +109,13 @@ class _AthleteProgramState extends State<AthleteProgram> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Week ${i + 1}'),
+                Text(
+                  'Week ${i + 1}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                  ),
+                ),
                 SizedBox(height: 10),
               ],
             ),
