@@ -67,6 +67,10 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
   List<List<List<List<TextEditingController>>>> _controllers = [];
   List<List<List<List<String>>>> dropdownValueState = [];
 
+  // in this we need to pass through the program and details of the program session 2 exercis ect. atleast and pass in through the actual
+  // program model and then we can use that to populate the text fields.
+  // we need to pass through the program model and then we can use that to populate the text fields.
+
   Future<void> _loadProgram() async {
     context.read<ProgramBloc>().add(
           LoadProgram(widget.inputProgramName, widget.weekCoachEmail),
@@ -89,6 +93,8 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         }
         if (state is ProgramLoaded) {
           int ex = 0;
+          List<ProgramModel> vProgram = state.program;
+
           for (int i = 0; i < widget.numWeeks; i++) {
             List<Widget> sessionFields = [];
             for (int j = 0; j < widget.sessionsPerWeek; j++) {
@@ -104,14 +110,12 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                 ),
               );
               for (int k = 0; k < widget.exercisesPerSession; k++) {
-                _controllers[i][j][k][0].text = state.program[ex].exercise;
-                _controllers[i][j][k][1].text =
-                    state.program[ex].sets.toString();
-                _controllers[i][j][k][2].text =
-                    state.program[ex].reps.toString();
-                _controllers[i][j][k][3].text =
-                    state.program[ex].intensity.toString();
-                _controllers[i][j][k][4].text = state.program[ex].comments;
+                // _controllers[i][j][k][0].text = vProgram[ex].exercise;
+                // _controllers[i][j][k][1].text = vProgram[ex].sets.toString();
+                // _controllers[i][j][k][2].text = vProgram[ex].reps.toString();
+                // _controllers[i][j][k][3].text =
+                //     vProgram[ex].intensity.toString();
+                // _controllers[i][j][k][4].text = vProgram[ex].comments;
 
                 exerciseFields.add(
                   Column(
@@ -122,7 +126,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                           Text('EX ${k + 1}'),
                           SizedBox(width: 3),
                           DropdownButton(
-                              value: state.program[ex].exercise,
+                              value: dropdownValueState[i][j][k][0],
                               items: [
                                 'Select Exercise',
                                 'Snatch',

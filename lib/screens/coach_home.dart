@@ -80,7 +80,7 @@ class _CoachHomeState extends State<CoachHome> {
                         athleteList.map((athlete) => athlete.block).toList();
                     return Flexible(
                       child: SizedBox(
-                        height: 150.0,
+                        height: 120.0,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
