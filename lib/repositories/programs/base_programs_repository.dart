@@ -7,6 +7,9 @@ abstract class BaseProgramsRepository {
 
   Stream<List<String>> getProgramList(String coachEmail);
 
+  Stream<ProgramDetailsModel> getProgramDetails(
+      String coachEmail, String programId);
+
   Future<void> deleteProgram(String programName, String coachEmail);
 
   Future<void> copyProgram(

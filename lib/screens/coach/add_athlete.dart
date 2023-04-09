@@ -235,59 +235,92 @@ class _AddAthleteState extends State<AddAthlete> {
                     return BlocBuilder<AthleteBloc, AthleteState>(
                       builder: (context, state) {
                         if (state is AthleteLoaded || state is AthleteLoading) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              print(controllerGetEmailText);
-                              if (athleteList.contains(
-                                  controllerGetEmailText.toLowerCase())) {
-                                context.read<AthleteProfileBloc>().add(
-                                      LoadAthleteProfile(
-                                          addAthleteEmail.toLowerCase()),
-                                    );
-                                context.read<AthleteProfileBloc>().add(
-                                      CreateAthleteProfile(
-                                        AthleteProfileModel(
-                                            email:
-                                                addAthleteEmail.toLowerCase(),
-                                            weightClass: profileState
-                                                .athleteProfile.weightClass,
-                                            coachEmail: widget.userEmail,
-                                            programId: controllerGetBlock
-                                                .toLowerCase(),
-                                            startDate: DateTime.parse(text)),
-                                      ),
-                                    );
-                                context.read<AthleteBloc>().add(
-                                      CreateAthlete(
-                                        AthleteModel(
-                                          name: controllerGetNameText
-                                              .toLowerCase(),
-                                          email: addAthleteEmail.toLowerCase(),
-                                          block:
-                                              controllerGetBlock.toLowerCase(),
-                                          startDate: DateTime.parse(text),
+                          return BlocBuilder<ProgramDetailsBloc,
+                              ProgramDetailsState>(
+                            builder: (context, programDetailsState) {
+                              if (programDetailsState is ProgramDetailsLoaded) {
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    if (athleteList.contains(
+                                        controllerGetEmailText.toLowerCase())) {
+                                      context.read<AthleteProfileBloc>().add(
+                                            LoadAthleteProfile(
+                                                addAthleteEmail.toLowerCase()),
+                                          );
+
+                                      context
+                                          .read<ProgramDetailsBloc>()
+                                          .add(LoadProgramDetails(
+                                            addAthleteEmail.toLowerCase(),
+                                            profileState
+                                                .athleteProfile.programId,
+                                          ));
+
+                                      context.read<AthleteProfileBloc>().add(
+                                            CreateAthleteProfile(
+                                              AthleteProfileModel(
+                                                  email: addAthleteEmail
+                                                      .toLowerCase(),
+                                                  weightClass: profileState
+                                                      .athleteProfile
+                                                      .weightClass,
+                                                  coachEmail: widget.userEmail,
+                                                  programId: controllerGetBlock
+                                                      .toLowerCase(),
+                                                  startDate:
+                                                      DateTime.parse(text),
+                                                  maxWeek: programDetailsState
+                                                      .programDetails.weeks,
+                                                  maxSession:
+                                                      programDetailsState
+                                                          .programDetails
+                                                          .sessions,
+                                                  maxExercise:
+                                                      programDetailsState
+                                                          .programDetails
+                                                          .exercises,
+                                                  week: 1,
+                                                  session: 1),
+                                            ),
+                                          );
+                                      context.read<AthleteBloc>().add(
+                                            CreateAthlete(
+                                              AthleteModel(
+                                                name: controllerGetNameText
+                                                    .toLowerCase(),
+                                                email: addAthleteEmail
+                                                    .toLowerCase(),
+                                                block: controllerGetBlock
+                                                    .toLowerCase(),
+                                                startDate: DateTime.parse(text),
+                                              ),
+                                              widget.userEmail,
+                                            ),
+                                          );
+                                      dispose();
+                                      // Navigation.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CoachHome(
+                                              userEmail: widget.userEmail),
                                         ),
-                                        widget.userEmail,
-                                      ),
-                                    );
-                                dispose();
-                                // Navigation.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        CoachHome(userEmail: widget.userEmail),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Athlete does not exist'),
-                                  ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content:
+                                              Text('Athlete does not exist'),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Text('Add Athlete'),
                                 );
                               }
+                              return Text('Program Details have not loaded');
                             },
-                            child: const Text('Add Athlete'),
                           );
                         }
                         return const Text('Error');

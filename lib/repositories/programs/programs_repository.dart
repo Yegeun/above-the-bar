@@ -1,3 +1,4 @@
+import 'package:above_the_bar/models/models.dart';
 import 'package:above_the_bar/models/programs_model.dart';
 import 'package:above_the_bar/repositories/programs/base_programs_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -128,5 +129,19 @@ class ProgramRepository extends BaseProgramsRepository {
 
     var newDoc = collectionDoc.doc(newCopyDocumentId);
     await newDoc.set(originalData!);
+  }
+
+  @override
+  Stream<ProgramDetailsModel> getProgramDetails(
+      String coachEmail, String programId) {
+    return _firebaseFirestore
+        .collection('coaches')
+        .doc(coachEmail)
+        .collection('programList')
+        .doc(programId)
+        .snapshots()
+        .map((snapshot) {
+      return ProgramDetailsModel.fromSnapshot(snapshot);
+    });
   }
 }

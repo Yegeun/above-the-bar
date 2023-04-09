@@ -19,6 +19,11 @@ class AthleteProfileLoaded extends AthleteProfileState {
       coachEmail: 'empty',
       programId: 'empty',
       startDate: ConstDateTime(2022, 1, 1),
+      maxWeek: 1,
+      maxSession: 1,
+      maxExercise: 1,
+      week: 1,
+      session: 1,
     ),
   });
 
@@ -36,6 +41,11 @@ class AthleteProfileUpdating extends AthleteProfileState {
       coachEmail: 'empty',
       programId: 'empty',
       startDate: ConstDateTime(2022, 1, 1),
+      maxWeek: 1,
+      maxSession: 1,
+      maxExercise: 1,
+      week: 1,
+      session: 1,
     ),
   });
 
@@ -47,15 +57,20 @@ class AthleteProfileCreateUpdating extends AthleteProfileState {
   final String email;
   final String blockId;
   final DateTime startDate;
+  final String maxWeek;
+  final String week;
+  final String maxSession;
+  final String session;
 
   const AthleteProfileCreateUpdating({
     required this.email,
     required this.blockId,
     required this.startDate,
+    required this.maxWeek,
+    required this.week,
+    required this.maxSession,
+    required this.session,
   });
-
 }
 
-class AthleteProfileCreateUpdated extends AthleteProfileState {
-}
-
+class AthleteProfileCreateUpdated extends AthleteProfileState {}

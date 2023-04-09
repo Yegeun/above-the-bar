@@ -4,8 +4,15 @@ abstract class BaseAthleteProfileRepository {
   Future<void> updateProfile(AthleteProfileModel user);
 
   //update from dropdown
-  Future<void> updateCoachProfile(String email, String blockId,
-      DateTime startDate);
+  Future<void> updateAthleteProfile(
+      String email,
+      String blockId,
+      DateTime startDate,
+      int maxWeek,
+      int maxSession,
+      int maxExercise,
+      int week,
+      int session);
 
   Future<void> deleteAthlete(String email);
 
