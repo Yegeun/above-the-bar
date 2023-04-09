@@ -13,6 +13,10 @@ class ProgramModel extends Equatable {
   final int intensity;
   final String comments;
 
+  final int maxWeek;
+  final int maxSession;
+  final int maxExercise;
+
   const ProgramModel({
     required this.programName,
     required this.week,
@@ -23,10 +27,14 @@ class ProgramModel extends Equatable {
     required this.reps,
     required this.intensity,
     required this.comments,
+    required this.maxWeek,
+    required this.maxSession,
+    required this.maxExercise,
   });
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         programName,
         week,
         session,
@@ -36,6 +44,9 @@ class ProgramModel extends Equatable {
         reps,
         intensity,
         comments,
+        maxWeek,
+        maxSession,
+        maxExercise,
       ];
 
   //To write in the firebase
@@ -50,6 +61,9 @@ class ProgramModel extends Equatable {
       'reps': reps,
       'intensity': intensity,
       'comments': comments,
+      'maxWeek': maxWeek,
+      'maxSession': maxSession,
+      'maxExercise': maxExercise,
     };
   }
 
@@ -64,6 +78,9 @@ class ProgramModel extends Equatable {
       reps: snap['reps'],
       intensity: snap['intensity'],
       comments: snap['comments'],
+      maxWeek: snap['maxWeek'],
+      maxSession: snap['maxSession'],
+      maxExercise: snap['maxExercise'],
     );
     return program;
   }
@@ -78,7 +95,7 @@ class ProgramModel extends Equatable {
     // For each week, group programs by session
     programsByWeek.forEach((week, weekPrograms) {
       Map<int, List<ProgramModel>> programsBySession =
-          groupProgramsBySession(weekPrograms);
+      groupProgramsBySession(weekPrograms);
 
       // Create list of sessions for this week
       List<List<ProgramModel>> weekSessions = [];

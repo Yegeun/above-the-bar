@@ -1,4 +1,5 @@
 import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
+import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:above_the_bar/models/athlete_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,10 +156,16 @@ class _CoachHomeState extends State<CoachHome> {
                                                     .read<AthleteProfileBloc>()
                                                     .add(
                                                       UpdateCreateAthleteProfile(
-                                                          athleteList[index]
-                                                              .email,
-                                                          item,
-                                                          _startDate),
+                                                        athleteList[index]
+                                                            .email,
+                                                        item,
+                                                        _startDate,
+                                                        2,
+                                                        2,
+                                                        2,
+                                                        2,
+                                                        2,
+                                                      ),
                                                     );
                                                 setState(() {
                                                   selectedItem = item;
@@ -177,18 +184,10 @@ class _CoachHomeState extends State<CoachHome> {
                                             );
                                           },
                                         );
-
-                                        //   return Container(
-                                        //       width: 150,
-                                        //       child:
-                                        //           Text(athleteList[index].block));
                                       }
                                       return Container();
                                     },
                                   ),
-                                  // OutlinedButton(
-                                  //     onPressed: () {},
-                                  //     child: Text('Assign New Program')),
                                 ],
                               ),
                             );

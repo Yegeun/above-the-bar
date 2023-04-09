@@ -120,6 +120,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                 exerciseFields.add(
                   Column(
                     children: [
+                      Padding(padding: EdgeInsets.only(top: 15)),
                       Row(
                         children: [
                           SizedBox(width: 5),
@@ -351,6 +352,9 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
               reps: int.parse(reps),
               intensity: int.parse(intensity),
               comments: comments,
+              maxWeek: widget.numWeeks,
+              maxSession: widget.sessionsPerWeek,
+              maxExercise: widget.exercisesPerSession,
             ));
           });
         }

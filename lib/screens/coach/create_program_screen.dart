@@ -87,6 +87,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
           exerciseFields.add(
             Column(
               children: [
+                Padding(padding: const EdgeInsets.only(top: 7.5, bottom: 7.5)),
                 Row(
                   children: [
                     SizedBox(width: 5),
@@ -246,7 +247,8 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               SizedBox(width: 16.0),
               FloatingActionButton(
                 onPressed: () {
-                  handleSubmit(widget.inputProgramName);
+                  handleSubmit(widget.inputProgramName, widget.numWeeks,
+                      widget.sessionsPerWeek, widget.exercisesPerSession);
                   Navigator.pop(context);
                 },
                 heroTag: null,
@@ -282,7 +284,8 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
     }
   }
 
-  List<ProgramModel> handleSubmit(String handleSubmitProgramName) {
+  List<ProgramModel> handleSubmit(String handleSubmitProgramName, int maxWeeks,
+      int maxSessions, int maxExercises) {
     _programModelList.clear();
     for (int i = 0; i < _controllers.length; i++) {
       for (int j = 0; j < _controllers[i].length; j++) {
@@ -308,6 +311,9 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               reps: int.parse(reps),
               intensity: int.parse(intensity),
               comments: comments,
+              maxWeek: maxWeeks,
+              maxSession: maxSessions,
+              maxExercise: maxExercises,
             ));
           });
         }

@@ -167,6 +167,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   context.read<ProgramBloc>().add(LoadProgram(
                       athleteState.athleteProfile.programId,
                       athleteState.athleteProfile.coachEmail));
+
                   _controller.text =
                       athleteState.athleteProfile.weightClass.toString();
 

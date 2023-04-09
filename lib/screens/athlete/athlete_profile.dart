@@ -115,8 +115,14 @@ class _AthleteProfileState extends State<AthleteProfile> {
                                           double.parse(_weightController.text),
                                       coachEmail: _coachEmailController.text,
                                       programId: state.athleteProfile.programId,
-                                      startDate:
-                                          state.athleteProfile.startDate),
+                                      startDate: state.athleteProfile.startDate,
+                                      maxWeek: state.athleteProfile.maxWeek,
+                                      maxSession:
+                                          state.athleteProfile.maxSession,
+                                      maxExercise:
+                                          state.athleteProfile.maxExercise,
+                                      week: state.athleteProfile.week,
+                                      session: state.athleteProfile.session),
                                 ));
 
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
