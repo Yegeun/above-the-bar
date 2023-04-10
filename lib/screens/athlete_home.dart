@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
 import 'package:above_the_bar/bloc/program/program_bloc.dart';
 
@@ -34,8 +36,14 @@ class _AthleteHomeState extends State<AthleteHome> {
 
   void _addExerciseWidget() {
     setState(() {
-      _exerciseWidgets
-          .add(AthleteInputWidget(exerciseNum: _exerciseWidgets.length + 1));
+      _exerciseWidgets.add(
+        AthleteInputWidget(
+            exerciseNum: _exerciseWidgets.length + 1,
+            exerciseName: 'Select Exercise',
+            load: 0,
+            sets: 0,
+            reps: 0),
+      );
     });
   }
 
@@ -375,7 +383,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
               ),
               Container(
-                width: 90,
+                width: 80,
                 margin: EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _controller,
@@ -433,7 +441,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                     AthleteDataEntryModel(
                                       email: widget.userEmail,
                                       date: DateTime.parse(text),
-                                      bw: int.parse(_controller.text),
+                                      bw: double.parse(_controller.text),
                                       exercise: _exerciseWidgets[i]
                                           .controllerGetExText,
                                       sets: int.parse(_exerciseWidgets[i]

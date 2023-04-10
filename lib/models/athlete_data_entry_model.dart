@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 class AthleteDataEntryModel extends Equatable {
   final String email;
   final DateTime date;
-  final int bw;
+  final double bw;
   final String exercise;
   final int sets;
   final int reps;
@@ -55,7 +55,7 @@ class AthleteDataEntryModel extends Equatable {
       return {
         'email': email, //TODO Probably take this out
         'date': DateTime.now(),
-        'bw': 73,
+        'bw': 73.0,
         'exercise': exercise,
         'sets': sets,
         'reps': reps,

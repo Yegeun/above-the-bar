@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AthletePersonalBestModel extends Equatable {
   final String email;
-  final int bw;
+  final double bw;
   final String exercise;
   final DateTime date;
   final int load;

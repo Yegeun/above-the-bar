@@ -3,31 +3,45 @@ import 'package:flutter/services.dart';
 
 class AthleteInputWidget extends StatelessWidget {
   final int exerciseNum;
+  final String exerciseName;
+  final int load;
+  final int sets;
+  final int reps;
 
-  AthleteInputWidget({required this.exerciseNum});
+  AthleteInputWidget(
+      {required this.exerciseNum,
+      required this.exerciseName,
+      required this.load,
+      required this.sets,
+      required this.reps});
 
   void clear() {
     _controllerEx.clear();
-    controllerSets.clear();
-    controllerReps.clear();
-    controllerLoad.clear();
+    _controllerSets.clear();
+    _controllerReps.clear();
+    _controllerLoad.clear();
   }
 
   final TextEditingController _controllerEx = TextEditingController();
-  TextEditingController controllerSets = TextEditingController();
-  TextEditingController controllerReps = TextEditingController();
-  TextEditingController controllerLoad = TextEditingController();
+  final TextEditingController _controllerSets = TextEditingController();
+  final TextEditingController _controllerReps = TextEditingController();
+  final TextEditingController _controllerLoad = TextEditingController();
 
   String get controllerGetExText => _controllerEx.text;
 
-  String get controllerGetSetsText => controllerSets.text;
+  String get controllerGetSetsText => _controllerSets.text;
 
-  String get controllerGetRepsText => controllerReps.text;
+  String get controllerGetRepsText => _controllerReps.text;
 
-  String get controllerGetLoadText => controllerLoad.text;
+  String get controllerGetLoadText => _controllerLoad.text;
 
   @override
   Widget build(BuildContext context) {
+    _controllerEx.text = exerciseName;
+    _controllerSets.text = sets.toString();
+    _controllerReps.text = reps.toString();
+    _controllerLoad.text = load.toString();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -45,7 +59,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerLoad,
+            controller: _controllerLoad,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Load (KG)'),
             inputFormatters: <TextInputFormatter>[
@@ -58,7 +72,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerSets,
+            controller: _controllerSets,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Sets'),
             inputFormatters: <TextInputFormatter>[
@@ -71,7 +85,7 @@ class AthleteInputWidget extends StatelessWidget {
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: controllerReps,
+            controller: _controllerReps,
             decoration: InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Reps'),
             inputFormatters: <TextInputFormatter>[
