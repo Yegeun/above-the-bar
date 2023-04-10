@@ -35,27 +35,15 @@ class CreateAthleteProfile extends AthleteProfileEvent {
 }
 
 class UpdateCreateAthleteProfile extends AthleteProfileEvent {
-  const UpdateCreateAthleteProfile(this.email, this.blockId, this.startDate,
-      this.maxWeek, this.maxSession, this.maxExercise, this.week, this.session);
+  const UpdateCreateAthleteProfile(
+      this.email, this.programId, this.startDate, this.week, this.session);
 
   final String email;
-  final String blockId;
+  final String programId;
   final DateTime startDate;
-  final int maxWeek;
-  final int maxSession;
-  final int maxExercise;
   final int week;
   final int session;
 
   @override
-  List<Object> get props => [
-        email,
-        blockId,
-        startDate,
-        maxWeek,
-        maxSession,
-        maxExercise,
-        week,
-        session
-      ];
+  List<Object> get props => [email, programId, startDate, week, session];
 }

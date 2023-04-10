@@ -21,9 +21,11 @@ class _AthleteProfileState extends State<AthleteProfile> {
   @override
   Widget build(BuildContext context) {
     print(widget.athleteEmail);
-    context
-        .read<AthleteProfileBloc>()
-        .add(LoadAthleteProfile(widget.athleteEmail));
+    setState(() {
+      context
+          .read<AthleteProfileBloc>()
+          .add(LoadAthleteProfile(widget.athleteEmail));
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text("Athlete Profile"),
@@ -38,11 +40,11 @@ class _AthleteProfileState extends State<AthleteProfile> {
             _weightController.text = athleteProfile.weightClass.toString();
             _coachEmailController.text = athleteProfile.coachEmail;
             return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   Text(
                     "Profile Page",
                     style:
@@ -62,7 +64,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                         style: TextStyle(fontSize: 20.0),
                       ),
                     ],
-                  ),
+                  ), //Email
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,10 +84,14 @@ class _AthleteProfileState extends State<AthleteProfile> {
                                 EdgeInsets.symmetric(horizontal: 10.0),
                           ),
                           keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^[0-9]+.?[0-9]*')),
+                          ],
                         ),
                       ),
                     ],
-                  ),
+                  ), //WC
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,11 +122,6 @@ class _AthleteProfileState extends State<AthleteProfile> {
                                       coachEmail: _coachEmailController.text,
                                       programId: state.athleteProfile.programId,
                                       startDate: state.athleteProfile.startDate,
-                                      maxWeek: state.athleteProfile.maxWeek,
-                                      maxSession:
-                                          state.athleteProfile.maxSession,
-                                      maxExercise:
-                                          state.athleteProfile.maxExercise,
                                       week: state.athleteProfile.week,
                                       session: state.athleteProfile.session),
                                 ));

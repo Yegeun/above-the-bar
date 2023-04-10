@@ -7,9 +7,6 @@ class AthleteProfileModel extends Equatable {
   final String coachEmail;
   final String programId;
   final DateTime startDate;
-  final int maxWeek;
-  final int maxSession;
-  final int maxExercise;
   final int week;
   final int session;
 
@@ -19,25 +16,12 @@ class AthleteProfileModel extends Equatable {
       required this.coachEmail,
       required this.programId,
       required this.startDate,
-      required this.maxWeek,
-      required this.maxSession,
-      required this.maxExercise,
       required this.week,
       required this.session});
 
   @override
-  List<Object?> get props => [
-        email,
-        coachEmail,
-        weightClass,
-        programId,
-        startDate,
-        maxWeek,
-        maxSession,
-        maxExercise,
-        week,
-        session
-      ];
+  List<Object?> get props =>
+      [email, coachEmail, weightClass, programId, startDate, week, session];
 
   Map<String, dynamic> toDocument() {
     return {
@@ -46,9 +30,6 @@ class AthleteProfileModel extends Equatable {
       'weightClass': weightClass,
       'block': programId,
       'startDate': startDate,
-      'maxWeek': maxWeek,
-      'maxSession': maxSession,
-      'maxExercise': maxExercise,
       'week': week,
       'session': session
     };
@@ -61,9 +42,6 @@ class AthleteProfileModel extends Equatable {
       coachEmail: snap['coach'],
       programId: snap['block'],
       startDate: snap['startDate'].toDate(),
-      maxWeek: snap['maxWeek'],
-      maxSession: snap['maxSession'],
-      maxExercise: snap['maxExercise'],
       week: snap['week'],
       session: snap['session'],
     );
@@ -77,9 +55,6 @@ class AthleteProfileModel extends Equatable {
         coachEmail: coachEmail,
         programId: programId,
         startDate: startDate,
-        maxWeek: maxWeek,
-        maxSession: maxSession,
-        maxExercise: maxExercise,
         week: week,
         session: session);
   }

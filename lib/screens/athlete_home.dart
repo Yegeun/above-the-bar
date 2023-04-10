@@ -11,8 +11,6 @@ import '../bloc/athlete_data/athlete_data_bloc.dart';
 import '../models/athlete_data_entry_model.dart';
 import '../models/programs_model.dart';
 
-TextEditingController _controller = TextEditingController();
-
 class AthleteHome extends StatefulWidget {
   final String userEmail;
 
@@ -25,6 +23,7 @@ class AthleteHome extends StatefulWidget {
 }
 
 class _AthleteHomeState extends State<AthleteHome> {
+  final TextEditingController _controller = TextEditingController();
   late DateTime date = DateTime.now();
 
   List<AthleteInputWidget> listDynamic = [];
@@ -46,16 +45,22 @@ class _AthleteHomeState extends State<AthleteHome> {
     });
   }
 
-  List<Widget> _loadExercises(List<ProgramModel> athleteProgram,
-      int startingSession, int exerciseNumber) {
+  List<Widget> _loadExercises(
+      List<ProgramModel> athleteProgram, int currentWeek, int currentSession) {
     List<Widget> exerciseText = [];
     exerciseText.add(Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Session 1', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Week $currentWeek Session $currentSession',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ],
     ));
-    for (int i = startingSession; i < exerciseNumber; i++) {
+    List<ProgramModel> filteredList = athleteProgram
+        .where((program) =>
+            program.week == currentWeek && program.session == currentSession)
+        .toList();
+
+    for (int i = 0; i < filteredList.length; i++) {
       exerciseText.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +69,7 @@ class _AthleteHomeState extends State<AthleteHome> {
             Container(
               width: 150,
               child: Text(
-                athleteProgram[i].exercise,
+                filteredList[i].exercise,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
@@ -74,16 +79,15 @@ class _AthleteHomeState extends State<AthleteHome> {
             Container(
               width: 50,
               child: Text(
-                '${athleteProgram[i].sets.toString()} sets',
+                '${filteredList[i].sets.toString()} sets',
               ),
             ),
             Container(
                 width: 50,
-                child: Text('${athleteProgram[i].sets.toString()} reps')),
+                child: Text('${filteredList[i].sets.toString()} reps')),
+            Container(width: 50, child: Text('${filteredList[i].intensity} %')),
             Container(
-                width: 50, child: Text('${athleteProgram[i].intensity} %')),
-            Container(
-                width: 100, child: Text(athleteProgram[i].comments.toString())),
+                width: 100, child: Text(filteredList[i].comments.toString())),
             SizedBox(height: 30),
           ],
         ),
@@ -158,32 +162,28 @@ class _AthleteHomeState extends State<AthleteHome> {
           ),
           BlocBuilder<AthleteProfileBloc, AthleteProfileState>(
             builder: (context, athleteState) {
-              context
-                  .read<AthleteProfileBloc>()
-                  .add(LoadAthleteProfile(widget.userEmail));
               if (athleteState is AthleteProfileLoaded) {
-                return BlocBuilder<ProgramBloc, ProgramState>(
-                    builder: (context, programState) {
-                  context.read<ProgramBloc>().add(LoadProgram(
-                      athleteState.athleteProfile.programId,
-                      athleteState.athleteProfile.coachEmail));
+                BlocProvider.of<ProgramBloc>(context).add(LoadProgram(
+                    athleteState.athleteProfile.programId,
+                    athleteState.athleteProfile.coachEmail));
 
+                Future.microtask(() {
                   _controller.text =
                       athleteState.athleteProfile.weightClass.toString();
+                });
 
+                return BlocBuilder<ProgramBloc, ProgramState>(
+                    builder: (context, programState) {
                   if (programState is ProgramLoaded) {
                     return Column(
                       children: [
                         Column(
-                          children: _loadExercises(
-                              programState.program,
-                              athleteState.athleteProfile.session,
-                              athleteState.athleteProfile.session +
-                                  athleteState.athleteProfile
-                                      .week // max number of sessions
-                              ),
-                        ),
-                        SizedBox(height: 20),
+                            children: _loadExercises(
+                          programState.program,
+                          athleteState.athleteProfile.week,
+                          athleteState.athleteProfile.session,
+                        )),
+                        SizedBox(height: 10),
                         //button for next session and previous session (if there is one)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -192,52 +192,118 @@ class _AthleteHomeState extends State<AthleteHome> {
                                 onPressed: () {
                                   setState(() {
                                     if (athleteState.athleteProfile.session ==
-                                        1) {
+                                            1 &&
+                                        athleteState.athleteProfile.week == 1) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(
-                                            'You are on the first session'),
-                                      ));
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'You are on the first session'),
+                                          duration: Duration(milliseconds: 95),
+                                        ),
+                                      );
                                     } else {
-                                      context.read<AthleteProfileBloc>().add(
-                                          UpdateAthleteProfile(athleteState
-                                              .athleteProfile
-                                              .copyWith(
-                                                  week: athleteState
-                                                      .athleteProfile.week,
-                                                  session: athleteState
-                                                          .athleteProfile
-                                                          .session -
-                                                      1)));
+                                      if (athleteState.athleteProfile.session ==
+                                          1) {
+                                        context.read<AthleteProfileBloc>().add(
+                                              UpdateCreateAthleteProfile(
+                                                  athleteState
+                                                      .athleteProfile.email,
+                                                  athleteState
+                                                      .athleteProfile.programId,
+                                                  athleteState
+                                                      .athleteProfile.startDate,
+                                                  athleteState
+                                                          .athleteProfile.week -
+                                                      1,
+                                                  programState
+                                                      .program[0].maxSession),
+                                            );
+                                      } else {
+                                        context.read<AthleteProfileBloc>().add(
+                                              UpdateCreateAthleteProfile(
+                                                athleteState
+                                                    .athleteProfile.email,
+                                                athleteState
+                                                    .athleteProfile.programId,
+                                                athleteState
+                                                    .athleteProfile.startDate,
+                                                athleteState
+                                                    .athleteProfile.week,
+                                                athleteState.athleteProfile
+                                                        .session -
+                                                    1,
+                                              ),
+                                            );
+                                      }
                                     }
+                                    _loadExercises(
+                                      programState.program,
+                                      athleteState.athleteProfile.week,
+                                      athleteState.athleteProfile.session,
+                                    );
                                   });
                                 },
                                 child: Text('Previous Session')),
+                            // Previous Session Button
                             SizedBox(width: 50),
                             OutlinedButton(
                                 onPressed: () {
                                   setState(() {
                                     if (programState.program.length <
-                                        athleteState.athleteProfile.session *
-                                            athleteState
-                                                .athleteProfile.maxWeek) {
+                                        programState.program[0].maxWeek *
+                                            programState
+                                                .program[0].maxSession) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content:
                                             Text('You are on the last session'),
+                                        duration: Duration(milliseconds: 50),
                                       ));
                                     } else {
                                       // need to check if it is t
-                                      context.read<AthleteProfileBloc>().add(
-                                          UpdateAthleteProfile(athleteState
-                                              .athleteProfile
-                                              .copyWith(
-                                                  week: athleteState
-                                                      .athleteProfile.week,
-                                                  session: athleteState
-                                                          .athleteProfile
-                                                          .session +
-                                                      1)));
+                                      if (athleteState.athleteProfile.session <
+                                          programState.program[0].maxSession) {
+                                        context.read<AthleteProfileBloc>().add(
+                                            UpdateCreateAthleteProfile(
+                                                athleteState
+                                                    .athleteProfile.email,
+                                                athleteState
+                                                    .athleteProfile.programId,
+                                                athleteState
+                                                    .athleteProfile.startDate,
+                                                athleteState
+                                                    .athleteProfile.week,
+                                                athleteState.athleteProfile
+                                                        .session +
+                                                    1));
+                                      } else if (athleteState
+                                              .athleteProfile.week <
+                                          programState.program[0].maxWeek) {
+                                        context.read<AthleteProfileBloc>().add(
+                                            UpdateCreateAthleteProfile(
+                                                athleteState
+                                                    .athleteProfile.email,
+                                                athleteState
+                                                    .athleteProfile.programId,
+                                                athleteState
+                                                    .athleteProfile.startDate,
+                                                athleteState
+                                                        .athleteProfile.week +
+                                                    1,
+                                                1));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              'You are on the last session'),
+                                        ));
+                                      }
+                                      _loadExercises(
+                                        programState.program,
+                                        athleteState.athleteProfile.week,
+                                        athleteState.athleteProfile.session,
+                                      );
                                     }
                                   });
                                 },
@@ -319,7 +385,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   ),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(
-                        RegExp(r'^(?:[1-4]?\d{1,2}|200|[0-9])$')),
+                        RegExp(r'^[0-9]+.?[0-9]*')),
                   ],
                 ),
               ),
@@ -351,7 +417,7 @@ class _AthleteHomeState extends State<AthleteHome> {
               ), //add exercise
             ],
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 7.5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -391,7 +457,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                 },
               ),
             ],
-          ),
+          ), // Submit Button
         ],
       ),
     );

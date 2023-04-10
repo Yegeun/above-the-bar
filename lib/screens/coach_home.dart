@@ -160,11 +160,8 @@ class _CoachHomeState extends State<CoachHome> {
                                                             .email,
                                                         item,
                                                         _startDate,
-                                                        2,
-                                                        2,
-                                                        2,
-                                                        2,
-                                                        2,
+                                                        1,
+                                                        1,
                                                       ),
                                                     );
                                                 setState(() {

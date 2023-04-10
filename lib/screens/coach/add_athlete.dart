@@ -269,16 +269,6 @@ class _AddAthleteState extends State<AddAthlete> {
                                                       .toLowerCase(),
                                                   startDate:
                                                       DateTime.parse(text),
-                                                  maxWeek: programDetailsState
-                                                      .programDetails.weeks,
-                                                  maxSession:
-                                                      programDetailsState
-                                                          .programDetails
-                                                          .sessions,
-                                                  maxExercise:
-                                                      programDetailsState
-                                                          .programDetails
-                                                          .exercises,
                                                   week: 1,
                                                   session: 1),
                                             ),

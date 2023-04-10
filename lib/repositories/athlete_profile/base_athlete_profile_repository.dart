@@ -5,14 +5,7 @@ abstract class BaseAthleteProfileRepository {
 
   //update from dropdown
   Future<void> updateAthleteProfile(
-      String email,
-      String blockId,
-      DateTime startDate,
-      int maxWeek,
-      int maxSession,
-      int maxExercise,
-      int week,
-      int session);
+      String email, String blockId, DateTime startDate, int week, int session);
 
   Future<void> deleteAthlete(String email);
 
