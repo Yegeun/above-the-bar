@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 class AthleteModel extends Equatable {
   final String name;
   final String email;
-  final String block;
+  final String programId;
   final DateTime startDate;
 
   const AthleteModel({
     required this.name,
     required this.email,
-    required this.block,
+    required this.programId,
     required this.startDate,
   });
 
@@ -18,7 +18,7 @@ class AthleteModel extends Equatable {
   List<Object?> get props => [
         name,
         email,
-        block,
+        programId,
         startDate,
       ];
 
@@ -26,7 +26,7 @@ class AthleteModel extends Equatable {
     AthleteModel athlete = AthleteModel(
       name: snap['name'],
       email: snap['email'],
-      block: snap['block'],
+      programId: snap['programId'],
       startDate: snap['startDate'].toDate(),
     );
     return athlete;
@@ -34,27 +34,27 @@ class AthleteModel extends Equatable {
 
   //To write in the firebase
   Map<String, Object> toDocument() {
-    if (block.toString().isEmpty && startDate.toString().isEmpty) {
+    if (programId.toString().isEmpty && startDate.toString().isEmpty) {
       return {
         'name': name,
         'email': email,
-        'block': '',
+        'programId': '',
         'startDate': DateTime.now(),
       };
     }
     return {
       'name': name,
       'email': email,
-      'block': block,
+      'programId': programId,
       'startDate': startDate,
     };
   }
 
-  AthleteModel copyWith({required String block}) {
+  AthleteModel copyWith({required String programId}) {
     return AthleteModel(
       name: name,
       email: email,
-      block: block,
+      programId: programId,
       startDate: startDate,
     );
   }

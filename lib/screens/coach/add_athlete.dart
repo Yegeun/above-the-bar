@@ -22,14 +22,14 @@ class AddAthlete extends StatefulWidget {
 
 class _AddAthleteState extends State<AddAthlete> {
   final TextEditingController _controllerName = TextEditingController();
-  final TextEditingController _controllerBlock = TextEditingController();
+  final TextEditingController _controllerProgramId = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
 
   String get controllerGetNameText => _controllerName.text;
 
   String get controllerGetEmailText => _controllerEmail.text;
 
-  String get controllerGetBlock => _controllerBlock.text;
+  String get controllerGetProgramId => _controllerProgramId.text;
 
   late DateTime date = DateTime.now();
 
@@ -182,7 +182,7 @@ class _AddAthleteState extends State<AddAthlete> {
                               onChanged: (item) {
                                 setState(() {
                                   selectedItem = item!;
-                                  _controllerBlock.text = item;
+                                  _controllerProgramId.text = item;
                                 });
                                 dropdownBloc.setSelectedItem(item!);
                               },
@@ -259,18 +259,20 @@ class _AddAthleteState extends State<AddAthlete> {
                                       context.read<AthleteProfileBloc>().add(
                                             CreateAthleteProfile(
                                               AthleteProfileModel(
-                                                  email: addAthleteEmail
-                                                      .toLowerCase(),
-                                                  weightClass: profileState
-                                                      .athleteProfile
-                                                      .weightClass,
-                                                  coachEmail: widget.userEmail,
-                                                  programId: controllerGetBlock
-                                                      .toLowerCase(),
-                                                  startDate:
-                                                      DateTime.parse(text),
-                                                  week: 1,
-                                                  session: 1),
+                                                email: addAthleteEmail
+                                                    .toLowerCase(),
+                                                weightClass: profileState
+                                                    .athleteProfile.weightClass,
+                                                coachEmail: widget.userEmail,
+                                                programId:
+                                                    controllerGetProgramId
+                                                        .toLowerCase(),
+                                                startDate: DateTime.parse(text),
+                                                week: 1,
+                                                session: 1,
+                                                snatch: 0,
+                                                cleanAndJerk: 0,
+                                              ),
                                             ),
                                           );
                                       context.read<AthleteBloc>().add(
@@ -280,8 +282,9 @@ class _AddAthleteState extends State<AddAthlete> {
                                                     .toLowerCase(),
                                                 email: addAthleteEmail
                                                     .toLowerCase(),
-                                                block: controllerGetBlock
-                                                    .toLowerCase(),
+                                                programId:
+                                                    controllerGetProgramId
+                                                        .toLowerCase(),
                                                 startDate: DateTime.parse(text),
                                               ),
                                               widget.userEmail,

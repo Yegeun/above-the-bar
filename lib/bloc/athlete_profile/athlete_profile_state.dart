@@ -21,6 +21,8 @@ class AthleteProfileLoaded extends AthleteProfileState {
       startDate: ConstDateTime(2022, 1, 1),
       week: 1,
       session: 1,
+      snatch: 0,
+      cleanAndJerk: 0,
     ),
   });
 
@@ -40,6 +42,8 @@ class AthleteProfileUpdating extends AthleteProfileState {
       startDate: ConstDateTime(2022, 1, 1),
       week: 1,
       session: 1,
+      snatch: 0,
+      cleanAndJerk: 0,
     ),
   });
 
@@ -49,7 +53,7 @@ class AthleteProfileUpdating extends AthleteProfileState {
 
 class AthleteProfileCreateUpdating extends AthleteProfileState {
   final String email;
-  final String blockId;
+  final String programId;
   final DateTime startDate;
   final String maxWeek;
   final String week;
@@ -58,7 +62,7 @@ class AthleteProfileCreateUpdating extends AthleteProfileState {
 
   const AthleteProfileCreateUpdating({
     required this.email,
-    required this.blockId,
+    required this.programId,
     required this.startDate,
     required this.maxWeek,
     required this.week,

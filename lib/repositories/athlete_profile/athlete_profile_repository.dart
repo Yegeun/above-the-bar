@@ -18,10 +18,10 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
   }
 
   @override
-  Future<void> updateAthleteProfile(String email, String blockId,
+  Future<void> updateAthleteProfile(String email, String programId,
       DateTime startDate, int week, int session) async {
     await _firebaseFirestore.collection('athletes').doc(email).update({
-      'block': blockId,
+      'programId': programId,
       'startDate': startDate,
       'week': week,
       'session': session

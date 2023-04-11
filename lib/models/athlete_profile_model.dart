@@ -9,6 +9,8 @@ class AthleteProfileModel extends Equatable {
   final DateTime startDate;
   final int week;
   final int session;
+  final int snatch;
+  final int cleanAndJerk;
 
   const AthleteProfileModel(
       {required this.email,
@@ -17,21 +19,34 @@ class AthleteProfileModel extends Equatable {
       required this.programId,
       required this.startDate,
       required this.week,
-      required this.session});
+      required this.session,
+      required this.snatch,
+      required this.cleanAndJerk});
 
   @override
-  List<Object?> get props =>
-      [email, coachEmail, weightClass, programId, startDate, week, session];
+  List<Object?> get props => [
+        email,
+        coachEmail,
+        weightClass,
+        programId,
+        startDate,
+        week,
+        session,
+        snatch,
+        cleanAndJerk
+      ];
 
   Map<String, dynamic> toDocument() {
     return {
       'email': email,
       'coach': coachEmail,
       'weightClass': weightClass,
-      'block': programId,
+      'programId': programId,
       'startDate': startDate,
       'week': week,
-      'session': session
+      'session': session,
+      'Snatch': snatch,
+      'Clean and Jerk': cleanAndJerk,
     };
   }
 
@@ -40,22 +55,24 @@ class AthleteProfileModel extends Equatable {
       email: snap['email'],
       weightClass: snap['weightClass'],
       coachEmail: snap['coach'],
-      programId: snap['block'],
+      programId: snap['programId'],
       startDate: snap['startDate'].toDate(),
       week: snap['week'],
       session: snap['session'],
+      snatch: snap['Snatch'],
+      cleanAndJerk: snap['Clean and Jerk'],
     );
     return user;
   }
 
-  AthleteProfileModel copyWith({required week, required session}) {
-    return AthleteProfileModel(
-        email: email,
-        weightClass: weightClass,
-        coachEmail: coachEmail,
-        programId: programId,
-        startDate: startDate,
-        week: week,
-        session: session);
+  int getWeightliftingResult(String type) {
+    switch (type) {
+      case 'Snatch':
+        return snatch;
+      case 'Clean and Jerk':
+        return cleanAndJerk;
+      default:
+        throw ArgumentError('Invalid weightlifting type: $type');
+    }
   }
 }

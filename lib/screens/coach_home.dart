@@ -77,8 +77,9 @@ class _CoachHomeState extends State<CoachHome> {
                           .read<AthleteBloc>()
                           .add(LoadAthlete(widget.userEmail));
                     }
-                    final blockList =
-                        athleteList.map((athlete) => athlete.block).toList();
+                    final blockList = athleteList
+                        .map((athlete) => athlete.programId)
+                        .toList();
                     return Flexible(
                       child: SizedBox(
                         height: 120.0,
@@ -134,9 +135,9 @@ class _CoachHomeState extends State<CoachHome> {
                                             DropdownBloc<String>(programsList);
                                         String selectedItem = 'unassigned';
                                         if (programsList.contains(
-                                            athleteList[index].block)) {
+                                            athleteList[index].programId)) {
                                           selectedItem =
-                                              athleteList[index].block;
+                                              athleteList[index].programId;
                                         }
                                         return StreamBuilder<String>(
                                           stream:
@@ -150,7 +151,8 @@ class _CoachHomeState extends State<CoachHome> {
                                                     CreateAthlete(
                                                         athleteList[index]
                                                             .copyWith(
-                                                                block: item!),
+                                                                programId:
+                                                                    item!),
                                                         widget.userEmail));
                                                 context
                                                     .read<AthleteProfileBloc>()

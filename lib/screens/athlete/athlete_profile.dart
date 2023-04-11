@@ -123,7 +123,10 @@ class _AthleteProfileState extends State<AthleteProfile> {
                                       programId: state.athleteProfile.programId,
                                       startDate: state.athleteProfile.startDate,
                                       week: state.athleteProfile.week,
-                                      session: state.athleteProfile.session),
+                                      session: state.athleteProfile.session,
+                                      snatch: state.athleteProfile.snatch,
+                                      cleanAndJerk:
+                                          state.athleteProfile.cleanAndJerk),
                                 ));
 
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

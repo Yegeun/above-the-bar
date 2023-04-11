@@ -1,17 +1,15 @@
-import 'dart:ffi';
-
-import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
-import 'package:above_the_bar/bloc/program/program_bloc.dart';
-
-import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../bloc/athlete_data/athlete_data_bloc.dart';
-import '../models/athlete_data_entry_model.dart';
-import '../models/programs_model.dart';
+import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
+import 'package:above_the_bar/bloc/program/program_bloc.dart';
+import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
+import 'package:above_the_bar/models/athlete_data_entry_model.dart';
+import 'package:above_the_bar/models/athlete_profile_model.dart';
+import 'package:above_the_bar/models/programs_model.dart';
+import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 
 class AthleteHome extends StatefulWidget {
   final String userEmail;
@@ -53,8 +51,9 @@ class _AthleteHomeState extends State<AthleteHome> {
     });
   }
 
-  List<Widget> _loadExercises(
-      List<ProgramModel> athleteProgram, int currentWeek, int currentSession) {
+  List<Widget> _loadExercises(List<ProgramModel> athleteProgram,
+      int currentWeek, int currentSession, AthleteProfileModel athleteProfile) {
+    _exerciseWidgets.clear();
     List<Widget> exerciseText = [];
     exerciseText.add(Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +68,7 @@ class _AthleteHomeState extends State<AthleteHome> {
         .toList();
 
     for (int i = 0; i < filteredList.length; i++) {
+      var temp = filteredList[i].exercise;
       exerciseText.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +100,18 @@ class _AthleteHomeState extends State<AthleteHome> {
           ],
         ),
       );
+      _exerciseWidgets.add(
+        AthleteInputWidget(
+            exerciseNum: _exerciseWidgets.length + 1,
+            exerciseName: filteredList[i].exercise,
+            load: filteredList[i].intensity *
+                athleteProfile.getWeightliftingResult(temp) ~/
+                100,
+            sets: filteredList[i].sets,
+            reps: filteredList[i].reps),
+      );
     }
+
     return exerciseText;
   }
 
@@ -183,6 +194,15 @@ class _AthleteHomeState extends State<AthleteHome> {
                 return BlocBuilder<ProgramBloc, ProgramState>(
                     builder: (context, programState) {
                   if (programState is ProgramLoaded) {
+                    Future.microtask(() {
+                      _loadExercises(
+                        programState.program,
+                        athleteState.athleteProfile.week,
+                        athleteState.athleteProfile.session,
+                        athleteState.athleteProfile,
+                      );
+                    });
+
                     return Column(
                       children: [
                         Column(
@@ -190,6 +210,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                           programState.program,
                           athleteState.athleteProfile.week,
                           athleteState.athleteProfile.session,
+                          athleteState.athleteProfile,
                         )),
                         SizedBox(height: 10),
                         //button for next session and previous session (if there is one)
@@ -249,6 +270,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                       programState.program,
                                       athleteState.athleteProfile.week,
                                       athleteState.athleteProfile.session,
+                                      athleteState.athleteProfile,
                                     );
                                   });
                                 },
@@ -311,6 +333,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                         programState.program,
                                         athleteState.athleteProfile.week,
                                         athleteState.athleteProfile.session,
+                                        athleteState.athleteProfile,
                                       );
                                     }
                                   });
@@ -346,6 +369,24 @@ class _AthleteHomeState extends State<AthleteHome> {
                                   vertical: 10.0, horizontal: 20.0),
                             ),
                           ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _loadExercises(
+                                    programState.program,
+                                    athleteState.athleteProfile.week,
+                                    athleteState.athleteProfile.session,
+                                    athleteState.athleteProfile,
+                                  );
+                                });
+                              },
+                              icon: Icon(Icons.refresh),
+                            ),
+                          ],
                         )
                       ],
                     );
@@ -397,6 +438,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   ],
                 ),
               ),
+              //Refresh button to update the data
             ],
           ),
           Column(
