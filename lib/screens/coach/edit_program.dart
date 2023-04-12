@@ -67,10 +67,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
   List<List<List<List<TextEditingController>>>> _controllers = [];
   List<List<List<List<String>>>> dropdownValueState = [];
 
-  // in this we need to pass through the program and details of the program session 2 exercis ect. atleast and pass in through the actual
-  // program model and then we can use that to populate the text fields.
-  // we need to pass through the program model and then we can use that to populate the text fields.
-
   Future<void> _loadProgram() async {
     context.read<ProgramBloc>().add(
           LoadProgram(widget.inputProgramName, widget.weekCoachEmail),
@@ -82,8 +78,9 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
     List<Widget> weekFields = [];
     final TransformationController _transformationController =
         TransformationController();
-    _loadProgram();
-
+    Future.microtask(() {
+      _loadProgram();
+    });
     return BlocBuilder<ProgramBloc, ProgramState>(
       builder: (context, state) {
         if (state is ProgramLoading) {
@@ -92,9 +89,15 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
           );
         }
         if (state is ProgramLoaded) {
-          int ex = 0;
           List<ProgramModel> vProgram = state.program;
-
+          Future.microtask(() {
+            if (dropdownValueState[0][0][0][0] == 'Select Exercise') {
+              setState(() {
+                loadProgramDetails(vProgram);
+              });
+            }
+          });
+          Future.microtask(() => loadProgramDetails(vProgram));
           for (int i = 0; i < widget.numWeeks; i++) {
             List<Widget> sessionFields = [];
             for (int j = 0; j < widget.sessionsPerWeek; j++) {
@@ -110,13 +113,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                 ),
               );
               for (int k = 0; k < widget.exercisesPerSession; k++) {
-                // _controllers[i][j][k][0].text = vProgram[ex].exercise;
-                // _controllers[i][j][k][1].text = vProgram[ex].sets.toString();
-                // _controllers[i][j][k][2].text = vProgram[ex].reps.toString();
-                // _controllers[i][j][k][3].text =
-                //     vProgram[ex].intensity.toString();
-                // _controllers[i][j][k][4].text = vProgram[ex].comments;
-
                 exerciseFields.add(
                   Column(
                     children: [
@@ -208,7 +204,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                     ],
                   ),
                 );
-                ex++;
               }
               sessionFields.add(
                 Column(
@@ -301,6 +296,24 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         return Container();
       },
     );
+  }
+
+  void loadProgramDetails(List<ProgramModel> programDetails) {
+    int ex = 0; //exercise counter
+    for (int i = 0; i < widget.numWeeks; i++) {
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
+          dropdownValueState[i][j][k][0] = programDetails[ex].exercise;
+          _controllers[i][j][k][0].text = programDetails[ex].exercise;
+          _controllers[i][j][k][1].text = programDetails[ex].sets.toString();
+          _controllers[i][j][k][2].text = programDetails[ex].reps.toString();
+          _controllers[i][j][k][3].text =
+              programDetails[ex].intensity.toString();
+          _controllers[i][j][k][4].text = programDetails[ex].comments;
+          ex++;
+        }
+      }
+    }
   }
 
   void _copyWeek(int weekIndex) {

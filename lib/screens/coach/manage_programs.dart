@@ -19,10 +19,9 @@ class ManagePrograms extends StatefulWidget {
 }
 
 class _ManageProgramsState extends State<ManagePrograms> {
-
   Future<void> _displayCopyDialog(BuildContext context, String name) async {
     final TextEditingController controllerName =
-    TextEditingController(text: '$name 1');
+        TextEditingController(text: '$name 1');
     return showDialog(
         context: context,
         builder: (context) {
@@ -55,7 +54,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
 
   Future<void> _displayCreateDialog(BuildContext context) async {
     final TextEditingController controllerProgramName =
-    TextEditingController(text: 'Program Name');
+        TextEditingController(text: 'Program Name');
     final TextEditingController controllerWeeks = TextEditingController();
     final TextEditingController controllerSession = TextEditingController();
     final TextEditingController controllerExercises = TextEditingController();
@@ -188,10 +187,19 @@ class _ManageProgramsState extends State<ManagePrograms> {
     );
   }
 
-  Future<void> _deleteProgram(String nameProg) async {
+  Future<void> _deleteProgram(String nameProg, List<String> listModel) async {
     // Delete the program from the database
-    BlocProvider.of<ProgramListBloc>(context)
-        .add(DeleteProgram(nameProg, widget.manageProgramsCoachEmail));
+    if (listModel.contains(nameProg)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Cannot delete a program that is in use'),
+        ),
+      );
+      return;
+    } else {
+      BlocProvider.of<ProgramListBloc>(context)
+          .add(DeleteProgram(nameProg, widget.manageProgramsCoachEmail));
+    }
   }
 
   Future<void> _copyProgram(String nameProg, String newNameProg) async {
@@ -263,7 +271,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   }
                   if (state is ProgramListLoaded) {
                     final List<String> programsList =
-                    state.programList.toList();
+                        state.programList.toList();
                     return Flexible(
                       child: SizedBox(
                         height: 300,
@@ -301,19 +309,9 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      if (programsList[index] == 'gpp1') {
-                                        //TODO this needs to be dynamic
-                                        //TODO need to check if the program is in use
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Cannot delete this program'),
-                                          ),
-                                        );
-                                        return;
-                                      }
-                                      _deleteProgram(programsList[index]);
+                                      _deleteProgram(
+                                          programsList[index], ['gpp1']);
+                                      //TODO this needs to be dynamic
                                     },
                                     icon: Icon(Icons.delete),
                                   ),

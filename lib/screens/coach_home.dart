@@ -62,14 +62,14 @@ class _CoachHomeState extends State<CoachHome> {
             children: [
               BlocBuilder<AthleteBloc, AthleteState>(
                 builder: (context, state) {
+                  context
+                      .read<AthleteBloc>()
+                      .add(LoadAthlete(widget.userEmail));
                   if (state is AthleteLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is AthleteLoaded) {
-                    context
-                        .read<AthleteBloc>()
-                        .add(LoadAthlete(widget.userEmail));
                     final List<AthleteModel> athleteList =
                         state.athletes.toList();
                     if (athleteList.isEmpty) {
@@ -101,16 +101,6 @@ class _CoachHomeState extends State<CoachHome> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // IconButton(
-                                  //   icon: Icon(Icons.edit),
-                                  //   onPressed: () {
-                                  //     Navigator.pushNamed(
-                                  //       context,
-                                  //       '/coach/edit',
-                                  //       arguments: athleteList[index],
-                                  //     );
-                                  //   },
-                                  // ),
                                   IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () {
