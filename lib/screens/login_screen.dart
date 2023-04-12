@@ -52,6 +52,11 @@ class LoginView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: Image.asset('assets/images/logo.png'),
+              ),
               const SizedBox(height: 20),
               _EmailInput(),
               const SizedBox(height: 10),
@@ -123,6 +128,9 @@ class _LoginButton extends StatelessWidget {
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 onPressed: state.status.isValidated
                     ? () => context.read<LoginCubit>().loginWithCredentials()
@@ -138,7 +146,12 @@ class _SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(minimumSize: const Size(200, 40)),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(200, 40),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
       onPressed: () {
         Navigator.of(context).push<void>(SignupScreen.route());
       },
