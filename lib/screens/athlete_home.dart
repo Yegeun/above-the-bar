@@ -53,8 +53,8 @@ class _AthleteHomeState extends State<AthleteHome> {
 
   List<Widget> _loadExercises(List<ProgramModel> athleteProgram,
       int currentWeek, int currentSession, AthleteProfileModel athleteProfile) {
-    _exerciseWidgets.clear();
     List<Widget> exerciseText = [];
+
     exerciseText.add(Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -64,7 +64,7 @@ class _AthleteHomeState extends State<AthleteHome> {
     ));
     List<ProgramModel> filteredList = athleteProgram
         .where((program) =>
-            program.week == currentWeek && program.session == currentSession)
+    program.week == currentWeek && program.session == currentSession)
         .toList();
 
     for (int i = 0; i < filteredList.length; i++) {
@@ -100,19 +100,28 @@ class _AthleteHomeState extends State<AthleteHome> {
           ],
         ),
       );
+    }
+    return exerciseText;
+  }
+
+  void _populateExercises(List<ProgramModel> athleteProgram,
+      int currentWeek,
+      int currentSession,
+      AthleteProfileModel athleteProfile,) {
+    List<ProgramModel> filteredList = athleteProgram
+        .where((program) =>
+    program.week == currentWeek && program.session == currentSession)
+        .toList();
+    for (int i = 0; i < filteredList.length; i++) {
       _exerciseWidgets.add(
         AthleteInputWidget(
-            exerciseNum: _exerciseWidgets.length + 1,
+            exerciseNum: i + 1,
             exerciseName: filteredList[i].exercise,
-            load: filteredList[i].intensity *
-                athleteProfile.getWeightliftingResult(temp) ~/
-                100,
+            load: filteredList[i].intensity,
             sets: filteredList[i].sets,
             reps: filteredList[i].reps),
       );
     }
-
-    return exerciseText;
   }
 
   @override
@@ -169,7 +178,10 @@ class _AthleteHomeState extends State<AthleteHome> {
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme
+                          .of(context)
+                          .colorScheme
+                          .primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -193,48 +205,56 @@ class _AthleteHomeState extends State<AthleteHome> {
 
                 return BlocBuilder<ProgramBloc, ProgramState>(
                     builder: (context, programState) {
-                  if (programState is ProgramLoaded) {
-                    Future.microtask(() {
-                      _loadExercises(
-                        programState.program,
-                        athleteState.athleteProfile.week,
-                        athleteState.athleteProfile.session,
-                        athleteState.athleteProfile,
-                      );
-                    });
-
-                    return Column(
-                      children: [
-                        Column(
-                            children: _loadExercises(
-                          programState.program,
-                          athleteState.athleteProfile.week,
-                          athleteState.athleteProfile.session,
-                          athleteState.athleteProfile,
-                        )),
-                        SizedBox(height: 10),
-                        //button for next session and previous session (if there is one)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      if (programState is ProgramLoaded) {
+                        if (_exerciseWidgets.isEmpty) {
+                          Future.microtask(() {
+                            setState(() {
+                              _populateExercises(
+                                programState.program,
+                                athleteState.athleteProfile.week,
+                                athleteState.athleteProfile.session,
+                                athleteState.athleteProfile,
+                              );
+                            });
+                          });
+                        }
+                        return Column(
                           children: [
-                            OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (athleteState.athleteProfile.session ==
+                            Column(
+                                children: _loadExercises(
+                                  programState.program,
+                                  athleteState.athleteProfile.week,
+                                  athleteState.athleteProfile.session,
+                                  athleteState.athleteProfile,
+                                )),
+                            SizedBox(height: 10),
+                            //button for next session and previous session (if there is one)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                OutlinedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (athleteState.athleteProfile
+                                            .session ==
                                             1 &&
-                                        athleteState.athleteProfile.week == 1) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'You are on the first session'),
-                                          duration: Duration(milliseconds: 95),
-                                        ),
-                                      );
-                                    } else {
-                                      if (athleteState.athleteProfile.session ==
-                                          1) {
-                                        context.read<AthleteProfileBloc>().add(
+                                            athleteState.athleteProfile.week ==
+                                                1) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'You are on the first session'),
+                                              duration: Duration(
+                                                  milliseconds: 95),
+                                            ),
+                                          );
+                                        } else {
+                                          if (athleteState.athleteProfile
+                                              .session ==
+                                              1) {
+                                            context.read<AthleteProfileBloc>()
+                                                .add(
                                               UpdateCreateAthleteProfile(
                                                   athleteState
                                                       .athleteProfile.email,
@@ -243,13 +263,23 @@ class _AthleteHomeState extends State<AthleteHome> {
                                                   athleteState
                                                       .athleteProfile.startDate,
                                                   athleteState
-                                                          .athleteProfile.week -
+                                                      .athleteProfile.week -
                                                       1,
                                                   programState
                                                       .program[0].maxSession),
                                             );
-                                      } else {
-                                        context.read<AthleteProfileBloc>().add(
+                                            _exerciseWidgets.clear();
+                                            _populateExercises(
+                                                programState.program,
+                                                athleteState.athleteProfile
+                                                    .week -
+                                                    1,
+                                                programState.program[0]
+                                                    .maxSession,
+                                                athleteState.athleteProfile);
+                                          } else {
+                                            context.read<AthleteProfileBloc>()
+                                                .add(
                                               UpdateCreateAthleteProfile(
                                                 athleteState
                                                     .athleteProfile.email,
@@ -260,139 +290,181 @@ class _AthleteHomeState extends State<AthleteHome> {
                                                 athleteState
                                                     .athleteProfile.week,
                                                 athleteState.athleteProfile
-                                                        .session -
+                                                    .session -
                                                     1,
                                               ),
                                             );
-                                      }
-                                    }
-                                    _loadExercises(
-                                      programState.program,
-                                      athleteState.athleteProfile.week,
-                                      athleteState.athleteProfile.session,
-                                      athleteState.athleteProfile,
-                                    );
-                                  });
-                                },
-                                child: Text('Previous Session')),
-                            // Previous Session Button
-                            SizedBox(width: 50),
-                            OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (programState.program.length <
-                                        programState.program[0].maxWeek *
-                                            programState
-                                                .program[0].maxSession) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content:
-                                            Text('You are on the last session'),
-                                        duration: Duration(milliseconds: 50),
-                                      ));
-                                    } else {
-                                      // need to check if it is t
-                                      if (athleteState.athleteProfile.session <
-                                          programState.program[0].maxSession) {
-                                        context.read<AthleteProfileBloc>().add(
-                                            UpdateCreateAthleteProfile(
-                                                athleteState
-                                                    .athleteProfile.email,
-                                                athleteState
-                                                    .athleteProfile.programId,
-                                                athleteState
-                                                    .athleteProfile.startDate,
-                                                athleteState
-                                                    .athleteProfile.week,
+                                            _exerciseWidgets.clear();
+                                            _populateExercises(
+                                                programState.program,
                                                 athleteState.athleteProfile
-                                                        .session +
-                                                    1));
-                                      } else if (athleteState
-                                              .athleteProfile.week <
-                                          programState.program[0].maxWeek) {
-                                        context.read<AthleteProfileBloc>().add(
-                                            UpdateCreateAthleteProfile(
+                                                    .week,
                                                 athleteState
-                                                    .athleteProfile.email,
-                                                athleteState
-                                                    .athleteProfile.programId,
-                                                athleteState
-                                                    .athleteProfile.startDate,
-                                                athleteState
-                                                        .athleteProfile.week +
+                                                    .athleteProfile.session -
                                                     1,
-                                                1));
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              'You are on the last session'),
-                                        ));
-                                      }
+                                                athleteState.athleteProfile);
+                                          }
+                                        }
+                                        _loadExercises(
+                                          programState.program,
+                                          athleteState.athleteProfile.week,
+                                          athleteState.athleteProfile.session,
+                                          athleteState.athleteProfile,
+                                        );
+                                      });
+                                    },
+                                    child: Text('Previous Session')),
+                                // Previous Session Button
+                                SizedBox(width: 50),
+                                OutlinedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (programState.program.length <
+                                            programState.program[0].maxWeek *
+                                                programState
+                                                    .program[0].maxSession) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content:
+                                            Text('You are on the last session'),
+                                            duration: Duration(
+                                                milliseconds: 50),
+                                          ));
+                                        } else {
+                                          // need to check if it is t
+                                          if (athleteState.athleteProfile
+                                              .session <
+                                              programState.program[0]
+                                                  .maxSession) {
+                                            context.read<AthleteProfileBloc>()
+                                                .add(
+                                                UpdateCreateAthleteProfile(
+                                                    athleteState
+                                                        .athleteProfile.email,
+                                                    athleteState
+                                                        .athleteProfile
+                                                        .programId,
+                                                    athleteState
+                                                        .athleteProfile
+                                                        .startDate,
+                                                    athleteState
+                                                        .athleteProfile.week,
+                                                    athleteState.athleteProfile
+                                                        .session +
+                                                        1));
+                                            _exerciseWidgets.clear();
+                                            _populateExercises(
+                                                programState.program,
+                                                athleteState.athleteProfile
+                                                    .week,
+                                                athleteState
+                                                    .athleteProfile.session +
+                                                    1,
+                                                athleteState.athleteProfile);
+                                          } else if (athleteState
+                                              .athleteProfile.week <
+                                              programState.program[0].maxWeek) {
+                                            context.read<AthleteProfileBloc>()
+                                                .add(
+                                                UpdateCreateAthleteProfile(
+                                                    athleteState
+                                                        .athleteProfile.email,
+                                                    athleteState
+                                                        .athleteProfile
+                                                        .programId,
+                                                    athleteState
+                                                        .athleteProfile
+                                                        .startDate,
+                                                    athleteState
+                                                        .athleteProfile.week +
+                                                        1,
+                                                    1));
+                                            _exerciseWidgets.clear();
+                                            _populateExercises(
+                                                programState.program,
+                                                athleteState.athleteProfile
+                                                    .week +
+                                                    1,
+                                                1,
+                                                athleteState.athleteProfile);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'You are on the last session'),
+                                            ));
+                                          }
+                                          _loadExercises(
+                                            programState.program,
+                                            athleteState.athleteProfile.week,
+                                            athleteState.athleteProfile.session,
+                                            athleteState.athleteProfile,
+                                          );
+                                        }
+                                      });
+                                    },
+                                    child: Text('Next Session')),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              alignment: Alignment.topCenter,
+                              child: TextButton.icon(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/athlete/program-viewer',
+                                      arguments: programState.program);
+                                },
+                                icon: Icon(
+                                    Icons.view_list, color: Colors.white),
+                                label: Text(
+                                  "View Program",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.purple,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
                                       _loadExercises(
                                         programState.program,
                                         athleteState.athleteProfile.week,
                                         athleteState.athleteProfile.session,
                                         athleteState.athleteProfile,
                                       );
-                                    }
-                                  });
-                                },
-                                child: Text('Next Session')),
+                                      _exerciseWidgets.clear();
+                                      _populateExercises(
+                                          programState.program,
+                                          athleteState.athleteProfile.week,
+                                          athleteState.athleteProfile.session,
+                                          athleteState.athleteProfile);
+                                    });
+                                  },
+                                  icon: Icon(Icons.refresh),
+                                ),
+                              ],
+                            )
                           ],
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          alignment: Alignment.topCenter,
-                          child: TextButton.icon(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/athlete/program-viewer',
-                                  arguments: programState.program);
-                            },
-                            icon: Icon(Icons.view_list, color: Colors.white),
-                            label: Text(
-                              "View Program",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.purple,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 20.0),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _loadExercises(
-                                    programState.program,
-                                    athleteState.athleteProfile.week,
-                                    athleteState.athleteProfile.session,
-                                    athleteState.athleteProfile,
-                                  );
-                                });
-                              },
-                              icon: Icon(Icons.refresh),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                  return Container();
-                });
+                        );
+                      }
+                      return Container();
+                    });
               }
               return Text(
                 'The Program has not been loaded',
@@ -479,22 +551,19 @@ class _AthleteHomeState extends State<AthleteHome> {
                         onPressed: () {
                           for (int i = 0; i < _exerciseWidgets.length; i++) {
                             context.read<AthleteDataBloc>().add(
-                                  CreateAthleteData(
-                                    AthleteDataEntryModel(
-                                      email: widget.userEmail,
-                                      date: DateTime.parse(text),
-                                      bw: double.parse(_controller.text),
-                                      exercise: _exerciseWidgets[i]
-                                          .controllerGetExText,
-                                      sets: int.parse(_exerciseWidgets[i]
-                                          .controllerGetSetsText),
-                                      reps: int.parse(_exerciseWidgets[i]
-                                          .controllerGetRepsText),
-                                      load: int.parse(_exerciseWidgets[i]
-                                          .controllerGetLoadText),
-                                    ),
-                                  ),
-                                );
+                              CreateAthleteData(
+                                AthleteDataEntryModel(
+                                  email: widget.userEmail,
+                                  date: DateTime.parse(text),
+                                  bw: double.parse(_controller.text),
+                                  exercise:
+                                  _exerciseWidgets[i].exerciseName,
+                                  sets: _exerciseWidgets[i].sets,
+                                  reps: _exerciseWidgets[i].reps,
+                                  load: _exerciseWidgets[i].load,
+                                ),
+                              ),
+                            );
                           }
                           _refreshScreen(context, widget.userEmail);
                         },
@@ -525,9 +594,10 @@ void _refreshScreen(BuildContext context, String athleteEmailString) {
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
-      builder: (BuildContext context) => AthleteHome(
-        userEmail: athleteEmailString,
-      ),
+      builder: (BuildContext context) =>
+          AthleteHome(
+            userEmail: athleteEmailString,
+          ),
     ),
   );
 }

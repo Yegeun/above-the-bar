@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AthleteInputWidget extends StatelessWidget {
+class AthleteInputWidget extends StatefulWidget {
   final int exerciseNum;
-  final String exerciseName;
-  final int load;
-  final int sets;
-  final int reps;
+  late final String exerciseName;
+  late final int load;
+  late final int sets;
+  late final int reps;
 
-  AthleteInputWidget(
-      {required this.exerciseNum,
-      required this.exerciseName,
-      required this.load,
-      required this.sets,
-      required this.reps});
+  AthleteInputWidget({
+    required this.exerciseNum,
+    required this.exerciseName,
+    required this.load,
+    required this.sets,
+    required this.reps,
+  });
 
-  void clear() {
-    _controllerEx.clear();
-    _controllerSets.clear();
-    _controllerReps.clear();
-    _controllerLoad.clear();
-  }
+  @override
+  _AthleteInputWidgetState createState() => _AthleteInputWidgetState();
+}
 
-  final TextEditingController _controllerEx = TextEditingController();
-  final TextEditingController _controllerSets = TextEditingController();
-  final TextEditingController _controllerReps = TextEditingController();
-  final TextEditingController _controllerLoad = TextEditingController();
-
-  String get controllerGetExText => _controllerEx.text;
-
-  String get controllerGetSetsText => _controllerSets.text;
-
-  String get controllerGetRepsText => _controllerReps.text;
-
-  String get controllerGetLoadText => _controllerLoad.text;
+class _AthleteInputWidgetState extends State<AthleteInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _controllerEx.text = exerciseName;
-    _controllerSets.text = sets.toString();
-    _controllerReps.text = reps.toString();
-    _controllerLoad.text = load.toString();
+    final controllerEx = TextEditingController(text: widget.exerciseName);
+    final controllerSets = TextEditingController(text: widget.sets.toString());
+    final controllerReps = TextEditingController(text: widget.reps.toString());
+    final controllerLoad = TextEditingController(text: widget.load.toString());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -49,49 +36,75 @@ class AthleteInputWidget extends StatelessWidget {
           width: 150,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: _controllerEx,
+            controller: controllerEx,
             decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Exercise' '${exerciseNum}'),
+              border: OutlineInputBorder(),
+              labelText: 'Exercise ${widget.exerciseNum}',
+            ),
+            onChanged: (value) {
+              // update the exercise name
+              widget.exerciseName = value;
+            },
           ),
         ),
         Container(
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: _controllerLoad,
+            controller: controllerLoad,
             decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Load (KG)'),
+              border: OutlineInputBorder(),
+              labelText: 'Load (KG)',
+            ),
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.allow(
-                  RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$')),
+                RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$'),
+              ),
             ],
+            onChanged: (value) {
+              // update the load
+              widget.load = int.parse(value);
+            },
           ),
         ),
         Container(
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: _controllerSets,
+            controller: controllerSets,
             decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Sets'),
+              border: OutlineInputBorder(),
+              labelText: 'Sets',
+            ),
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.allow(
-                  RegExp(r'^(?:1?[0-9]|20|[0-9])$')),
+                RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+              ),
             ],
+            onChanged: (value) {
+              // update the sets
+              widget.sets = int.parse(value);
+            },
           ),
         ),
         Container(
           width: 100,
           margin: EdgeInsets.all(8.0),
           child: TextFormField(
-            controller: _controllerReps,
+            controller: controllerReps,
             decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Reps'),
+              border: OutlineInputBorder(),
+              labelText: 'Reps',
+            ),
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.allow(
-                  RegExp(r'^(?:1?[0-9]|20|[0-9])$')),
+                RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+              ),
             ],
+            onChanged: (value) {
+              // update the reps
+              widget.reps = int.parse(value);
+            },
           ),
         ),
       ],

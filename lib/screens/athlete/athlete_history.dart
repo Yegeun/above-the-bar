@@ -94,6 +94,7 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                       context
                           .read<AthleteDataBloc>()
                           .add(LoadAthleteData(widget.athleteEmail));
+                      athleteData.sort((a, b) => a.date.compareTo(b.date));
                     }
                     return Flexible(
                       child: SizedBox(
@@ -103,17 +104,53 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                           shrinkWrap: true,
                           itemCount: athleteData.length,
                           itemBuilder: (context, index) {
-                            // print(athleteData[index].document)
                             return ListTile(
-                              title: Text(
-                                  '${DateFormat('yyyy-MM-dd').format(athleteData[index].date)} ${athleteData[index].exercise} ${athleteData[index].load} ${athleteData[index].reps}'),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(athleteData[index].date),
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      athleteData[index].exercise,
+                                      style: TextStyle(color: Colors.green),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      athleteData[index].load.toString(),
+                                      style: TextStyle(color: Colors.orange),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      '${athleteData[index].sets.toString()} sets',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      '${athleteData[index].reps.toString()} reps',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               trailing: IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () {
                                   _deleteAthleteData(athleteData[index]);
-                                  // setState(() {
-                                  //   athleteData.removeAt(index);
-                                  // });
                                   UpdateAthleteData(athleteData);
                                   _refreshScreen(context, widget.athleteEmail);
                                 },
