@@ -90,6 +90,7 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                   if (state is AthleteDataLoaded) {
                     final List<AthleteDataEntryModel> athleteData =
                         state.entries.toList();
+                    athleteData.sort((a, b) => a.date.compareTo(b.date));
                     if (athleteData.isEmpty) {
                       context
                           .read<AthleteDataBloc>()
