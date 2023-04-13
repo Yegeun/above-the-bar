@@ -47,12 +47,26 @@ class _CoachHomeState extends State<CoachHome> {
                 child: Container(
                   padding: EdgeInsets.only(top: 10.0),
                   alignment: Alignment.topCenter,
-                  child: TextButton(
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pushNamed(context, '/coach/manage-programs',
                           arguments: widget.userEmail);
                     },
-                    child: Text("Manage Programs"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blueGrey[900],
+                      // button background color
+                      onPrimary: Colors.white,
+                      // text color
+                      side: BorderSide(color: Colors.blue, width: 2),
+                      // border color and width
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      // rounded corners
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0), // button padding
+                    ),
+                    icon: Icon(Icons.manage_search_rounded), // manage icon
+                    label: Text("Manage Programs"), // button text
                   ),
                 ),
               ),
