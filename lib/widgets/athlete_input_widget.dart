@@ -21,7 +21,6 @@ class AthleteInputWidget extends StatefulWidget {
 }
 
 class _AthleteInputWidgetState extends State<AthleteInputWidget> {
-
   @override
   Widget build(BuildContext context) {
     final controllerEx = TextEditingController(text: widget.exerciseName);
@@ -32,79 +31,87 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: 150,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: controllerEx,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Exercise ${widget.exerciseNum}',
+        Expanded(
+          flex: 3,
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: TextFormField(
+              controller: controllerEx,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Exercise ${widget.exerciseNum}',
+              ),
+              onChanged: (value) {
+                // update the exercise name
+                widget.exerciseName = value;
+              },
             ),
-            onChanged: (value) {
-              // update the exercise name
-              widget.exerciseName = value;
-            },
           ),
         ),
-        Container(
-          width: 100,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: controllerLoad,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Load (KG)',
-            ),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(
-                RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$'),
+        Expanded(
+          flex: 2,
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: TextFormField(
+              controller: controllerLoad,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'W(KG)',
               ),
-            ],
-            onChanged: (value) {
-              // update the load
-              widget.load = int.parse(value);
-            },
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:[1-4]?\d{1,2}|500|[0-9])$'),
+                ),
+              ],
+              onChanged: (value) {
+                // update the load
+                widget.load = int.parse(value);
+              },
+            ),
           ),
         ),
-        Container(
-          width: 100,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: controllerSets,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Sets',
-            ),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(
-                RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+        Expanded(
+          flex: 1,
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: TextFormField(
+              controller: controllerSets,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Sets',
               ),
-            ],
-            onChanged: (value) {
-              // update the sets
-              widget.sets = int.parse(value);
-            },
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+                ),
+              ],
+              onChanged: (value) {
+                // update the sets
+                widget.sets = int.parse(value);
+              },
+            ),
           ),
         ),
-        Container(
-          width: 100,
-          margin: EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: controllerReps,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Reps',
-            ),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(
-                RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+        Expanded(
+          flex: 1,
+          child: Container(
+            margin: EdgeInsets.all(1.0),
+            child: TextFormField(
+              controller: controllerReps,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Reps',
               ),
-            ],
-            onChanged: (value) {
-              // update the reps
-              widget.reps = int.parse(value);
-            },
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^(?:1?[0-9]|20|[0-9])$'),
+                ),
+              ],
+              onChanged: (value) {
+                // update the reps
+                widget.reps = int.parse(value);
+              },
+            ),
           ),
         ),
       ],

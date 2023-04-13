@@ -75,7 +75,7 @@ class _AthleteHomeState extends State<AthleteHome> {
           children: [
             SizedBox(height: 10),
             Container(
-              width: 150,
+              width: 100,
               child: Text(
                 filteredList[i].exercise,
                 style: TextStyle(
@@ -93,7 +93,7 @@ class _AthleteHomeState extends State<AthleteHome> {
             Container(
                 width: 50,
                 child: Text('${filteredList[i].sets.toString()} reps')),
-            Container(width: 50, child: Text('${filteredList[i].intensity} %')),
+            Container(width: 50, child: Text('${filteredList[i].intensity}%')),
             Container(
                 width: 100, child: Text(filteredList[i].comments.toString())),
             SizedBox(height: 30),
@@ -437,7 +437,7 @@ class _AthleteHomeState extends State<AthleteHome> {
             children: [
               Text('Date:'),
               Container(
-                width: 180,
+                width: 100,
                 margin: EdgeInsets.all(8.0),
                 child: TextButton(
                   onPressed: () async {
@@ -454,7 +454,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
               ),
               Container(
-                width: 80,
+                width: 70,
                 margin: EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _controller,
@@ -474,7 +474,7 @@ class _AthleteHomeState extends State<AthleteHome> {
           Column(
             children: [
               Container(
-                height: 200,
+                height: 150,
                 child: ListView.builder(
                   itemCount: _exerciseWidgets.length,
                   itemBuilder: (context, index) {
