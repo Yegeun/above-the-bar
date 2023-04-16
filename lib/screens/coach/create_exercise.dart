@@ -21,15 +21,15 @@ class _CreateExerciseState extends State<CreateExercise> {
         padding: EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                      alignment: Alignment.center,
-                      child: Text("Create Exercise")),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                'Exercises',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -52,7 +52,7 @@ class _CreateExerciseState extends State<CreateExercise> {
                           itemCount: exercisetemp.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(exercisetemp[index].name),
+                              title: Text('Name: ${exercisetemp[index].name}'),
                             );
                           },
                         ),
@@ -79,7 +79,9 @@ class _CreateExerciseState extends State<CreateExercise> {
                   child: Container(
                       padding: EdgeInsets.only(top: 10.0),
                       alignment: Alignment.center,
-                      child: Text("Exercise Name")),
+                      child: Text("Exercise Name",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold))),
                 ),
               ],
             ),

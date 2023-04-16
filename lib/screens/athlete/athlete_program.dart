@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
 
+import '../../utilities/constants.dart';
+
 class AthleteProgram extends StatefulWidget {
   final List<ProgramModel> program;
 
@@ -37,27 +39,61 @@ class _AthleteProgramState extends State<AthleteProgram> {
               Container(
                 padding: const EdgeInsets.only(left: 10.0),
                 width: 150,
-                child: Text('Exercise'),
+                child: Text(
+                  'Exercise',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ),
               SizedBox(width: 10),
               Container(
                 width: 100,
-                child: Text('Sets'),
+                child: Text(
+                  'Sets',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: kRepsSetsColour,
+                  ),
+                ),
               ),
               SizedBox(width: 10),
               Container(
                 width: 100,
-                child: Text('Reps'),
+                child: Text(
+                  'Reps',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: kRepsSetsColour,
+                  ),
+                ),
               ),
               SizedBox(width: 10),
               Container(
                 width: 100,
-                child: Text('Intensity'),
+                child: Text(
+                  'Intensity',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: kLoadColour,
+                  ),
+                ),
               ),
               SizedBox(width: 10),
               Container(
                 width: 100,
-                child: Text('Comments'),
+                child: Text(
+                  'Comments',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: kCommentsColour,
+                  ),
+                ),
               ),
               SizedBox(width: 20),
             ],
@@ -75,22 +111,42 @@ class _AthleteProgramState extends State<AthleteProgram> {
                 SizedBox(width: 10),
                 Container(
                   width: 100,
-                  child: Text(viewProgram[i][j][k].sets.toString()),
+                  child: Text(
+                    viewProgram[i][j][k].sets.toString(),
+                    style: TextStyle(
+                      color: kRepsSetsColour,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 Container(
                   width: 100,
-                  child: Text(viewProgram[i][j][k].reps.toString()),
+                  child: Text(
+                    viewProgram[i][j][k].reps.toString(),
+                    style: TextStyle(
+                      color: kRepsSetsColour,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 Container(
                   width: 100,
-                  child: Text(viewProgram[i][j][k].intensity.toString()),
+                  child: Text(
+                    viewProgram[i][j][k].intensity.toString(),
+                    style: TextStyle(
+                      color: kLoadColour,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 Container(
                   width: 100,
-                  child: Text(viewProgram[i][j][k].comments.toString()),
+                  child: Text(
+                    viewProgram[i][j][k].comments.toString(),
+                    style: TextStyle(
+                      color: kCommentsColour,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 20),
               ],

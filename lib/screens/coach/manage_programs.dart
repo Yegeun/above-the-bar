@@ -224,32 +224,54 @@ class _ManageProgramsState extends State<ManagePrograms> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 10.0),
           Row(
             children: [
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(color: Colors.blue),
+                    color: Colors.white,
+                  ),
                   child: TextButton(
                     onPressed: () {
                       _displayCreateDialog(context);
                     },
                     child: Text(
                       'Create Program',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ),
+              SizedBox(width: 10.0),
               Expanded(
                 flex: 1,
                 child: Container(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(color: Colors.orange),
+                    color: Colors.white,
+                  ),
                   child: TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/coach/create-exercise');
                     },
                     child: Text(
-                      "Create Exercise",
+                      'Create Exercise',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -313,7 +335,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                           programsList[index], ['gpp1']);
                                       //TODO this needs to be dynamic
                                     },
-                                    icon: Icon(Icons.delete),
+                                    icon: Icon(Icons.delete, color: Colors.red),
                                   ),
                                 ],
                               ),

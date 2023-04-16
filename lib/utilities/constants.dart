@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:above_the_bar/models/exercise_model.dart';
 
 List<Exercise> kExerciseList = [
@@ -77,3 +79,7 @@ List<Exercise> kExerciseList = [
     name: 'Side Hold',
   ),
 ];
+
+const kRepsSetsColour = Color(0xF0008080);
+const kLoadColour = Color(0xF0DC0A87);
+const kCommentsColour = Color(0xFFFFA500);

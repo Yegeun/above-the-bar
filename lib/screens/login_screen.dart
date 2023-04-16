@@ -127,7 +127,7 @@ class _LoginButton extends StatelessWidget {
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(200, 40),
+                  minimumSize: const Size(190, 38),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -147,7 +147,7 @@ class _SignupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(200, 40),
+        minimumSize: const Size(190, 38),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),

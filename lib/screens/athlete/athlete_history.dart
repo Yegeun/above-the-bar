@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:intl/intl.dart';
 
+import '../../utilities/constants.dart';
+
 class AthleteHistory extends StatefulWidget {
   final String athleteEmail;
 
@@ -129,27 +131,30 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                                     flex: 2,
                                     child: Text(
                                       athleteData[index].load.toString(),
-                                      style: TextStyle(color: Colors.orange),
+                                      style: TextStyle(
+                                        color: kLoadColour,
+                                      ), // change load color to teal
                                     ),
                                   ),
                                   Expanded(
                                     flex: 2,
                                     child: Text(
                                       '${athleteData[index].sets.toString()} sets',
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(color: kRepsSetsColour),
                                     ),
                                   ),
                                   Expanded(
                                     flex: 2,
                                     child: Text(
                                       '${athleteData[index].reps.toString()} reps',
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(color: kRepsSetsColour),
                                     ),
                                   ),
                                 ],
                               ),
                               trailing: IconButton(
-                                icon: Icon(Icons.delete),
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                // change delete icon color to red
                                 onPressed: () {
                                   _deleteAthleteData(athleteData[index]);
                                   UpdateAthleteData(athleteData);

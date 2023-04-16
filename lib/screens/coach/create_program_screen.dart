@@ -233,7 +233,8 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                       Matrix4.diagonal3Values(1.3, 1.3, 1);
                 },
                 heroTag: null,
-                child: Icon(Icons.add),
+                backgroundColor: Color(0xFF008080),
+                child: Icon(Icons.zoom_in),
               ),
               SizedBox(width: 16.0),
               FloatingActionButton(
@@ -242,7 +243,8 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                       Matrix4.diagonal3Values(0.7, 0.7, 1);
                 },
                 heroTag: null,
-                child: Icon(Icons.remove),
+                backgroundColor: Color(0xFF008080),
+                child: Icon(Icons.zoom_out),
               ),
               SizedBox(width: 16.0),
               FloatingActionButton(
@@ -252,8 +254,9 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                   Navigator.pop(context);
                 },
                 heroTag: null,
-                child: Icon(Icons.save),
-              ),
+                backgroundColor: Color(0xFF4285F4),
+                child: Icon(Icons.save, color: Colors.white),
+              )
             ],
           ),
         ),

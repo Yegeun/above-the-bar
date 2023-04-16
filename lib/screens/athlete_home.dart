@@ -244,6 +244,12 @@ class _AthleteHomeState extends State<AthleteHome> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             OutlinedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(100, 38),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
                                 onPressed: () {
                                   setState(() {
                                     if (athleteState.athleteProfile.session ==
@@ -299,8 +305,14 @@ class _AthleteHomeState extends State<AthleteHome> {
                                 },
                                 child: Text('Previous Session')),
                             // Previous Session Button
-                            SizedBox(width: 50),
+                            SizedBox(width: 20),
                             OutlinedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(100, 38),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
                                 onPressed: () {
                                   setState(() {
                                     if (programState.program.length <
@@ -484,7 +496,14 @@ class _AthleteHomeState extends State<AthleteHome> {
                         Expanded(child: _exerciseWidgets[index]),
                         IconButton(
                           onPressed: () => _removeExerciseWidget(index),
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          // set the size of the icon
+                          padding: EdgeInsets.all(4),
+                          // set the padding around the icon
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                          ),
                         ),
                       ],
                     );

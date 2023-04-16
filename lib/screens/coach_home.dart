@@ -116,7 +116,7 @@ class _CoachHomeState extends State<CoachHome> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.delete),
+                                    icon: Icon(Icons.delete, color: Colors.red),
                                     onPressed: () {
                                       _deleteAthlete(athleteList[index]);
                                       print(
