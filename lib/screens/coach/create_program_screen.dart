@@ -34,6 +34,12 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Program"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: weekTextInputList,
     );
@@ -62,6 +68,116 @@ class WeekTextInputList extends StatefulWidget {
 class _WeekTextInputListState extends State<WeekTextInputList> {
   List<List<List<List<TextEditingController>>>> _controllers = [];
   List<List<List<List<String>>>> dropdownValueState = [];
+
+  Future<void> _displayCopyDialog(BuildContext context) async {
+    final TextEditingController controllerWeek = TextEditingController();
+    final TextEditingController controllerCopyWeek = TextEditingController();
+    final weeksList = List.generate(widget.numWeeks, (index) => index + 1);
+    // final TextEditingController controllerSets = TextEditingController();
+    // final TextEditingController controllerReps = TextEditingController();
+    // final TextEditingController controllerIntensity = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        void dispose() {
+          controllerWeek.dispose();
+          controllerCopyWeek.dispose();
+          super.dispose();
+        }
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'COPY Week',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                DropdownButtonFormField<int>(
+                  value: controllerWeek.text.isEmpty
+                      ? null
+                      : int.parse(controllerWeek.text),
+                  decoration: InputDecoration(
+                    hintText: 'Copying Week',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: List.generate(widget.numWeeks, (index) => index + 1)
+                      .map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text('$value'),
+                    );
+                  }).toList(),
+                  onChanged: (int? value) {
+                    setState(() {
+                      controllerWeek.text = value.toString();
+                    });
+                  },
+                ),
+                DropdownButtonFormField<int>(
+                  value: controllerCopyWeek.text.isEmpty
+                      ? null
+                      : int.parse(controllerCopyWeek.text),
+                  decoration: InputDecoration(
+                    hintText: 'Copy To Week',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: List.generate(widget.numWeeks, (index) => index + 1)
+                      .map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text('$value'),
+                    );
+                  }).toList(),
+                  onChanged: (int? value) {
+                    setState(() {
+                      controllerCopyWeek.text = value.toString();
+                    });
+                  },
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'CANCEL',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(width: 10.0),
+                    ElevatedButton(
+                      child: Text('COPY'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        dispose();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,18 +302,18 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               children: [
                 Text('Week ${i + 1}'),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    if (i == 0) SizedBox(height: 35),
-                    if (i > 0)
-                      IconButton(
-                        icon: Icon(Icons.content_copy),
-                        onPressed: () {
-                          _copyWeek(i);
-                        },
-                      ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     if (i == 0) SizedBox(height: 35),
+                //     if (i > 0)
+                //       IconButton(
+                //         icon: Icon(Icons.content_copy),
+                //         onPressed: () {
+                //           _copyWeek(i);
+                //         },
+                //       ),
+                //   ],
+                // ),
               ],
             ),
             Column(
@@ -209,6 +325,11 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
     }
     return Column(
       children: [
+        IconButton(
+            onPressed: () {
+              _displayCopyDialog(context);
+            },
+            icon: Icon(Icons.copy)),
         Expanded(
           child: InteractiveViewer(
             minScale: 0.001,

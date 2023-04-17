@@ -172,9 +172,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
                           controllerExercises.text,
                         ];
                         _programList.add(widget.manageProgramsCoachEmail);
-                        navigateToCreateProgram(_programList);
                         Navigator.of(context).pop();
-                        dispose();
+                        navigateToCreateProgram(_programList);
                       },
                     ),
                   ],
