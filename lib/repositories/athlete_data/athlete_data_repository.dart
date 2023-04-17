@@ -21,10 +21,10 @@ class AthleteDataRepository extends BaseAthleteDataRepository {
   }
 
   @override
-  Future<void> delete(String documentId) async {
+  Future<void> delete(String documentId, String email) async {
     var collection = FirebaseFirestore.instance
         .collection('athletes')
-        .doc("yegeunator@gmail.com")
+        .doc(email)
         .collection('data');
     await collection.doc(documentId).delete();
   }

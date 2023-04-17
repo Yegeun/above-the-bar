@@ -62,13 +62,13 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
     Emitter<AthleteDataState> emit,
   ) async {
     emit(AthleteDataDeleting());
-    await _athleteDataRepository.delete(event.entryModel.id);
+    await _athleteDataRepository.delete(
+        event.entryModel.id, event.entryModel.email);
     emit(AthleteDataDeleted());
-    print('Delete Successful 2');
+    print('Athlete Data Successful');
     _athleteDataSubscription?.cancel();
-    //TODO - change this to get athlete data for a specific athlete
     _athleteDataSubscription =
-        _athleteDataRepository.getDataEntries('yegeunator@gmail.com').listen(
+        _athleteDataRepository.getDataEntries(event.entryModel.email).listen(
               (entries) => add(
                 UpdateAthleteData(entries),
               ),

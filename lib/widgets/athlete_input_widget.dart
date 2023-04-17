@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 
 class AthleteInputWidget extends StatefulWidget {
   final int exerciseNum;
-  late final String exerciseName;
-  late final int load;
-  late final int sets;
-  late final int reps;
+  String exerciseName;
+  int load;
+  int sets;
+  int reps;
 
   AthleteInputWidget({
     required this.exerciseNum,
@@ -41,10 +41,6 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
                 border: OutlineInputBorder(),
                 labelText: 'Exercise ${widget.exerciseNum}',
               ),
-              onChanged: (value) {
-                // update the exercise name
-                widget.exerciseName = value;
-              },
             ),
           ),
         ),

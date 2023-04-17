@@ -51,7 +51,7 @@ class ProgramListBloc extends Bloc<ProgramListEvent, ProgramListState> {
     emit(ProgramListDeleting());
     await _programListRepository.deleteProgram(event.program, event.coachEmail);
     emit(ProgramListDeleted());
-    print('Delete Successful 2');
+    print('Delete Successful');
     _programListSubscription?.cancel();
     _programListSubscription =
         _programListRepository.getProgramList(event.coachEmail).listen(

@@ -5,5 +5,5 @@ abstract class BaseAthleteDataRepository {
 
   Stream<List<AthleteDataEntryModel>> getDataEntries(email);
 
-  Future<void> delete(String documentId);
+  Future<void> delete(String documentId, String email);
 }

@@ -79,6 +79,23 @@ List<Exercise> kExerciseList = [
     name: 'Side Hold',
   ),
 ];
+List<String> kExercises = [
+  'Snatch', // 0
+  'Clean and Jerk', // 1
+  'Back Squat', // 2
+  'Total', // 3
+  'Power Snatch', // 4
+  'Hang Snatch', // 5
+  'Block Snatch', // 6
+  'Snatch Deadlift', // 7
+  'Clean', // 8
+  'Hang Clean', // 9
+  'Power Clean', // 10
+  'Block Clean', // 11
+  'Clean Deadlift', // 12
+  'Power Jerk', // 13
+
+];
 
 const kRepsSetsColour = Color(0xF0008080);
 const kLoadColour = Color(0xF0DC0A87);
