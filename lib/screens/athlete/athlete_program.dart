@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
-
-import '../../utilities/constants.dart';
+import 'package:flutter/rendering.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:above_the_bar/utilities/constants.dart';
 
 class AthleteProgram extends StatefulWidget {
   final List<ProgramModel> program;
@@ -16,9 +17,10 @@ class _AthleteProgramState extends State<AthleteProgram> {
   @override
   Widget build(BuildContext context) {
     final viewProgram = ProgramModel.getWeeksSessionsExercises(widget.program);
+    final TransformationController transformationController =
+        TransformationController();
     // Create a List of Lists to store the data in rows and columns
     List<Widget> weekFields = [];
-
     for (int i = 0; i < viewProgram.length; i++) {
       List<Widget> sessionFields = [];
       for (int j = 0; j < viewProgram[i].length; j++) {
@@ -193,7 +195,7 @@ class _AthleteProgramState extends State<AthleteProgram> {
               minScale: 0.001,
               maxScale: 0.5,
               constrained: false,
-              // transformationController: _transformationController,
+              transformationController: transformationController,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: weekFields,
@@ -206,27 +208,30 @@ class _AthleteProgramState extends State<AthleteProgram> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // FloatingActionButton(
-                //   onPressed: () {
-                //     _transformationController.value *=
-                //         Matrix4.diagonal3Values(1.3, 1.3, 1);
-                //   },
-                //   heroTag: null,
-                //   child: Icon(Icons.add),
-                // ),
+                FloatingActionButton(
+                  onPressed: () {
+                    transformationController.value *=
+                        Matrix4.diagonal3Values(1.3, 1.3, 1);
+                  },
+                  heroTag: null,
+                  backgroundColor: Color(0xFF008080),
+                  child: Icon(Icons.zoom_in),
+                ),
                 SizedBox(width: 16.0),
-                // FloatingActionButton(
-                //   onPressed: () {
-                //     _transformationController.value *=
-                //         Matrix4.diagonal3Values(0.7, 0.7, 1);
-                //   },
-                //   heroTag: null,
-                //   child: Icon(Icons.remove),
-                // ),
+                FloatingActionButton(
+                  onPressed: () {
+                    transformationController.value *=
+                        Matrix4.diagonal3Values(0.7, 0.7, 1);
+                  },
+                  heroTag: null,
+                  backgroundColor: Color(0xFF008080),
+                  child: Icon(Icons.zoom_out),
+                ),
                 SizedBox(width: 16.0),
               ],
             ),
           ),
+          // Export Screen to PDF
         ],
       ),
     );

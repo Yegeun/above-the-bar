@@ -29,6 +29,9 @@ dependencies:
   collection: ^1.15.0
   syncfusion_flutter_charts: ^20.4.53
   const_date_time: ^1.0.2
+  pdf: ^3.6.0
+  screenshot: ^1.0.0
+  share_plus: ^3.0.2
 
 dev_dependencies:
   flutter_test:

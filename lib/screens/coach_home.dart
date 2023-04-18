@@ -53,9 +53,8 @@ class _CoachHomeState extends State<CoachHome> {
                           arguments: widget.userEmail);
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blueGrey[900],
-                      // button background color
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueGrey[900],
                       // text color
                       side: BorderSide(color: Colors.blue, width: 2),
                       // border color and width
@@ -68,6 +67,28 @@ class _CoachHomeState extends State<CoachHome> {
                     icon: Icon(Icons.manage_search_rounded), // manage icon
                     label: Text("Manage Programs"), // button text
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(AuthLogoutRequested());
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red,
+                    // set the text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          30.0), // set the rounded corners
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 10.0), // set the button padding
+                  ),
+                  child: Text('Logout'),
                 ),
               ),
             ],
@@ -104,14 +125,51 @@ class _CoachHomeState extends State<CoachHome> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: TextButton(
-                                  child: Text(athleteList[index].name),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/coach/athlete-overview',
-                                      arguments: athleteList[index],
-                                    );
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.grey[50]!),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      side: BorderSide(
+                                        color: Colors.blue[700]!,
+                                        // Border color
+                                        width: 2.0, // Border width
+                                      ),
+                                    ),
+                                  ),
+                                  elevation:
+                                      MaterialStateProperty.resolveWith<double>(
+                                          (states) {
+                                    if (states
+                                        .contains(MaterialState.hovered)) {
+                                      return 4; // Elevation when hovering
+                                    } else {
+                                      return 0; // Default elevation
+                                    }
                                   }),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/coach/athlete-overview',
+                                    arguments: athleteList[index],
+                                  );
+                                },
+                                child: Text(
+                                  athleteList[index].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.blue, // Text color
+                                  ),
+                                ),
+                              ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -219,15 +277,6 @@ class _CoachHomeState extends State<CoachHome> {
               backgroundColor: Colors.blue,
               heroTag: null, //herotag is null
               child: const Icon(Icons.add),
-            ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(AuthLogoutRequested());
-              },
-              child: Text('Logout'),
             ),
           ),
         ],

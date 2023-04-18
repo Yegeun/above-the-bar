@@ -11,6 +11,8 @@ import 'package:above_the_bar/models/athlete_profile_model.dart';
 import 'package:above_the_bar/models/programs_model.dart';
 import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 
+import '../bloc/auth/auth_bloc.dart';
+
 class AthleteHome extends StatefulWidget {
   final String userEmail;
 
@@ -68,38 +70,40 @@ class _AthleteHomeState extends State<AthleteHome> {
         .toList();
 
     for (int i = 0; i < filteredList.length; i++) {
-      var temp = filteredList[i].exercise;
-      exerciseText.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 10),
-            Container(
-              width: 100,
-              child: Text(
-                filteredList[i].exercise,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+      if (filteredList[i].exercise != '') {
+        exerciseText.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 10),
+              Container(
+                width: 100,
+                child: Text(
+                  filteredList[i].exercise,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 50,
-              child: Text(
-                '${filteredList[i].sets.toString()} sets',
-              ),
-            ),
-            Container(
+              Container(
                 width: 50,
-                child: Text('${filteredList[i].sets.toString()} reps')),
-            Container(width: 50, child: Text('${filteredList[i].intensity}%')),
-            Container(
-                width: 100, child: Text(filteredList[i].comments.toString())),
-            SizedBox(height: 30),
-          ],
-        ),
-      );
+                child: Text(
+                  '${filteredList[i].sets.toString()} sets',
+                ),
+              ),
+              Container(
+                  width: 50,
+                  child: Text('${filteredList[i].sets.toString()} reps')),
+              Container(
+                  width: 50, child: Text('${filteredList[i].intensity}%')),
+              Container(
+                  width: 100, child: Text(filteredList[i].comments.toString())),
+              SizedBox(height: 30),
+            ],
+          ),
+        );
+      }
     }
     return exerciseText;
   }
@@ -115,14 +119,16 @@ class _AthleteHomeState extends State<AthleteHome> {
             program.week == currentWeek && program.session == currentSession)
         .toList();
     for (int i = 0; i < filteredList.length; i++) {
-      _exerciseWidgets.add(
-        AthleteInputWidget(
-            exerciseNum: i + 1,
-            exerciseName: filteredList[i].exercise,
-            load: filteredList[i].intensity,
-            sets: filteredList[i].sets,
-            reps: filteredList[i].reps),
-      );
+      if (filteredList[i].exercise != '') {
+        _exerciseWidgets.add(
+          AthleteInputWidget(
+              exerciseNum: i + 1,
+              exerciseName: filteredList[i].exercise,
+              load: filteredList[i].intensity,
+              sets: filteredList[i].sets,
+              reps: filteredList[i].reps),
+        );
+      }
     }
   }
 
@@ -148,29 +154,51 @@ class _AthleteHomeState extends State<AthleteHome> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Athlete Programming App"),
+        title: const Text("Athlete Home"),
       ),
       body: Column(
         children: [
-          Row(
-            // Button
+          Stack(
             children: [
-              Expanded(
-                flex: 1,
+              Align(
+                alignment: Alignment.topCenter,
+                child: IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/athlete/profile',
+                        arguments: widget.userEmail);
+                  },
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
                 child: Container(
-                  padding: EdgeInsets.only(top: 10.0),
-                  alignment: Alignment.topCenter,
-                  child: IconButton(
-                    icon: Icon(Icons.person),
+                  alignment: Alignment.topRight,
+                  padding: EdgeInsets.only(right: 10.0, top: 10.0),
+                  child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/athlete/profile',
-                          arguments: widget.userEmail);
+                      context.read<AuthBloc>().add(AuthLogoutRequested());
                     },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
+                      // set the text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            30.0), // set the rounded corners
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 10.0), // set the button padding
+                    ),
+                    child: Text('Logout'),
                   ),
                 ),
               ),
             ],
           ),
+
           Row(
             children: [
               Expanded(
@@ -238,7 +266,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                           athleteState.athleteProfile.session,
                           athleteState.athleteProfile,
                         )),
-                        SizedBox(height: 10),
+                        SizedBox(height: 5),
                         //button for next session and previous session (if there is one)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -509,11 +537,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                     );
                   },
                 ),
-              ), // List of exercises
-              FloatingActionButton(
-                onPressed: _addExerciseWidget,
-                child: Icon(Icons.add),
-              ), //add exercise
+              ), // List of exercises//add exercise
             ],
           ), //Delete
           SizedBox(height: 7.5),
@@ -551,6 +575,11 @@ class _AthleteHomeState extends State<AthleteHome> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   );
                 },
+              ),
+              SizedBox(width: 20.0),
+              FloatingActionButton(
+                onPressed: _addExerciseWidget,
+                child: Icon(Icons.add),
               ),
             ],
           ), // Submit Button

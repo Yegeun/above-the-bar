@@ -32,6 +32,7 @@ class LoginView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Login'),
       ),
+      backgroundColor: Colors.grey[200],
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status.isSubmissionSuccess) {

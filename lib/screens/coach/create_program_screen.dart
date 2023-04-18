@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../utilities/constants.dart';
 import '/bloc/blocs.dart';
 
 List<ProgramModel> _programModelList = [];
@@ -212,8 +213,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                     SizedBox(width: 3),
                     DropdownButton(
                         value: dropdownValueState[i][j][k][0],
-                        items: ['Select Exercise', 'Snatch', 'Clean and Jerk']
-                            .map((String items) {
+                        items: kExercises.map((String items) {
                           return DropdownMenuItem<String>(
                             value: items,
                             child: Text(items),
@@ -224,6 +224,12 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                             _controllers[i][j][k][0].text = newValue.toString();
                             dropdownValueState[i][j][k][0] =
                                 newValue.toString();
+                            if (newValue.toString() == 'Empty') {
+                              _controllers[i][j][k][1].text = '0';
+                              _controllers[i][j][k][2].text = '0';
+                              _controllers[i][j][k][3].text = '0';
+                              _controllers[i][j][k][4].text = '0';
+                            }
                           });
                         }),
                     SizedBox(width: 10),
@@ -325,11 +331,28 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
     }
     return Column(
       children: [
-        IconButton(
-            onPressed: () {
-              _displayCopyDialog(context);
-            },
-            icon: Icon(Icons.copy)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Name : ${widget.inputProgramName}',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
+            IconButton(
+                onPressed: () {
+                  _displayCopyDialog(context);
+                },
+                icon: Icon(Icons.copy)),
+            Tooltip(
+              message:
+                  'If you don\'t have an exercise, select "Empty" and the exercise will be skipped',
+              child: IconButton(
+                icon: Icon(Icons.help_outline),
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
         Expanded(
           child: InteractiveViewer(
             minScale: 0.001,
@@ -420,11 +443,8 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
           String intensity = _controllers[i][j][k][3].text;
           String comments = _controllers[i][j][k][4].text;
           setState(() {
-            if (exerciseName != 'Select Exercise' &&
-                    (sets != '' || reps != '') ||
-                intensity != '') {
-              //checker if the text boxes are filled in
-            }
+            if (exerciseName == 'Empty' && (sets != '' || reps != '') ||
+                intensity != '') {}
             _programModelList.add(ProgramModel(
               programName: handleSubmitProgramName.toLowerCase(),
               week: i + 1,

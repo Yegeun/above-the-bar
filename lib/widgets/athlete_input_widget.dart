@@ -8,7 +8,7 @@ class AthleteInputWidget extends StatefulWidget {
   int sets;
   int reps;
 
-  AthleteInputWidget({
+  AthleteInputWidget({super.key,
     required this.exerciseNum,
     required this.exerciseName,
     required this.load,

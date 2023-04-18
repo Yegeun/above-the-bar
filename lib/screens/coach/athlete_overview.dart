@@ -19,6 +19,29 @@ class AthleteOverview extends StatefulWidget {
 class _AthleteOverviewState extends State<AthleteOverview> {
   String _selectedExercise = 'Snatch';
 
+  TableRow buildExerciseRow(
+      String exerciseName, List<AthleteDataEntryModel> athleteData) {
+    List<dynamic> highestRecordedData =
+        AthleteDataEntryModel.getHighestRecordedWeightAndReps(
+            athleteData, exerciseName);
+
+    return TableRow(
+      children: [
+        TableText(text: exerciseName),
+        TableText(text: '${highestRecordedData[0]} kg'),
+        TableText(text: '${highestRecordedData[1]}'),
+        // TableCell(
+        //   child: TextButton(
+        //     onPressed: () {
+        //       // Do something when the button is pressed
+        //     },
+        //     child: Text('Button'),
+        //   ),
+        // ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AthleteModel athlete = widget.athlete;
@@ -146,63 +169,43 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                       child: Table(
                         columnWidths: const <int, TableColumnWidth>{
                           0: FixedColumnWidth(128),
-                          1: FixedColumnWidth(98),
+                          1: FixedColumnWidth(90),
                           2: FixedColumnWidth(64),
+                          // 3: FixedColumnWidth(64),
                         },
                         defaultVerticalAlignment:
                             TableCellVerticalAlignment.middle,
+                        border: TableBorder.all(),
                         children: <TableRow>[
                           TableRow(
                             children: [
                               TableText(text: 'Exercise'),
                               TableText(text: 'Weight'),
                               TableText(text: 'Reps'),
+                              // TableText(text: 'Chart'),
                             ],
                           ),
-                          TableRow(
-                            children: [
-                              TableText(text: 'Clean and Jerk'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")[0]} kg'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")[1]}'),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableText(text: 'Snatch'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Snatch")[0]} kg'),
-                              TableText(
-                                  text:
-                                      '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Snatch")[1]}'),
-                            ],
-                          ),
-                          // TableRow(
-                          //   children: [
-                          //     TableText(text: 'Back Squat'),
-                          //     TableText(
-                          //         text:
-                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[0]} kg'),
-                          //     TableText(
-                          //         text:
-                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Back Squat")[1]}'),
-                          //   ],
-                          // ),
-                          // TableRow(
-                          //   children: [
-                          //     TableText(text: 'Front Squat'),
-                          //     TableText(
-                          //         text:
-                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[0]} kg'),
-                          //     TableText(
-                          //         text:
-                          //             '${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Front Squat")[1]}'),
-                          //   ],
-                          // ),
+                          buildExerciseRow('Snatch', athleteData),
+                          buildExerciseRow('Clean and Jerk', athleteData),
+                          buildExerciseRow('Hang Snatch', athleteData),
+                          buildExerciseRow('Power Snatch', athleteData),
+                          buildExerciseRow('Block Snatch', athleteData),
+                          buildExerciseRow('Snatch Deadlift', athleteData),
+                          buildExerciseRow('Clean', athleteData),
+                          buildExerciseRow('Hang Clean', athleteData),
+                          buildExerciseRow('Power Clean', athleteData),
+                          buildExerciseRow('Block Clean', athleteData),
+                          buildExerciseRow('Clean Deadlift', athleteData),
+                          buildExerciseRow('Jerk From Rack', athleteData),
+                          buildExerciseRow('Power Jerk', athleteData),
+                          buildExerciseRow('Jerk From Block', athleteData),
+                          buildExerciseRow('Push Press', athleteData),
+                          buildExerciseRow('Back Squat', athleteData),
+                          buildExerciseRow('Strict Press', athleteData),
+                          buildExerciseRow('Strict Row', athleteData),
+                          buildExerciseRow('Trunk Hold', athleteData),
+                          buildExerciseRow('Back Hold', athleteData),
+                          buildExerciseRow('Side Hold', athleteData),
                         ],
                       ),
                     );
