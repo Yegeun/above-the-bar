@@ -91,17 +91,18 @@ List<String> kExercises = [
   'Power Clean', // 10
   'Block Clean', // 11
   'Clean Deadlift', // 12
-  'Jerk From Rack',
-  'Jerk From Block',
-  'Push Press',
-  'Back Squat', // 6
-  'Front Squat', //
-  'Strict Press',
-  'Strict Row',
-  'Trunk Hold',
-  'Back Hold',
-  'Side Hold',
-  'Empty', // 14
+  'Jerk From Rack', //13
+  'Power Jerk', // 14
+  'Jerk From Block', // 15
+  'Push Press', // 16
+  'Back Squat', // 17
+  'Front Squat', // 18
+  'Strict Press', // 19
+  'Strict Row', // 20
+  'Trunk Hold', // 21
+  'Back Hold', // 22
+  'Side Hold', // 23
+  'Empty', // 24
 ];
 
 const kRepsSetsColour = Color(0xF0008080);

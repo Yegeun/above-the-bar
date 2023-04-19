@@ -48,7 +48,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                   Text(
                     "Profile Page",
                     style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.0),
@@ -81,7 +81,7 @@ class _AthleteProfileState extends State<AthleteProfile> {
                             hintText: 'Weight Class',
                             border: OutlineInputBorder(),
                             contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10.0),
+                            EdgeInsets.symmetric(horizontal: 10.0),
                           ),
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
@@ -115,20 +115,20 @@ class _AthleteProfileState extends State<AthleteProfile> {
                             context
                                 .read<AthleteProfileBloc>()
                                 .add(CreateAthleteProfile(
-                                  AthleteProfileModel(
-                                      email: athleteProfile.email,
-                                      weightClass:
-                                          double.parse(_weightController.text),
-                                      coachEmail: _coachEmailController.text,
-                                      programId: state.athleteProfile.programId,
-                                      startDate: state.athleteProfile.startDate,
-                                      week: state.athleteProfile.week,
-                                      session: state.athleteProfile.session,
-                                      snatch: state.athleteProfile.snatch,
-                                      cleanAndJerk:
-                                          state.athleteProfile.cleanAndJerk),
-                                ));
-
+                              AthleteProfileModel(
+                                  email: athleteProfile.email,
+                                  weightClass:
+                                  double.parse(_weightController.text),
+                                  coachEmail: _coachEmailController.text,
+                                  programId: state.athleteProfile.programId,
+                                  startDate: state.athleteProfile.startDate,
+                                  week: state.athleteProfile.week,
+                                  session: state.athleteProfile.session,
+                                  snatch: state.athleteProfile.snatch,
+                                  cleanAndJerk:
+                                  state.athleteProfile.cleanAndJerk),
+                            ));
+                            Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Profile Updated Successfully'),
                             ));

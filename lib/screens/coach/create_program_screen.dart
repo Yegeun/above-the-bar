@@ -110,7 +110,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                       ? null
                       : int.parse(controllerWeek.text),
                   decoration: InputDecoration(
-                    hintText: 'Copying Week',
+                    hintText: 'Copy',
                     border: OutlineInputBorder(),
                   ),
                   items: List.generate(widget.numWeeks, (index) => index + 1)
@@ -166,8 +166,28 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                     ElevatedButton(
                       child: Text('COPY'),
                       onPressed: () {
+                        int copyNum = int.parse(controllerCopyWeek.text) - 1;
+                        int num = int.parse(controllerWeek.text) - 1;
+                        print('copyNum: $copyNum num: $num');
+                        for (int j = 0; j < widget.sessionsPerWeek; j++) {
+                          for (int k = 0; k < widget.exercisesPerSession; k++) {
+                            setState(() {
+                              dropdownValueState[copyNum][j][k][0] =
+                                  dropdownValueState[num][j][k][0];
+                            });
+                            _controllers[copyNum][j][k][0].text =
+                                _controllers[num][j][k][0].text;
+                            _controllers[copyNum][j][k][1].text =
+                                _controllers[num][j][k][1].text;
+                            _controllers[copyNum][j][k][2].text =
+                                _controllers[num][j][k][2].text;
+                            _controllers[copyNum][j][k][3].text =
+                                _controllers[num][j][k][3].text;
+                            _controllers[copyNum][j][k][4].text =
+                                _controllers[num][j][k][4].text;
+                          }
+                        }
                         Navigator.of(context).pop();
-                        dispose();
                       },
                     ),
                   ],
@@ -353,15 +373,18 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
             ),
           ],
         ),
-        Expanded(
-          child: InteractiveViewer(
-            minScale: 0.001,
-            maxScale: 0.5,
-            constrained: false,
-            transformationController: _transformationController,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: weekFields,
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InteractiveViewer(
+              minScale: 0.001,
+              maxScale: 0.5,
+              constrained: false,
+              transformationController: _transformationController,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: weekFields,
+              ),
             ),
           ),
         ),
@@ -406,29 +429,6 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
         ),
       ],
     );
-  }
-
-  void _copyWeek(int weekIndex) {
-    if (weekIndex > 0) {
-      for (int j = 0; j < widget.sessionsPerWeek; j++) {
-        for (int k = 0; k < widget.exercisesPerSession; k++) {
-          setState(() {
-            dropdownValueState[weekIndex][j][k][0] =
-                dropdownValueState[weekIndex - 1][j][k][0];
-          });
-          _controllers[weekIndex][j][k][0].text =
-              _controllers[weekIndex - 1][j][k][0].text;
-          _controllers[weekIndex][j][k][1].text =
-              _controllers[weekIndex - 1][j][k][1].text;
-          _controllers[weekIndex][j][k][2].text =
-              _controllers[weekIndex - 1][j][k][2].text;
-          _controllers[weekIndex][j][k][3].text =
-              _controllers[weekIndex - 1][j][k][3].text;
-          _controllers[weekIndex][j][k][4].text =
-              _controllers[weekIndex - 1][j][k][4].text;
-        }
-      }
-    }
   }
 
   List<ProgramModel> handleSubmit(String handleSubmitProgramName, int maxWeeks,

@@ -19,6 +19,22 @@ class ManagePrograms extends StatefulWidget {
 }
 
 class _ManageProgramsState extends State<ManagePrograms> {
+  void showSnack(String title) {
+    final snackbar = SnackBar(
+      content: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 15,
+        ),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    Future.delayed(Duration(seconds: 2), () {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+  }
+
   Future<void> _displayCopyDialog(BuildContext context, String name) async {
     final TextEditingController controllerName =
         TextEditingController(text: '$name 1');
@@ -52,7 +68,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
         });
   }
 
-  Future<void> _displayCreateDialog(BuildContext context) async {
+  Future<void> _displayCreateDialog(
+      BuildContext context, List<String> list) async {
     final TextEditingController controllerProgramName =
         TextEditingController(text: 'Program Name');
     final TextEditingController controllerWeeks = TextEditingController();
@@ -62,14 +79,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
     return showDialog(
       context: context,
       builder: (context) {
-        void dispose() {
-          controllerProgramName.dispose();
-          controllerWeeks.dispose();
-          controllerSession.dispose();
-          controllerExercises.dispose();
-          super.dispose();
-        }
-
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -96,10 +105,9 @@ class _ManageProgramsState extends State<ManagePrograms> {
                     hintText: 'Name',
                     border: OutlineInputBorder(),
                   ),
-                  //TODO need to check if an exercise program NAme already exists// preload
                 ),
                 SizedBox(height: 10.0),
-                TextField(
+                TextFormField(
                   onChanged: (value) {},
                   controller: controllerWeeks,
                   decoration: InputDecoration(
@@ -112,10 +120,9 @@ class _ManageProgramsState extends State<ManagePrograms> {
                       RegExp(r'^(?:1?\d|20|0)$'),
                     ),
                   ],
-                  // preload
                 ),
                 SizedBox(height: 10.0),
-                TextField(
+                TextFormField(
                   onChanged: (value) {},
                   controller: controllerSession,
                   decoration: InputDecoration(
@@ -128,10 +135,9 @@ class _ManageProgramsState extends State<ManagePrograms> {
                       RegExp(r'^(?:1?\d|20|0)$'),
                     ),
                   ],
-                  // preload
                 ),
                 SizedBox(height: 10.0),
-                TextField(
+                TextFormField(
                   onChanged: (value) {},
                   controller: controllerExercises,
                   decoration: InputDecoration(
@@ -144,7 +150,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
                       RegExp(r'^(?:1?\d|20|0)$'),
                     ),
                   ],
-                  // preload
                 ),
                 SizedBox(height: 20.0),
                 Row(
@@ -165,15 +170,22 @@ class _ManageProgramsState extends State<ManagePrograms> {
                     ElevatedButton(
                       child: Text('CREATE'),
                       onPressed: () {
-                        List<String> _programList = [
-                          controllerProgramName.text,
-                          controllerWeeks.text,
-                          controllerSession.text,
-                          controllerExercises.text,
-                        ];
-                        _programList.add(widget.manageProgramsCoachEmail);
-                        Navigator.of(context).pop();
-                        navigateToCreateProgram(_programList);
+                        print(list);
+                        if (list.contains(
+                            controllerProgramName.text.toLowerCase())) {
+                          showSnack('Program already exists');
+                          return;
+                        } else {
+                          List<String> _programList = [
+                            controllerProgramName.text,
+                            controllerWeeks.text,
+                            controllerSession.text,
+                            controllerExercises.text,
+                          ];
+                          _programList.add(widget.manageProgramsCoachEmail);
+                          Navigator.of(context).pop();
+                          navigateToCreateProgram(_programList);
+                        }
                       },
                     ),
                   ],
@@ -215,6 +227,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
     );
   }
 
+  List<String> globalProgramList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +250,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      _displayCreateDialog(context);
+                      _displayCreateDialog(context, globalProgramList);
                     },
                     child: Text(
                       'Create Program',
@@ -293,6 +307,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   if (state is ProgramListLoaded) {
                     final List<String> programsList =
                         state.programList.toList();
+                    globalProgramList = state.programList.toList();
                     return Flexible(
                       child: SizedBox(
                         height: 300,
@@ -302,7 +317,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
                           itemCount: programsList.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(programsList[index]),
+                              title:
+                                  Text('Program Name: ${programsList[index]}'),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [

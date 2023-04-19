@@ -94,7 +94,7 @@ class _AthleteHomeState extends State<AthleteHome> {
               ),
               Container(
                   width: 50,
-                  child: Text('${filteredList[i].sets.toString()} reps')),
+                  child: Text('${filteredList[i].reps.toString()} reps')),
               Container(
                   width: 50, child: Text('${filteredList[i].intensity}%')),
               Container(
@@ -118,6 +118,7 @@ class _AthleteHomeState extends State<AthleteHome> {
         .where((program) =>
             program.week == currentWeek && program.session == currentSession)
         .toList();
+    print(filteredList);
     for (int i = 0; i < filteredList.length; i++) {
       if (filteredList[i].exercise != '') {
         _exerciseWidgets.add(
