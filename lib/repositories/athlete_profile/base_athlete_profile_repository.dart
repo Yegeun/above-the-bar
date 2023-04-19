@@ -12,4 +12,7 @@ abstract class BaseAthleteProfileRepository {
   Stream<AthleteProfileModel> getProfile(String email);
 
   Stream<List<String>> getAthleteList();
+
+  Future<void> updatePersonalBestProfile(
+      String email, String exercise, int weight);
 }

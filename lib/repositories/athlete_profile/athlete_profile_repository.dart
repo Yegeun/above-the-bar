@@ -57,4 +57,11 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
   Future<void> deleteAthlete(String email) async {
     await _firebaseFirestore.collection('athletes').doc(email).delete();
   }
+
+  @override
+  Future<void> updatePersonalBestProfile(String email, String exercise, int weight) async {
+    await _firebaseFirestore.collection('athletes').doc(email).update({
+      exercise: weight,
+    });
+  }
 }

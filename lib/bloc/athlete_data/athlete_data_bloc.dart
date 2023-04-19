@@ -65,7 +65,7 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
     await _athleteDataRepository.delete(
         event.entryModel.id, event.entryModel.email);
     emit(AthleteDataDeleted());
-    print('Athlete Data Successful');
+    print('Athlete Delete Successful');
     _athleteDataSubscription?.cancel();
     _athleteDataSubscription =
         _athleteDataRepository.getDataEntries(event.entryModel.email).listen(

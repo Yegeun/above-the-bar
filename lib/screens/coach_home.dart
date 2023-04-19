@@ -162,7 +162,7 @@ class _CoachHomeState extends State<CoachHome> {
                                   );
                                 },
                                 child: Text(
-                                  athleteList[index].name,
+                                  '${athleteList[index].name}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0,
@@ -269,14 +269,27 @@ class _CoachHomeState extends State<CoachHome> {
             //bottom right
             alignment: Alignment.bottomRight,
             margin: const EdgeInsets.all(50),
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/coach/add-athlete',
-                    arguments: widget.userEmail);
-              },
-              backgroundColor: Colors.blue,
-              heroTag: null, //herotag is null
-              child: const Icon(Icons.add),
+            child: SizedBox(
+              width: 65,
+              height: 65,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/coach/add-athlete',
+                      arguments: widget.userEmail);
+                },
+                backgroundColor: Colors.blue,
+                heroTag: null,
+                tooltip: 'Add Athlete',
+                child: Column(
+                  children: [
+                    const Icon(Icons.add, size: 28),
+                    const SizedBox(width: 1),
+                    // Add a small space between the icon and text
+                    const Text('Athlete'),
+                    // Add the text next to the icon
+                  ],
+                ),
+              ),
             ),
           ),
         ],

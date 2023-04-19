@@ -24,6 +24,7 @@ class AthleteProfileBloc
     on<UpdateAthleteProfile>(_onUpdateAthleteProfile);
     on<CreateAthleteProfile>(_onCreateAthleteProfile);
     on<UpdateCreateAthleteProfile>(_onUpdateCreateAthleteProfile);
+    on<UpdatePersonalBestProfile>(_onUpdatePersonalBestProfile);
   }
 
   void _onLoadAthleteProfile(
@@ -59,6 +60,16 @@ class AthleteProfileBloc
     await _athleteProfileRepository.updateAthleteProfile(event.email,
         event.programId, event.startDate, event.week, event.session);
     emit(AthleteProfileCreateUpdated());
+    emit(AthleteProfileLoaded());
+  }
+
+  void _onUpdatePersonalBestProfile(UpdatePersonalBestProfile event,
+      Emitter<AthleteProfileState> emit) async {
+    _athleteProfileSubscription?.cancel();
+
+    await _athleteProfileRepository.updatePersonalBestProfile(
+        event.email, event.exercise, event.weight);
+    emit(AthleteProfilePersonalBestUpdated());
     emit(AthleteProfileLoaded());
   }
 }

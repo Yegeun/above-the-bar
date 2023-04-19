@@ -126,7 +126,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   onChanged: (value) {},
                   controller: controllerSession,
                   decoration: InputDecoration(
-                    hintText: 'Session',
+                    hintText: 'Number of Session',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
@@ -141,7 +141,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   onChanged: (value) {},
                   controller: controllerExercises,
                   decoration: InputDecoration(
-                    hintText: 'Exercises',
+                    hintText: 'Number of Exercises',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
@@ -317,8 +317,20 @@ class _ManageProgramsState extends State<ManagePrograms> {
                           itemCount: programsList.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title:
-                                  Text('Program Name: ${programsList[index]}'),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    'Name: ',
+                                  ),
+                                  Text(
+                                    programsList[index],
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -333,6 +345,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                           arguments: programEditList);
                                     },
                                     icon: Icon(Icons.edit),
+                                    tooltip: 'Edit Program',
                                   ),
                                   IconButton(
                                     onPressed: () {
@@ -343,6 +356,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                       _displayCopyDialog(context, _name);
                                     },
                                     icon: Icon(Icons.copy),
+                                    tooltip: 'Copy Program',
                                   ),
                                   IconButton(
                                     onPressed: () {
@@ -351,6 +365,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                       //TODO this needs to be dynamic
                                     },
                                     icon: Icon(Icons.delete, color: Colors.red),
+                                    tooltip: 'Delete Program',
                                   ),
                                 ],
                               ),

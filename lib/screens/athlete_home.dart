@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,7 @@ class AthleteHome extends StatefulWidget {
 class _AthleteHomeState extends State<AthleteHome> {
   final TextEditingController _controller = TextEditingController();
   late DateTime date = DateTime.now();
+  late AthleteProfileModel athletePersonalBest;
 
   List<AthleteInputWidget> listDynamic = [];
   List<AthleteInputWidget> listCreateData = [];
@@ -118,14 +120,17 @@ class _AthleteHomeState extends State<AthleteHome> {
         .where((program) =>
             program.week == currentWeek && program.session == currentSession)
         .toList();
-    print(filteredList);
     for (int i = 0; i < filteredList.length; i++) {
       if (filteredList[i].exercise != '') {
+        int maxLoad =
+            athleteProfile.getWeightliftingResult(filteredList[i].exercise);
+        print(maxLoad);
+        int actualLoad = (maxLoad * filteredList[i].intensity / 100).round();
         _exerciseWidgets.add(
           AthleteInputWidget(
               exerciseNum: i + 1,
               exerciseName: filteredList[i].exercise,
-              load: filteredList[i].intensity,
+              load: actualLoad,
               sets: filteredList[i].sets,
               reps: filteredList[i].reps),
         );
@@ -242,6 +247,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   _controller.text =
                       athleteState.athleteProfile.weightClass.toString();
                 });
+                athletePersonalBest = athleteState.athleteProfile;
 
                 return BlocBuilder<ProgramBloc, ProgramState>(
                     builder: (context, programState) {
@@ -566,7 +572,29 @@ class _AthleteHomeState extends State<AthleteHome> {
                                     ),
                                   ),
                                 );
+                            if (athletePersonalBest.getWeightliftingResult(
+                                    _exerciseWidgets[i].exerciseName) <
+                                _exerciseWidgets[i].load) {
+                              print(athletePersonalBest.getWeightliftingResult(
+                                  _exerciseWidgets[i].exerciseName));
+                              context.read<AthleteProfileBloc>().add(
+                                  UpdatePersonalBestProfile(
+                                      widget.userEmail,
+                                      _exerciseWidgets[i].exerciseName,
+                                      _exerciseWidgets[i].load));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      '${_exerciseWidgets[i].exerciseName} PB Broken'),
+                                ),
+                              );
+                            }
                           }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Data Submitted'),
+                            ),
+                          );
                           _refreshScreen(context, widget.userEmail);
                         },
                         child: Text("Submit Data"));
@@ -594,8 +622,6 @@ class _AthleteHomeState extends State<AthleteHome> {
 void _refreshScreen(BuildContext context, String athleteEmailString) {
   // reset bloc to loading state
   context.read<AthleteDataBloc>().add(LoadAthleteData(athleteEmailString));
-
-  // Clear any text fields
 
   // Push a new instance of the same screen onto the navigation stack
   Navigator.pushReplacement(

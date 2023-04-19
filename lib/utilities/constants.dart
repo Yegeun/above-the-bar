@@ -91,9 +91,9 @@ List<String> kExercises = [
   'Power Clean', // 10
   'Block Clean', // 11
   'Clean Deadlift', // 12
-  'Jerk From Rack', //13
+  'Jerk from Rack', //13
   'Power Jerk', // 14
-  'Jerk From Block', // 15
+  'Jerk from Block', // 15
   'Push Press', // 16
   'Back Squat', // 17
   'Front Squat', // 18

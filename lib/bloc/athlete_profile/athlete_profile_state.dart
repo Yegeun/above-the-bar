@@ -72,3 +72,18 @@ class AthleteProfileCreateUpdating extends AthleteProfileState {
 }
 
 class AthleteProfileCreateUpdated extends AthleteProfileState {}
+
+class AthleteProfilePersonalBestUpdate extends AthleteProfileState {
+  final String email;
+  final String exercise;
+  final int weight;
+
+  const AthleteProfilePersonalBestUpdate({
+    required this.email,
+    required this.exercise,
+    required this.weight,
+  });
+}
+
+class AthleteProfilePersonalBestUpdated extends AthleteProfileState {
+}
