@@ -12,5 +12,6 @@ export 'coach/manage_programs.dart';
 export 'athlete/athlete_history.dart';
 export 'athlete/athlete_profile.dart';
 export 'athlete/athlete_program.dart';
+export 'athlete/athlete_graphs.dart';
 export 'login_screen.dart';
 export 'signup_screen.dart';

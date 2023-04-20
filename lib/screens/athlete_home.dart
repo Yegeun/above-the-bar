@@ -175,6 +175,16 @@ class _AthleteHomeState extends State<AthleteHome> {
                   },
                 ),
               ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: Icon(Icons.auto_graph_sharp),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'athlete/athlete-graph',
+                        arguments: widget.userEmail);
+                  },
+                ),
+              ),
               Positioned(
                 top: 0,
                 right: 0,
@@ -242,10 +252,6 @@ class _AthleteHomeState extends State<AthleteHome> {
                 context.read<ProgramBloc>().add(LoadProgram(
                     athleteState.athleteProfile.programId,
                     athleteState.athleteProfile.coachEmail));
-                Future.microtask(() {
-                  _controller.text =
-                      athleteState.athleteProfile.weightClass.toString();
-                });
                 athletePersonalBest = athleteState.athleteProfile;
 
                 return BlocBuilder<ProgramBloc, ProgramState>(
@@ -260,6 +266,9 @@ class _AthleteHomeState extends State<AthleteHome> {
                             athleteState.athleteProfile.session,
                             athleteState.athleteProfile,
                           );
+                          _controller.text = athleteState
+                              .athleteProfile.weightClass
+                              .toString();
                         });
                       });
                       check = true;
@@ -503,7 +512,7 @@ class _AthleteHomeState extends State<AthleteHome> {
               Container(
                 width: 70,
                 margin: EdgeInsets.all(8.0),
-                child: TextFormField(
+                child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),

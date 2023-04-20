@@ -1,14 +1,7 @@
-import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
 import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:above_the_bar/models/athlete_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
-import 'package:above_the_bar/bloc/program_list/program_list_bloc.dart';
-
-import '../bloc/auth/auth_bloc.dart';
-import '../bloc/cupertino_picker/dropdown_bloc.dart';
 
 String _outlineTextButton = 'Assign Program';
 
@@ -269,26 +262,21 @@ class _CoachHomeState extends State<CoachHome> {
             //bottom right
             alignment: Alignment.bottomRight,
             margin: const EdgeInsets.all(50),
-            child: SizedBox(
-              width: 65,
-              height: 65,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/coach/add-athlete',
-                      arguments: widget.userEmail);
-                },
-                backgroundColor: Colors.blue,
-                heroTag: null,
-                tooltip: 'Add Athlete',
-                child: Column(
-                  children: [
-                    const Icon(Icons.add, size: 28),
-                    const SizedBox(width: 1),
-                    // Add a small space between the icon and text
-                    const Text('Athlete'),
-                    // Add the text next to the icon
-                  ],
-                ),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/coach/add-athlete',
+                    arguments: widget.userEmail);
+              },
+              backgroundColor: Colors.blue,
+              heroTag: null,
+              tooltip: 'Add Athlete',
+              child: Row(
+                children: [
+                  const Icon(Icons.add, size: 28),
+                  // Add a small space between the icon and text
+                  const Icon(Icons.person, size: 28),
+                  // Add the text next to the icon
+                ],
               ),
             ),
           ),

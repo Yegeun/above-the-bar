@@ -45,6 +45,12 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
               onChanged: (value) {
                 widget.exerciseName = value;
               },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  throw Exception('Please enter a value');
+                }
+                return null;
+              },
             ),
           ),
         ),
@@ -66,6 +72,12 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
               onChanged: (value) {
                 // update the load
                 widget.load = int.parse(value);
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  throw Exception('Please enter a value');
+                }
+                return null;
               },
             ),
           ),
@@ -89,6 +101,12 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
                 // update the sets
                 widget.sets = int.parse(value);
               },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  throw Exception('Please enter a value');
+                }
+                return null;
+              },
             ),
           ),
         ),
@@ -110,6 +128,12 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
               onChanged: (value) {
                 // update the reps
                 widget.reps = int.parse(value);
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  throw Exception('Please enter a value');
+                }
+                return null;
               },
             ),
           ),

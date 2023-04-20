@@ -159,6 +159,11 @@ class AppView extends StatelessWidget {
               builder: (_) =>
                   AthleteProfile(athleteEmail: settings.arguments as String),
             );
+          case AthleteGraphsScreen.routeName:
+            return MaterialPageRoute(
+              builder: (_) => AthleteGraphsScreen(
+                  athleteEmail: settings.arguments as String),
+            );
           case '/coach/home':
             return MaterialPageRoute(
               builder: (_) => CoachHome(

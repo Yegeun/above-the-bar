@@ -102,6 +102,8 @@ class AthleteDataEntryModel extends Equatable {
       final result = entryGroups.values
           .map((entries) => entries.reduce((a, b) => a.load > b.load ? a : b))
           .toList();
+      //then sort by date
+      result.sort((a, b) => a.date.compareTo(b.date));
 
       return result;
     } catch (e) {
