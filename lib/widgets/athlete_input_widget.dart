@@ -8,7 +8,8 @@ class AthleteInputWidget extends StatefulWidget {
   int sets;
   int reps;
 
-  AthleteInputWidget({super.key,
+  AthleteInputWidget({
+    super.key,
     required this.exerciseNum,
     required this.exerciseName,
     required this.load,
@@ -41,6 +42,9 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
                 border: OutlineInputBorder(),
                 labelText: 'Exercise ${widget.exerciseNum}',
               ),
+              onChanged: (value) {
+                widget.exerciseName = value;
+              },
             ),
           ),
         ),
