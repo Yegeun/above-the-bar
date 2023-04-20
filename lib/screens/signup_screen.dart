@@ -1,4 +1,6 @@
 import 'package:above_the_bar/auth_service.dart';
+import 'package:above_the_bar/bloc/athlete/athlete_bloc.dart';
+import 'package:above_the_bar/bloc/athlete_profile/athlete_profile_bloc.dart';
 import 'package:above_the_bar/cubit/signup/signup_cubit.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:above_the_bar/screens/home.dart';
@@ -224,6 +226,40 @@ class _SignupButton extends StatelessWidget {
                                             email: state.email.value,
                                             occupation: 'athlete',
                                             coachEmail: 'unassigned')),
+                                      );
+                                  context.read<AthleteProfileBloc>().add(
+                                        CreateAthleteProfile(
+                                          AthleteProfileModel(
+                                              email: state.email.value,
+                                              weightClass: 55.1,
+                                              coachEmail: 'unassigned',
+                                              programId: 'unassigned',
+                                              startDate: DateTime(2021, 1, 1),
+                                              week: 1,
+                                              session: 1,
+                                              snatch: 0,
+                                              cleanAndJerk: 0,
+                                              hangSnatch: 0,
+                                              powerSnatch: 0,
+                                              blockSnatch: 0,
+                                              snatchDeadlift: 0,
+                                              clean: 0,
+                                              hangClean: 0,
+                                              powerClean: 0,
+                                              blockClean: 0,
+                                              cleanDeadlift: 0,
+                                              jerkFromRack: 0,
+                                              powerJerk: 0,
+                                              jerkFromBlock: 0,
+                                              pushPress: 0,
+                                              backSquat: 0,
+                                              frontSquat: 0,
+                                              strictPress: 0,
+                                              strictRow: 0,
+                                              trunkHold: 0,
+                                              backHold: 0,
+                                              sideHold: 0),
+                                        ),
                                       );
                                 }
                               } catch (e) {

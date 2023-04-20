@@ -23,6 +23,26 @@ class AthleteProfileLoaded extends AthleteProfileState {
       session: 1,
       snatch: 0,
       cleanAndJerk: 0,
+      hangSnatch: 0,
+      powerSnatch: 0,
+      blockSnatch: 0,
+      snatchDeadlift: 0,
+      clean: 0,
+      hangClean: 0,
+      powerClean: 0,
+      blockClean: 0,
+      cleanDeadlift: 0,
+      jerkFromRack: 0,
+      powerJerk: 0,
+      jerkFromBlock: 0,
+      pushPress: 0,
+      backSquat: 0,
+      frontSquat: 0,
+      strictPress: 0,
+      strictRow: 0,
+      trunkHold: 0,
+      backHold: 0,
+      sideHold: 0,
     ),
   });
 
@@ -44,6 +64,26 @@ class AthleteProfileUpdating extends AthleteProfileState {
       session: 1,
       snatch: 0,
       cleanAndJerk: 0,
+      hangSnatch: 0,
+      powerSnatch: 0,
+      blockSnatch: 0,
+      snatchDeadlift: 0,
+      clean: 0,
+      hangClean: 0,
+      powerClean: 0,
+      blockClean: 0,
+      cleanDeadlift: 0,
+      jerkFromRack: 0,
+      powerJerk: 0,
+      jerkFromBlock: 0,
+      pushPress: 0,
+      backSquat: 0,
+      frontSquat: 0,
+      strictPress: 0,
+      strictRow: 0,
+      trunkHold: 0,
+      backHold: 0,
+      sideHold: 0,
     ),
   });
 
@@ -85,5 +125,16 @@ class AthleteProfilePersonalBestUpdate extends AthleteProfileState {
   });
 }
 
-class AthleteProfilePersonalBestUpdated extends AthleteProfileState {
+class AthleteProfilePersonalBestUpdated extends AthleteProfileState {}
+
+class AthleteProfileWeightClassUpdate extends AthleteProfileState {
+  final String email;
+  final double weightClass;
+
+  const AthleteProfileWeightClassUpdate({
+    required this.email,
+    required this.weightClass,
+  });
 }
+
+class AthleteProfileWeightClassUpdated extends AthleteProfileState {}

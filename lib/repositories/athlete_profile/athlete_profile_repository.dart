@@ -59,9 +59,17 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
   }
 
   @override
-  Future<void> updatePersonalBestProfile(String email, String exercise, int weight) async {
+  Future<void> updatePersonalBestProfile(
+      String email, String exercise, int weight) async {
     await _firebaseFirestore.collection('athletes').doc(email).update({
       exercise: weight,
+    });
+  }
+
+  @override
+  Future<void> updateWeightProfile(String email, double weightCat) async {
+    _firebaseFirestore.collection('athletes').doc(email).update({
+      'weightClass': weightCat,
     });
   }
 }

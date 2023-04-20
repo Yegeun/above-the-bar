@@ -22,11 +22,6 @@ class UserRepository implements BaseUserRepository {
           .collection('coaches')
           .doc(user.email)
           .set(user.toDocument());
-    } else {
-      await _firebaseFirestore
-          .collection('athletes')
-          .doc(user.email)
-          .set(user.toDocument());
     }
   }
 

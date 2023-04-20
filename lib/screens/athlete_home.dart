@@ -29,6 +29,7 @@ class _AthleteHomeState extends State<AthleteHome> {
   final TextEditingController _controller = TextEditingController();
   late DateTime date = DateTime.now();
   late AthleteProfileModel athletePersonalBest;
+  late bool check = false;
 
   List<AthleteInputWidget> listDynamic = [];
   List<AthleteInputWidget> listCreateData = [];
@@ -124,7 +125,6 @@ class _AthleteHomeState extends State<AthleteHome> {
       if (filteredList[i].exercise != '') {
         int maxLoad =
             athleteProfile.getWeightliftingResult(filteredList[i].exercise);
-        print(maxLoad);
         int actualLoad = (maxLoad * filteredList[i].intensity / 100).round();
         _exerciseWidgets.add(
           AthleteInputWidget(
@@ -252,7 +252,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                 return BlocBuilder<ProgramBloc, ProgramState>(
                     builder: (context, programState) {
                   if (programState is ProgramLoaded) {
-                    if (_exerciseWidgets.isEmpty) {
+                    if (check == false) {
                       Future.microtask(() {
                         setState(() {
                           _populateExercises(
@@ -263,6 +263,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                           );
                         });
                       });
+                      check = true;
                     }
                     return Column(
                       children: [

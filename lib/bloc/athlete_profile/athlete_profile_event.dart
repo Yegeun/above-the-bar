@@ -58,3 +58,13 @@ class UpdatePersonalBestProfile extends AthleteProfileEvent {
   @override
   List<Object> get props => [email, exercise, weight];
 }
+
+class UpdateWeightProfile extends AthleteProfileEvent {
+  const UpdateWeightProfile(this.email, this.weightClass);
+
+  final String email;
+  final double weightClass;
+
+  @override
+  List<Object> get props => [email, weightClass];
+}

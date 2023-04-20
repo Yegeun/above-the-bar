@@ -257,23 +257,13 @@ class _AddAthleteState extends State<AddAthlete> {
                                           ));
 
                                       context.read<AthleteProfileBloc>().add(
-                                            CreateAthleteProfile(
-                                              AthleteProfileModel(
-                                                email: addAthleteEmail
+                                            UpdateCreateAthleteProfile(
+                                                addAthleteEmail.toLowerCase(),
+                                                controllerGetProgramId
                                                     .toLowerCase(),
-                                                weightClass: profileState
-                                                    .athleteProfile.weightClass,
-                                                coachEmail: widget.userEmail,
-                                                programId:
-                                                    controllerGetProgramId
-                                                        .toLowerCase(),
-                                                startDate: DateTime.parse(text),
-                                                week: 1,
-                                                session: 1,
-                                                snatch: 0,
-                                                cleanAndJerk: 0,
-                                              ),
-                                            ),
+                                                DateTime.parse(text),
+                                                1,
+                                                1),
                                           );
                                       context.read<AthleteBloc>().add(
                                             CreateAthlete(
