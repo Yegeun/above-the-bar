@@ -22,6 +22,7 @@ class _AthleteGraphsScreenState extends State<AthleteGraphsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO Chart Builder to a different fucntion to make the code cleaner
     SfCartesianChart _buildChart(
         String selectedExercise, List<AthleteDataEntryModel> athleteData) {
       String titleText;
