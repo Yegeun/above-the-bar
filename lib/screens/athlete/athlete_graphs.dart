@@ -1,7 +1,7 @@
 import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:above_the_bar/widgets/exercise_graphs.widget.dart';
 
 import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
@@ -22,63 +22,6 @@ class _AthleteGraphsScreenState extends State<AthleteGraphsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO Chart Builder to a different fucntion to make the code cleaner
-    SfCartesianChart _buildChart(
-        String selectedExercise, List<AthleteDataEntryModel> athleteData) {
-      String titleText;
-      String seriesName;
-      List<AthleteDataEntryModel> filteredData;
-      if (selectedExercise == 'Snatch') {
-        titleText = 'Snatch Progress';
-        seriesName = 'Snatch';
-        filteredData =
-            AthleteDataEntryModel.getFilteredExercises(athleteData, "Snatch");
-      } else if (selectedExercise == 'Clean and Jerk') {
-        titleText = 'Clean and Jerk Progress';
-        seriesName = 'Clean and Jerk';
-        filteredData = AthleteDataEntryModel.getFilteredExercises(
-            athleteData, "Clean and Jerk");
-      } else {
-        titleText = 'Athlete Progress';
-        seriesName = 'Clean and Jerk';
-        filteredData = AthleteDataEntryModel.getFilteredExercises(
-            athleteData, "Clean and Jerk");
-      }
-
-      return SfCartesianChart(
-          title: ChartTitle(text: titleText),
-          legend: Legend(isVisible: true, position: LegendPosition.top),
-          primaryXAxis: DateTimeAxis(),
-          primaryYAxis: NumericAxis(
-            edgeLabelPlacement: EdgeLabelPlacement.shift,
-            labelFormat: '{value}kg',
-          ),
-          trackballBehavior: TrackballBehavior(
-              enable: true,
-              activationMode: ActivationMode.singleTap,
-              tooltipSettings: InteractiveTooltip(
-                  enable: true, format: 'point.x : point.y')),
-          series: <ChartSeries>[
-            // Renders line chart
-            LineSeries<AthleteDataEntryModel, DateTime>(
-              name: seriesName,
-              dataSource: filteredData,
-              xValueMapper: (AthleteDataEntryModel data, _) => data.date,
-              yValueMapper: (AthleteDataEntryModel data, _) => data.load,
-              dataLabelSettings: DataLabelSettings(
-                  isVisible: true, labelAlignment: ChartDataLabelAlignment.top),
-            ),
-            LineSeries<AthleteDataEntryModel, DateTime>(
-                name: 'Body Weight (kg)',
-                color: Colors.red,
-                dashArray: [3],
-                dataSource: AthleteDataEntryModel.getFilteredExercises(
-                    athleteData, selectedExercise),
-                xValueMapper: (AthleteDataEntryModel data, _) => data.date,
-                yValueMapper: (AthleteDataEntryModel data, _) => data.bw),
-          ]);
-    }
-
     //gets data from previous page
     return Scaffold(
       appBar: AppBar(
@@ -150,7 +93,7 @@ class _AthleteGraphsScreenState extends State<AthleteGraphsScreen> {
                   }
                   print(
                       'AthleteData ${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")}');
-                  return _buildChart('Snatch', athleteData);
+                  return buildChart(_selectedExercise, athleteData);
                 } else {
                   print("Error");
                   return Center(
