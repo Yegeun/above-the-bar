@@ -25,7 +25,7 @@ class AthleteProfileBloc
     on<CreateAthleteProfile>(_onCreateAthleteProfile);
     on<UpdateCreateAthleteProfile>(_onUpdateCreateAthleteProfile);
     on<UpdatePersonalBestProfile>(_onUpdatePersonalBestProfile);
-    on<UpdateWeightProfile>(_onUpdateWeightProfile);
+    on<UpdateWeightsOnProfile>(_onUpdateWeightsOnProfile);
   }
 
   void _onLoadAthleteProfile(
@@ -74,12 +74,35 @@ class AthleteProfileBloc
     emit(AthleteProfileLoaded());
   }
 
-  void _onUpdateWeightProfile(
-      UpdateWeightProfile event, Emitter<AthleteProfileState> emit) async {
+  void _onUpdateWeightsOnProfile(
+      UpdateWeightsOnProfile event, Emitter<AthleteProfileState> emit) async {
     _athleteProfileSubscription?.cancel();
 
     await _athleteProfileRepository.updateWeightProfile(
-        event.email, event.weightClass);
+        event.email,
+        event.weightClass,
+        event.snatch,
+        event.cleanAndJerk,
+        event.hangSnatch,
+        event.powerSnatch,
+        event.blockSnatch,
+        event.snatchDeadlift,
+        event.clean,
+        event.hangClean,
+        event.powerClean,
+        event.blockClean,
+        event.cleanDeadlift,
+        event.jerkFromRack,
+        event.powerJerk,
+        event.jerkFromBlock,
+        event.pushPress,
+        event.backSquat,
+        event.frontSquat,
+        event.strictPress,
+        event.strictRow,
+        event.backHold,
+        event.trunkHold,
+        event.sideHold);
     emit(AthleteProfileWeightClassUpdated());
     emit(AthleteProfileLoaded());
   }

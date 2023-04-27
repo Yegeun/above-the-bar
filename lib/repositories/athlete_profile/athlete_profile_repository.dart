@@ -67,9 +67,55 @@ class AthleteProfileRepository implements BaseAthleteProfileRepository {
   }
 
   @override
-  Future<void> updateWeightProfile(String email, double weightCat) async {
+  Future<void> updateWeightProfile(
+      String email,
+      double weightCat,
+      int snatch,
+      int cleanAndJerk,
+      int hangSnatch,
+      int powerSnatch,
+      int blockSnatch,
+      int snatchDeadlift,
+      int clean,
+      int hangClean,
+      int powerClean,
+      int blockClean,
+      int cleanDeadlift,
+      int jerkFromRack,
+      int powerJerk,
+      int jerkFromBlock,
+      int pushPress,
+      int backSquat,
+      int frontSquat,
+      int strictPress,
+      int strictRow,
+      int trunkHold,
+      int backHold,
+      int sideHold) async {
     _firebaseFirestore.collection('athletes').doc(email).update({
       'weightClass': weightCat,
+      'Snatch': snatch,
+      'Clean and Jerk': cleanAndJerk,
+      'Hang Snatch': hangSnatch,
+      'Power Snatch': powerSnatch,
+      'Block Snatch': blockSnatch,
+      'Snatch Deadlift': snatchDeadlift,
+      'Clean': clean,
+      'Hang Clean': hangClean,
+      'Power Clean': powerClean,
+      'Block Clean': blockClean,
+      'Clean Deadlift': cleanDeadlift,
+      'Jerk from Rack': jerkFromRack,
+      'Power Jerk': powerJerk,
+      'Jerk from Block': jerkFromBlock,
+      'Push Press': pushPress,
+      'Back Squat': backSquat,
+      'Front Squat': frontSquat,
+      'Strict Press': strictPress,
+      'Strict Row': strictRow,
+      'Trunk Hold': trunkHold,
+      'Back Hold': backHold,
+      'Side Hold': sideHold,
     });
   }
 }

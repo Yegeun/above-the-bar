@@ -130,10 +130,54 @@ class AthleteProfilePersonalBestUpdated extends AthleteProfileState {}
 class AthleteProfileWeightClassUpdate extends AthleteProfileState {
   final String email;
   final double weightClass;
+  final int snatch;
+  final int cleanAndJerk;
+  final int hangSnatch;
+  final int powerSnatch;
+  final int blockSnatch;
+  final int snatchDeadlift;
+  final int clean;
+  final int hangClean;
+  final int powerClean;
+  final int blockClean;
+  final int cleanDeadlift;
+  final int jerkFromRack;
+  final int powerJerk;
+  final int jerkFromBlock;
+  final int pushPress;
+  final int backSquat;
+  final int frontSquat;
+  final int strictPress;
+  final int strictRow;
+  final int trunkHold;
+  final int backHold;
+  final int sideHold;
 
   const AthleteProfileWeightClassUpdate({
     required this.email,
     required this.weightClass,
+    required this.snatch,
+    required this.cleanAndJerk,
+    required this.hangSnatch,
+    required this.powerSnatch,
+    required this.blockSnatch,
+    required this.snatchDeadlift,
+    required this.clean,
+    required this.hangClean,
+    required this.powerClean,
+    required this.blockClean,
+    required this.cleanDeadlift,
+    required this.jerkFromRack,
+    required this.powerJerk,
+    required this.jerkFromBlock,
+    required this.pushPress,
+    required this.backSquat,
+    required this.frontSquat,
+    required this.strictPress,
+    required this.strictRow,
+    required this.trunkHold,
+    required this.backHold,
+    required this.sideHold,
   });
 }
 

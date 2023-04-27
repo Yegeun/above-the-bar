@@ -16,5 +16,29 @@ abstract class BaseAthleteProfileRepository {
   Future<void> updatePersonalBestProfile(
       String email, String exercise, int weight);
 
-  Future<void> updateWeightProfile(String email, double weight);
+  Future<void> updateWeightProfile(
+      String email,
+      double weight,
+      int snatch,
+      int cleanAndJerk,
+      int hangSnatch,
+      int powerSnatch,
+      int blockSnatch,
+      int snatchDeadlift,
+      int clean,
+      int hangClean,
+      int powerClean,
+      int blockClean,
+      int cleanDeadlift,
+      int jerkFromRack,
+      int powerJerk,
+      int jerkFromBlock,
+      int pushPress,
+      int backSquat,
+      int frontSquat,
+      int strictPress,
+      int strictRow,
+      int trunkHold,
+      int backHold,
+      int sideHold);
 }

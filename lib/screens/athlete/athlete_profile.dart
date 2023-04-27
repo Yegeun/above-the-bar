@@ -244,9 +244,31 @@ class _AthleteProfileState extends State<AthleteProfile> {
                         OutlinedButton(
                             onPressed: () {
                               context.read<AthleteProfileBloc>().add(
-                                    UpdateWeightProfile(
+                                    UpdateWeightsOnProfile(
                                       athleteProfile.email,
                                       double.parse(_weightController.text),
+                                      int.parse(_snatchController.text),
+                                      int.parse(_cleanAndJerkController.text),
+                                      int.parse(_hangSnatchController.text),
+                                      int.parse(_powerSnatchController.text),
+                                      int.parse(_blockSnatchController.text),
+                                      int.parse(_snatchDeadliftController.text),
+                                      int.parse(_cleanController.text),
+                                      int.parse(_hangCleanController.text),
+                                      int.parse(_powerCleanController.text),
+                                      int.parse(_blockCleanController.text),
+                                      int.parse(_cleanDeadliftController.text),
+                                      int.parse(_jerkFromRackController.text),
+                                      int.parse(_powerJerkController.text),
+                                      int.parse(_jerkFromBlockController.text),
+                                      int.parse(_pushPressController.text),
+                                      int.parse(_backSquatController.text),
+                                      int.parse(_frontSquatController.text),
+                                      int.parse(_strictPressController.text),
+                                      int.parse(_strictRowController.text),
+                                      int.parse(_trunkHoldController.text),
+                                      int.parse(_backHoldController.text),
+                                      int.parse(_sideHoldController.text),
                                     ),
                                   );
                               Navigator.push(
