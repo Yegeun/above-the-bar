@@ -1,6 +1,7 @@
+import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:above_the_bar/widgets/build_two_lines.dart';
 
 import 'package:above_the_bar/bloc/athlete_data/athlete_data_bloc.dart';
 import 'package:above_the_bar/models/models.dart';
@@ -18,6 +19,7 @@ class AthleteOverview extends StatefulWidget {
 
 class _AthleteOverviewState extends State<AthleteOverview> {
   String _selectedExercise = 'Snatch';
+  String _selectedExercise2 = 'Snatch';
 
   TableRow buildExerciseRow(
       String exerciseName, List<AthleteDataEntryModel> athleteData) {
@@ -45,62 +47,6 @@ class _AthleteOverviewState extends State<AthleteOverview> {
   @override
   Widget build(BuildContext context) {
     AthleteModel athlete = widget.athlete;
-
-    SfCartesianChart _buildChart(
-        String selectedExercise, List<AthleteDataEntryModel> athleteData) {
-      String titleText;
-      String seriesName;
-      List<AthleteDataEntryModel> filteredData;
-      if (selectedExercise == 'Snatch') {
-        titleText = 'Snatch Progress';
-        seriesName = 'Snatch';
-        filteredData =
-            AthleteDataEntryModel.getFilteredExercises(athleteData, "Snatch");
-      } else if (selectedExercise == 'Clean and Jerk') {
-        titleText = 'Clean and Jerk Progress';
-        seriesName = 'Clean and Jerk';
-        filteredData = AthleteDataEntryModel.getFilteredExercises(
-            athleteData, "Clean and Jerk");
-      } else {
-        titleText = 'Athlete Progress';
-        seriesName = 'Clean and Jerk';
-        filteredData = AthleteDataEntryModel.getFilteredExercises(
-            athleteData, "Clean and Jerk");
-      }
-
-      return SfCartesianChart(
-          title: ChartTitle(text: titleText),
-          legend: Legend(isVisible: true, position: LegendPosition.top),
-          primaryXAxis: DateTimeAxis(),
-          primaryYAxis: NumericAxis(
-            edgeLabelPlacement: EdgeLabelPlacement.shift,
-            labelFormat: '{value}kg',
-          ),
-          trackballBehavior: TrackballBehavior(
-              enable: true,
-              activationMode: ActivationMode.singleTap,
-              tooltipSettings: InteractiveTooltip(
-                  enable: true, format: 'point.x : point.y kg')),
-          series: <ChartSeries>[
-            // Renders line chart
-            LineSeries<AthleteDataEntryModel, DateTime>(
-              name: seriesName,
-              dataSource: filteredData,
-              xValueMapper: (AthleteDataEntryModel data, _) => data.date,
-              yValueMapper: (AthleteDataEntryModel data, _) => data.load,
-              dataLabelSettings: DataLabelSettings(
-                  isVisible: true, labelAlignment: ChartDataLabelAlignment.top),
-            ),
-            LineSeries<AthleteDataEntryModel, DateTime>(
-                name: 'Weight',
-                color: Colors.red,
-                dashArray: [2],
-                dataSource: AthleteDataEntryModel.getFilteredExercises(
-                    athleteData, selectedExercise),
-                xValueMapper: (AthleteDataEntryModel data, _) => data.date,
-                yValueMapper: (AthleteDataEntryModel data, _) => data.bw),
-          ]);
-    }
 
     //gets data from previous page
     return Scaffold(
@@ -196,11 +142,12 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                           buildExerciseRow('Power Clean', athleteData),
                           buildExerciseRow('Block Clean', athleteData),
                           buildExerciseRow('Clean Deadlift', athleteData),
-                          buildExerciseRow('Jerk From Rack', athleteData),
+                          buildExerciseRow('Jerk from Rack', athleteData),
                           buildExerciseRow('Power Jerk', athleteData),
-                          buildExerciseRow('Jerk From Block', athleteData),
+                          buildExerciseRow('Jerk from Block', athleteData),
                           buildExerciseRow('Push Press', athleteData),
                           buildExerciseRow('Back Squat', athleteData),
+                          buildExerciseRow('Front Squat', athleteData),
                           buildExerciseRow('Strict Press', athleteData),
                           buildExerciseRow('Strict Row', athleteData),
                           buildExerciseRow('Trunk Hold', athleteData),
@@ -217,20 +164,36 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                   }
                 },
               ),
-              DropdownButton(
-                  value: _selectedExercise,
-                  items: ['Select Exercise', 'Snatch', 'Clean and Jerk']
-                      .map((String items) {
-                    return DropdownMenuItem<String>(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedExercise = newValue.toString();
-                    });
-                  }),
+              Column(
+                children: [
+                  DropdownButton(
+                      value: _selectedExercise,
+                      items: kExercises.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedExercise = newValue.toString();
+                        });
+                      }),
+                  DropdownButton(
+                      value: _selectedExercise2,
+                      items: kExercises.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (newValue1) {
+                        setState(() {
+                          _selectedExercise2 = newValue1.toString();
+                        });
+                      }),
+                ],
+              ),
               Expanded(
                 child: BlocBuilder<AthleteDataBloc, AthleteDataState>(
                   builder: (context, state) {
@@ -253,7 +216,8 @@ class _AthleteOverviewState extends State<AthleteOverview> {
                       }
                       print(
                           'AthleteData ${AthleteDataEntryModel.getHighestRecordedWeightAndReps(athleteData, "Clean and Jerk")}');
-                      return _buildChart('Snatch', athleteData);
+                      return buildTwoLinesChart(
+                          _selectedExercise, _selectedExercise2, athleteData);
                     } else {
                       print("Error");
                       return Center(
