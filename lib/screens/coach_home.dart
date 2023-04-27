@@ -15,6 +15,8 @@ class CoachHome extends StatefulWidget {
 }
 
 class _CoachHomeState extends State<CoachHome> {
+  List<String> athleteAssigned = [];
+
   Future<void> _deleteAthlete(AthleteModel athlete) async {
     // Delete the program from the database
     BlocProvider.of<AthleteBloc>(context)
@@ -42,8 +44,11 @@ class _CoachHomeState extends State<CoachHome> {
                   alignment: Alignment.topCenter,
                   child: ElevatedButton.icon(
                     onPressed: () {
+                      List<String> _manageList = [];
+                      _manageList.add(widget.userEmail);
+                      _manageList.addAll(athleteAssigned);
                       Navigator.pushNamed(context, '/coach/manage-programs',
-                          arguments: widget.userEmail);
+                          arguments: _manageList);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -183,6 +188,8 @@ class _CoachHomeState extends State<CoachHome> {
                                         );
                                       }
                                       if (programState is ProgramListLoaded) {
+                                        athleteAssigned
+                                            .add(athleteList[index].programId);
                                         final List<String> programsList =
                                             programState.programList.toList();
                                         programsList.insert(0, 'unassigned');

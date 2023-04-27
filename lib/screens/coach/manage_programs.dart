@@ -7,11 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 String _name = 'Program Name';
 
 class ManagePrograms extends StatefulWidget {
-  final String manageProgramsCoachEmail;
+  final List<String> manageProgramsList;
 
   const ManagePrograms({
     Key? key,
-    required this.manageProgramsCoachEmail,
+    required this.manageProgramsList,
   }) : super(key: key);
 
   @override
@@ -170,7 +170,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
                     ElevatedButton(
                       child: Text('CREATE'),
                       onPressed: () {
-                        print(list);
                         if (list.contains(
                             controllerProgramName.text.toLowerCase())) {
                           showSnack('Program already exists');
@@ -182,7 +181,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                             controllerSession.text,
                             controllerExercises.text,
                           ];
-                          _programList.add(widget.manageProgramsCoachEmail);
+                          _programList.add(widget.manageProgramsList[0]);
                           Navigator.of(context).pop();
                           navigateToCreateProgram(_programList);
                         }
@@ -209,14 +208,14 @@ class _ManageProgramsState extends State<ManagePrograms> {
       return;
     } else {
       BlocProvider.of<ProgramListBloc>(context)
-          .add(DeleteProgram(nameProg, widget.manageProgramsCoachEmail));
+          .add(DeleteProgram(nameProg, widget.manageProgramsList[0]));
     }
   }
 
   Future<void> _copyProgram(String nameProg, String newNameProg) async {
     // Copy the program from the database
-    BlocProvider.of<ProgramListBloc>(context).add(
-        CopyProgram(nameProg, newNameProg, widget.manageProgramsCoachEmail));
+    BlocProvider.of<ProgramListBloc>(context)
+        .add(CopyProgram(nameProg, newNameProg, widget.manageProgramsList[0]));
   }
 
   navigateToCreateProgram(List<String> diaCreateProgram) {
@@ -231,6 +230,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.manageProgramsList);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Manage Programs"),
@@ -298,7 +298,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                 builder: (context, state) {
                   context
                       .read<ProgramListBloc>()
-                      .add(LoadProgramList(widget.manageProgramsCoachEmail));
+                      .add(LoadProgramList(widget.manageProgramsList[0]));
                   if (state is ProgramListLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -338,7 +338,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                     onPressed: () {
                                       List<String> programEditList = [
                                         programsList[index],
-                                        widget.manageProgramsCoachEmail,
+                                        widget.manageProgramsList[0],
                                       ];
                                       Navigator.pushNamed(
                                           context, '/coach/edit',
@@ -360,8 +360,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      _deleteProgram(
-                                          programsList[index], ['gpp1']);
+                                      _deleteProgram(programsList[index],
+                                          widget.manageProgramsList);
                                       //TODO this needs to be dynamic
                                     },
                                     icon: Icon(Icons.delete, color: Colors.red),

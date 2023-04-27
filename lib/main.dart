@@ -173,7 +173,8 @@ class AppView extends StatelessWidget {
           case '/coach/manage-programs':
             return MaterialPageRoute(
               builder: (_) => ManagePrograms(
-                  manageProgramsCoachEmail: settings.arguments as String),
+                manageProgramsList: settings.arguments as List<String>,
+              ),
             );
           case '/coach/manage-exercises':
             return MaterialPageRoute(
