@@ -60,6 +60,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
             margin: EdgeInsets.all(5.0),
             child: TextFormField(
               controller: controllerLoad,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'W(KG)',
@@ -88,6 +89,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
             margin: EdgeInsets.all(5.0),
             child: TextFormField(
               controller: controllerSets,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Sets',
@@ -116,6 +118,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
             margin: EdgeInsets.all(1.0),
             child: TextFormField(
               controller: controllerReps,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Reps',
