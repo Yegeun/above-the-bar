@@ -53,7 +53,7 @@ class AthleteDataEntryModel extends Equatable {
   Map<String, Object> toDocument() {
     if (date.toString().isEmpty || bw.toString().isEmpty) {
       return {
-        'email': email, //TODO Probably take this out
+        'email': email,
         'date': DateTime.now(),
         'bw': 73.0,
         'exercise': exercise,
@@ -63,7 +63,7 @@ class AthleteDataEntryModel extends Equatable {
       };
     }
     return {
-      'email': email, //TODO Probably take this out
+      'email': email,
       'date': date,
       'bw': bw,
       'exercise': exercise,

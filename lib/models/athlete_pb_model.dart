@@ -19,8 +19,9 @@ class AthletePersonalBestModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        email, //TODO Probably take this out
+  List<Object?> get props =>
+      [
+        email,
         date,
         bw,
         exercise,
@@ -42,9 +43,13 @@ class AthletePersonalBestModel extends Equatable {
 
   //To write in the firebase
   Map<String, Object> toDocument() {
-    if (date.toString().isEmpty || bw.toString().isEmpty) {
+    if (date
+        .toString()
+        .isEmpty || bw
+        .toString()
+        .isEmpty) {
       return {
-        'email': email, //TODO Probably take this out
+        'email': email,
         'date': DateTime.now(),
         'bw': 73,
         'exercise': exercise,
@@ -53,7 +58,7 @@ class AthletePersonalBestModel extends Equatable {
       };
     }
     return {
-      'email': email, //TODO Probably take this out
+      'email': email,
       'date': date,
       'bw': bw,
       'exercise': exercise,

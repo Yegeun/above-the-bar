@@ -14,7 +14,7 @@ class AthletePersonalBestRepository extends BaseAthletePersonalBestRepository {
     print('Athlete name ${pb.email} ');
     await _firebaseFirestore
         .collection('athletes')
-        .doc(pb.email) //TODO change for the login
+        .doc(pb.email)
         .collection('data')
         .doc(pb.exercise)
         .set(pb.toDocument());

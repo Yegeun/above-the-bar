@@ -15,7 +15,8 @@ class AthleteProgramDataModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         email,
         id,
         startDate,
@@ -35,7 +36,7 @@ class AthleteProgramDataModel extends Equatable {
   //To write in the firebase
   Map<String, Object> toDocument() {
     return {
-      'email': email, //TODO Probably take this out
+      'email': email,
       'startDate': startDate,
       'programName': programName,
     };

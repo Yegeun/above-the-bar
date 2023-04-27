@@ -33,7 +33,6 @@ class HomeScreen extends StatelessWidget {
         if (userState is UserLoaded) {
           print(userState.user);
           if (userState.user.occupation == 'athlete') {
-            //TODO in this home we can push the athleteProfile this would actually be really useful ahahaha
             Navigator.pushNamed(context, '/athlete/home',
                 arguments: userState.user.email);
             return Container(); // Return an empty container so that nothing is displayed before navigating

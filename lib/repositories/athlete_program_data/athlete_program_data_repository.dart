@@ -14,7 +14,7 @@ class AthleteProgramDataRepository extends BaseAthleteProgramDataRepository {
     print('Athlete name ${programData.email} ');
     await _firebaseFirestore
         .collection('athletes')
-        .doc(programData.email) //TODO change for the login
+        .doc(programData.email)
         .collection('program')
         .doc(programData.id)
         .set(programData.toDocument());
