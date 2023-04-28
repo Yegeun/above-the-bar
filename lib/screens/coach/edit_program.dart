@@ -1,4 +1,5 @@
 import 'package:above_the_bar/bloc/blocs.dart';
+import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,6 +77,30 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
   @override
   Widget build(BuildContext context) {
     List<Widget> weekFields = [];
+    for (int i = 0; i < widget.numWeeks; i++) {
+      List<List<List<TextEditingController>>> weekSessions = [];
+      List<List<List<String>>> dropdownValueWeek = [];
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        List<List<TextEditingController>> sessionExercises = [];
+        List<List<String>> dropdownValueSession = [];
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
+          List<TextEditingController> exerciseFields = [];
+          List<String> dropdownValueExercise = [];
+          exerciseFields.add(TextEditingController()); // Exercise
+          exerciseFields.add(TextEditingController()); // Sets
+          exerciseFields.add(TextEditingController()); // Reps
+          exerciseFields.add(TextEditingController()); // Load(KG)
+          exerciseFields.add(TextEditingController()); // Comments
+          sessionExercises.add(exerciseFields);
+          dropdownValueExercise.add('Select Exercise');
+          dropdownValueSession.add(dropdownValueExercise);
+        }
+        weekSessions.add(sessionExercises);
+        dropdownValueWeek.add(dropdownValueSession);
+      }
+      _controllers.add(weekSessions);
+      dropdownValueState.add(dropdownValueWeek);
+    }
     final TransformationController _transformationController =
         TransformationController();
     Future.microtask(() {
@@ -90,14 +115,13 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         }
         if (state is ProgramLoaded) {
           List<ProgramModel> vProgram = state.program;
-          Future.microtask(() {
+          Future.delayed(Duration(milliseconds: 250), () {
             if (dropdownValueState[0][0][0][0] == 'Select Exercise') {
               setState(() {
                 loadProgramDetails(vProgram);
               });
             }
           });
-          Future.microtask(() => loadProgramDetails(vProgram));
           for (int i = 0; i < widget.numWeeks; i++) {
             List<Widget> sessionFields = [];
             for (int j = 0; j < widget.sessionsPerWeek; j++) {
@@ -124,11 +148,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                           SizedBox(width: 3),
                           DropdownButton(
                               value: dropdownValueState[i][j][k][0],
-                              items: [
-                                'Select Exercise',
-                                'Snatch',
-                                'Clean and Jerk'
-                              ].map((String items) {
+                              items: kExercises.map((String items) {
                                 return DropdownMenuItem<String>(
                                   value: items,
                                   child: Text(items),
@@ -388,30 +408,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < widget.numWeeks; i++) {
-      List<List<List<TextEditingController>>> weekSessions = [];
-      List<List<List<String>>> dropdownValueWeek = [];
-      for (int j = 0; j < widget.sessionsPerWeek; j++) {
-        List<List<TextEditingController>> sessionExercises = [];
-        List<List<String>> dropdownValueSession = [];
-        for (int k = 0; k < widget.exercisesPerSession; k++) {
-          List<TextEditingController> exerciseFields = [];
-          List<String> dropdownValueExercise = [];
-          exerciseFields.add(TextEditingController()); // Exercise
-          exerciseFields.add(TextEditingController()); // Sets
-          exerciseFields.add(TextEditingController()); // Reps
-          exerciseFields.add(TextEditingController()); // Load(KG)
-          exerciseFields.add(TextEditingController()); // Comments
-          sessionExercises.add(exerciseFields);
-          dropdownValueExercise.add('Select Exercise');
-          dropdownValueSession.add(dropdownValueExercise);
-        }
-        weekSessions.add(sessionExercises);
-        dropdownValueWeek.add(dropdownValueSession);
-      }
-      _controllers.add(weekSessions);
-      dropdownValueState.add(dropdownValueWeek);
-    }
   }
 
   @override

@@ -35,6 +35,29 @@ class _CoachHomeState extends State<CoachHome> {
       ),
       body: Column(
         children: [
+          SizedBox(
+            height: 10.0,
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Welcome: ${widget.userEmail}',
+                      style: TextStyle(
+                        fontFamily: 'Arial',
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Row(
             children: [
               Expanded(
@@ -65,28 +88,6 @@ class _CoachHomeState extends State<CoachHome> {
                     icon: Icon(Icons.manage_search_rounded), // manage icon
                     label: Text("Manage Programs"), // button text
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutRequested());
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.red,
-                    // set the text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          30.0), // set the rounded corners
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 10.0), // set the button padding
-                  ),
-                  child: Text('Logout'),
                 ),
               ),
             ],
@@ -285,6 +286,27 @@ class _CoachHomeState extends State<CoachHome> {
                   // Add the text next to the icon
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<AuthBloc>().add(AuthLogoutRequested());
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                // set the text color
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(30.0), // set the rounded corners
+                ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0), // set the button padding
+              ),
+              child: Text('Logout'),
             ),
           ),
         ],
