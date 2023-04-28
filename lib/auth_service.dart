@@ -57,6 +57,10 @@ class AuthService {
       throw Exception("Logout failed");
     }
   }
+
+  sendPasswordResetEmail(String text) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: text);
+  }
 }
 
 extension on firebase_auth.User {

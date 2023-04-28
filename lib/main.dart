@@ -139,6 +139,10 @@ class AppView extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => SignupScreen(),
             );
+          case '/forgotten-password':
+            return MaterialPageRoute(
+              builder: (_) => ForgottenPasswordScreen(),
+            );
           case '/athlete/home':
             return MaterialPageRoute(
               builder: (_) =>

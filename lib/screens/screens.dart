@@ -15,3 +15,4 @@ export 'athlete/athlete_program.dart';
 export 'athlete/athlete_graphs.dart';
 export 'login_screen.dart';
 export 'signup_screen.dart';
+export 'forgotten_password_screen.dart';

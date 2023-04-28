@@ -67,6 +67,12 @@ class LoginView extends StatelessWidget {
               _LoginButton(),
               const SizedBox(height: 20),
               _SignupButton(),
+              const SizedBox(height: 20),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forgotten-password');
+                  },
+                  child: Text('Forgot Password?')),
             ],
           ),
         ),
