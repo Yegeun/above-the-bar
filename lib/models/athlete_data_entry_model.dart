@@ -5,21 +5,25 @@ import 'package:equatable/equatable.dart';
 class AthleteDataEntryModel extends Equatable {
   final String email;
   final DateTime date;
+  final DateTime startDate;
   final double bw;
   final String exercise;
   final int sets;
   final int reps;
   final int load;
   final String id;
+  final String block;
 
   const AthleteDataEntryModel({
     required this.email,
     required this.date,
+    required this.startDate,
     required this.bw,
     required this.exercise,
     required this.sets,
     required this.reps,
     required this.load,
+    required this.block,
     this.id = '',
   });
 
@@ -28,11 +32,13 @@ class AthleteDataEntryModel extends Equatable {
         id,
         email,
         date,
+        startDate,
         bw,
         exercise,
         sets,
         reps,
         load,
+        block,
       ];
 
   static AthleteDataEntryModel fromSnapshot(DocumentSnapshot snap) {
@@ -40,11 +46,13 @@ class AthleteDataEntryModel extends Equatable {
       id: snap.id,
       email: snap['email'],
       date: snap['date'].toDate(),
+      startDate: snap['startDate'].toDate(),
       bw: snap['bw'],
       exercise: snap['exercise'],
       sets: snap['sets'],
       reps: snap['reps'],
       load: snap['load'],
+      block: snap['block'],
     );
     return dataEntry;
   }
@@ -55,21 +63,25 @@ class AthleteDataEntryModel extends Equatable {
       return {
         'email': email,
         'date': DateTime.now(),
+        'startDate': startDate,
         'bw': 73.0,
         'exercise': exercise,
         'sets': sets,
         'reps': reps,
         'load': load,
+        'block': block,
       };
     }
     return {
       'email': email,
       'date': date,
+      'startDate': startDate,
       'bw': bw,
       'exercise': exercise,
       'sets': sets,
       'reps': reps,
       'load': load,
+      'block': block,
     };
   }
 

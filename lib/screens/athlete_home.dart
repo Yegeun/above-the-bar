@@ -34,6 +34,7 @@ class _AthleteHomeState extends State<AthleteHome> {
   List<String> data = [];
 
   final List<AthleteInputWidget> _exerciseWidgets = [];
+  bool isWeightClassSet = false;
 
   void _addExerciseWidget() {
     setState(() {
@@ -41,9 +42,9 @@ class _AthleteHomeState extends State<AthleteHome> {
         AthleteInputWidget(
             exerciseNum: _exerciseWidgets.length + 1,
             exerciseName: 'Select Exercise',
-            load: 0,
-            sets: 0,
-            reps: 0),
+            load: 1,
+            sets: 1,
+            reps: 1),
       );
     });
   }
@@ -221,17 +222,18 @@ class _AthleteHomeState extends State<AthleteHome> {
                       athleteState.athleteProfile.programId,
                       athleteState.athleteProfile.coachEmail));
                   athletePersonalBest = athleteState.athleteProfile;
-
+                  if (isWeightClassSet == false || _controller.text == '0.0') {
+                    Future.microtask(() {
+                      setState(() {
+                        _controller.text =
+                            athleteState.athleteProfile.weightClass.toString();
+                      });
+                    });
+                    isWeightClassSet = true;
+                  }
                   return BlocBuilder<ProgramBloc, ProgramState>(
                       builder: (context, programState) {
                     if (programState is ProgramLoaded) {
-                      Future.microtask(() {
-                        setState(() {
-                          _controller.text = athleteState
-                              .athleteProfile.weightClass
-                              .toString();
-                        });
-                      });
                       return Column(
                         children: [
                           Column(
@@ -468,6 +470,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                   });
                                 },
                                 icon: Icon(Icons.refresh),
+                                tooltip: 'Load Exercise Input',
                               ),
                             ],
                           )
@@ -570,12 +573,15 @@ class _AthleteHomeState extends State<AthleteHome> {
                                       AthleteDataEntryModel(
                                         email: widget.userEmail,
                                         date: DateTime.parse(text),
+                                        startDate:
+                                            athletePersonalBest.startDate,
                                         bw: double.parse(_controller.text),
                                         exercise:
                                             _exerciseWidgets[i].exerciseName,
                                         sets: _exerciseWidgets[i].sets,
                                         reps: _exerciseWidgets[i].reps,
                                         load: _exerciseWidgets[i].load,
+                                        block: athletePersonalBest.programId,
                                       ),
                                     ),
                                   );

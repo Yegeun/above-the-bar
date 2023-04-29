@@ -113,7 +113,7 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: Text(
                                       DateFormat('yyyy-MM-dd')
                                           .format(athleteData[index].date),
@@ -130,7 +130,7 @@ class _AthleteHistoryState extends State<AthleteHistory> {
                                   Expanded(
                                     flex: 2,
                                     child: Text(
-                                      athleteData[index].load.toString(),
+                                      '${athleteData[index].load.toString()} kg',
                                       style: TextStyle(
                                         color: kLoadColour,
                                       ), // change load color to teal

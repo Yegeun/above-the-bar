@@ -206,22 +206,34 @@ class _AddAthleteState extends State<AddAthlete> {
                 ],
               ),
               // BlocBuilder<AthleteData>()
-              Container(
-                width: 200,
-                margin: EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () async {
-                    date = (await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2024)))!;
-                    setState(() {
-                      text = DateFormat('yyyy-MM-dd').format(date);
-                    });
-                  },
-                  child: Text(text),
-                ),
+              Row(
+                children: [
+                  Container(
+                    width: 150,
+                    child: Text('Start Date of Program',
+                        style: TextStyle(fontSize: 20)),
+                  ),
+                  Container(
+                    width: 200,
+                    margin: EdgeInsets.all(8.0),
+                    child: Tooltip(
+                      message: 'Select Start Date of Program',
+                      child: TextButton(
+                        onPressed: () async {
+                          date = (await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2024)))!;
+                          setState(() {
+                            text = DateFormat('yyyy-MM-dd').format(date);
+                          });
+                        },
+                        child: Text(text),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 10.0),
               BlocBuilder<AthleteProfileBloc, AthleteProfileState>(
