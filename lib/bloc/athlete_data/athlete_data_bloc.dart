@@ -26,7 +26,6 @@ class AthleteDataBloc extends Bloc<AthleteDataEvent, AthleteDataState> {
   void _onLoadAthleteData(
       LoadAthleteData event, Emitter<AthleteDataState> emit) {
     _athleteDataSubscription?.cancel();
-    //TODO - change this to get athlete data for a specific athlete
     _athleteDataSubscription =
         _athleteDataRepository.getDataEntries(event.email).listen(
               (entries) => add(

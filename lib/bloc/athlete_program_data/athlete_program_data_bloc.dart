@@ -7,6 +7,7 @@ import 'package:above_the_bar/repositories/athlete_program_data/athlete_program_
 import 'package:flutter/foundation.dart';
 
 part 'athlete_program_data_event.dart';
+
 part 'athlete_program_data_state.dart';
 
 class AthleteProgramDataBloc
@@ -26,7 +27,6 @@ class AthleteProgramDataBloc
   void _onLoadAthleteProgramData(
       LoadAthleteProgramData event, Emitter<AthleteProgramDataState> emit) {
     _athleteProgramDataSubscription?.cancel();
-    //TODO - change this to get athlete data for a specific athlete
     _athleteProgramDataSubscription = _athleteProgramDataRepository
         .getAthleteProgramData('yegeunator@gmail.com')
         .listen(

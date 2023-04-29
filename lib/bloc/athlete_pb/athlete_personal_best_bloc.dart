@@ -7,6 +7,7 @@ import 'package:above_the_bar/repositories/athlete_pb/athlete_pb_repository.dart
 import 'package:flutter/foundation.dart';
 
 part 'athlete_personal_best_event.dart';
+
 part 'athlete_personal_best_state.dart';
 
 class AthletePersonalBestBloc
@@ -26,7 +27,6 @@ class AthletePersonalBestBloc
   void _onLoadAthletePersonalBest(
       LoadAthletePersonalBest event, Emitter<AthletePersonalBestState> emit) {
     _athletePersonalBestSubscription?.cancel();
-    //TODO - change this to get athlete data for a specific athlete
     _athletePersonalBestSubscription = _athletePersonalBestRepository
         .getAthletePersonalBest('yegeunator@gmail.com')
         .listen(

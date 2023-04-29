@@ -47,7 +47,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
               onChanged: (value) {},
               controller: controllerName,
               decoration: InputDecoration(hintText: "Name"), // preload
-              //TODO check if name already exists
             ),
             actions: <Widget>[
               TextButton(
@@ -366,7 +365,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                     onPressed: () {
                                       _deleteProgram(programsList[index],
                                           widget.manageProgramsList);
-                                      //TODO this needs to be dynamic
                                     },
                                     icon: Icon(Icons.delete, color: Colors.red),
                                     tooltip: 'Delete Program',

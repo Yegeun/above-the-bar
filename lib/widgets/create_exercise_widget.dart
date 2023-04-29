@@ -1,6 +1,5 @@
 import 'package:above_the_bar/bloc/blocs.dart';
 import 'package:above_the_bar/models/exercise_model.dart';
-import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,7 +71,6 @@ class _CreateExerciseWidgetState extends State<CreateExerciseWidget> {
     return Row(
       children: [
         BlocBuilder<ExerciseBloc, ExerciseState>(
-          //TODO this shoudl adpat for uassign and assign
           builder: (context, state) {
             if (state is ExerciseLoading) {
               return Center(
