@@ -535,6 +535,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             IconButton(
+                tooltip: 'Copy Week x to Week y',
                 onPressed: () {
                   displayCopyDialog(context);
                 },

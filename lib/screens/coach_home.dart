@@ -123,49 +123,52 @@ class _CoachHomeState extends State<CoachHome> {
                           itemCount: athleteList.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: TextButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.grey[50]!),
-                                  overlayColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      side: BorderSide(
-                                        color: Colors.blue[700]!,
-                                        // Border color
-                                        width: 2.0, // Border width
+                              title: Tooltip(
+                                message: 'Click to view athlete overview',
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.grey[50]!),
+                                    overlayColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        side: BorderSide(
+                                          color: Colors.blue[700]!,
+                                          // Border color
+                                          width: 2.0, // Border width
+                                        ),
                                       ),
                                     ),
+                                    elevation: MaterialStateProperty
+                                        .resolveWith<double>((states) {
+                                      if (states
+                                          .contains(MaterialState.hovered)) {
+                                        return 4; // Elevation when hovering
+                                      } else {
+                                        return 0; // Default elevation
+                                      }
+                                    }),
                                   ),
-                                  elevation:
-                                      MaterialStateProperty.resolveWith<double>(
-                                          (states) {
-                                    if (states
-                                        .contains(MaterialState.hovered)) {
-                                      return 4; // Elevation when hovering
-                                    } else {
-                                      return 0; // Default elevation
-                                    }
-                                  }),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/coach/athlete-overview',
-                                    arguments: athleteList[index],
-                                  );
-                                },
-                                child: Text(
-                                  '${athleteList[index].name}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.blue, // Text color
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/coach/athlete-overview',
+                                      arguments: athleteList[index],
+                                    );
+                                  },
+                                  child: Text(
+                                    '${athleteList[index].name}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                      color: Colors.blue, // Text color
+                                    ),
                                   ),
                                 ),
                               ),
@@ -207,42 +210,49 @@ class _CoachHomeState extends State<CoachHome> {
                                               dropdownBloc.selectedItemStream,
                                           initialData: selectedItem,
                                           builder: (context, snapshot) {
-                                            return DropdownButton<String>(
-                                              value: snapshot.data,
-                                              onChanged: (item) {
-                                                context.read<AthleteBloc>().add(
-                                                    CreateAthlete(
-                                                        athleteList[index]
-                                                            .copyWith(
-                                                                programId:
-                                                                    item!),
-                                                        widget.userEmail));
-                                                context
-                                                    .read<AthleteProfileBloc>()
-                                                    .add(
-                                                      UpdateCreateAthleteProfile(
-                                                        athleteList[index]
-                                                            .email,
-                                                        item,
-                                                        _startDate,
-                                                        1,
-                                                        1,
-                                                      ),
-                                                    );
-                                                setState(() {
-                                                  selectedItem = item;
-                                                });
-                                                dropdownBloc
-                                                    .setSelectedItem(item);
-                                              },
-                                              items: dropdownBloc.items.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (item) {
-                                                return DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(item),
-                                                );
-                                              }).toList(),
+                                            return Tooltip(
+                                              message:
+                                                  'Click to change program',
+                                              child: DropdownButton<String>(
+                                                value: snapshot.data,
+                                                onChanged: (item) {
+                                                  context
+                                                      .read<AthleteBloc>()
+                                                      .add(CreateAthlete(
+                                                          athleteList[index]
+                                                              .copyWith(
+                                                                  programId:
+                                                                      item!),
+                                                          widget.userEmail));
+                                                  context
+                                                      .read<
+                                                          AthleteProfileBloc>()
+                                                      .add(
+                                                        UpdateCreateAthleteProfile(
+                                                          athleteList[index]
+                                                              .email,
+                                                          item,
+                                                          _startDate,
+                                                          1,
+                                                          1,
+                                                        ),
+                                                      );
+                                                  setState(() {
+                                                    selectedItem = item;
+                                                  });
+                                                  dropdownBloc
+                                                      .setSelectedItem(item);
+                                                },
+                                                items: dropdownBloc.items.map<
+                                                    DropdownMenuItem<
+                                                        String>>((item) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: item,
+                                                    child: Text(item),
+                                                  );
+                                                }).toList(),
+                                              ),
                                             );
                                           },
                                         );
