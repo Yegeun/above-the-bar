@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:above_the_bar/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:above_the_bar/models/user_model.dart';
 import 'package:above_the_bar/repositories/user/user_repository.dart';
 import 'package:flutter/foundation.dart';
 
