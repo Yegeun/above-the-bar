@@ -29,14 +29,11 @@ jobs:
           flutter-version: "3.7.9"
           channel: 'stable'
       - name: Install dependencies
-          id: dependencies
           run: flutter pub get
           continue-on-error: true
       - name: Build app
-          id: build
           run: flutter build
           continue-on-error: true
       - name: Run tests
-          id: tests
           run: flutter test
           continue-on-error: true
