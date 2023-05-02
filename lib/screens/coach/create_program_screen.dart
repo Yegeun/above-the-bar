@@ -378,6 +378,10 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
       );
     }
 
+    List<String> newExerciseList = [];
+    Future.microtask(() =>
+        context.read<ExerciseBloc>().add(LoadExercises(widget.weekCoachEmail)));
+
     List<Widget> weekFields = [];
     final TransformationController transformationController =
         TransformationController();
