@@ -146,22 +146,25 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                           SizedBox(width: 5),
                           Text('EX ${k + 1}'),
                           SizedBox(width: 3),
-                          DropdownButton(
-                              value: dropdownValueState[i][j][k][0],
-                              items: kExercises.map((String items) {
-                                return DropdownMenuItem<String>(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _controllers[i][j][k][0].text =
-                                      newValue.toString();
-                                  dropdownValueState[i][j][k][0] =
-                                      newValue.toString();
-                                });
-                              }),
+                          DropdownButton<String>(
+                            value: dropdownValueState[i][j][k][0],
+                            onChanged: (item) {
+                              setState(() {
+                                dropdownValueState[i][j][k][0] = item!;
+                                _controllers[i][j][k][0].text = item;
+                              });
+                              DropdownBloc<String>(kExercises).setSelectedItem(
+                                  _controllers[i][j][k][0].text);
+                            },
+                            items: DropdownBloc<String>(kExercises)
+                                .items
+                                .map<DropdownMenuItem<String>>((item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
+                          ),
                           SizedBox(width: 10),
                           Container(
                             width: 100,
@@ -246,7 +249,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                             IconButton(
                               icon: Icon(Icons.content_copy),
                               onPressed: () {
-                                _copyWeek(i);
+                                // _copyWeek(i);
                               },
                             ),
                         ],
@@ -336,34 +339,11 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
     }
   }
 
-  void _copyWeek(int weekIndex) {
-    if (weekIndex > 0) {
-      for (int j = 0; j < widget.sessionsPerWeek; j++) {
-        for (int k = 0; k < widget.exercisesPerSession; k++) {
-          setState(() {
-            dropdownValueState[weekIndex][j][k][0] =
-                dropdownValueState[weekIndex - 1][j][k][0];
-          });
-          _controllers[weekIndex][j][k][0].text =
-              _controllers[weekIndex - 1][j][k][0].text;
-          _controllers[weekIndex][j][k][1].text =
-              _controllers[weekIndex - 1][j][k][1].text;
-          _controllers[weekIndex][j][k][2].text =
-              _controllers[weekIndex - 1][j][k][2].text;
-          _controllers[weekIndex][j][k][3].text =
-              _controllers[weekIndex - 1][j][k][3].text;
-          _controllers[weekIndex][j][k][4].text =
-              _controllers[weekIndex - 1][j][k][4].text;
-        }
-      }
-    }
-  }
-
   List<ProgramModel> handleSubmit(String handleSubmitProgramName) {
     _programModelList.clear();
-    for (int i = 0; i < _controllers.length; i++) {
-      for (int j = 0; j < _controllers[i].length; j++) {
-        for (int k = 0; k < _controllers[i][j].length; k++) {
+    for (int i = 0; i < widget.numWeeks; i++) {
+      for (int j = 0; j < widget.sessionsPerWeek; j++) {
+        for (int k = 0; k < widget.exercisesPerSession; k++) {
           String exerciseName = _controllers[i][j][k][0].text;
           String sets = _controllers[i][j][k][1].text;
           String reps = _controllers[i][j][k][2].text;
@@ -393,7 +373,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         }
       }
     }
-    print('ProgramModelList: $_programModelList');
     for (int i = 0; i < _programModelList.length; i++) {
       context.read<ProgramBloc>().add(
             CreateProgram(
