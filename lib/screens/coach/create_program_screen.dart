@@ -407,27 +407,25 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                     //Where the data is being written
                     Text('EX ${k + 1}'),
                     SizedBox(width: 3),
-                    DropdownButton(
-                        value: dropdownValueState[i][j][k][0],
-                        items: kExercises.map((String items) {
-                          return DropdownMenuItem<String>(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _controllers[i][j][k][0].text = newValue.toString();
-                            dropdownValueState[i][j][k][0] =
-                                newValue.toString();
-                            if (newValue.toString() == 'Empty') {
-                              _controllers[i][j][k][1].text = '0';
-                              _controllers[i][j][k][2].text = '0';
-                              _controllers[i][j][k][3].text = '0';
-                              _controllers[i][j][k][4].text = '0';
-                            }
-                          });
-                        }),
+                    DropdownButton<String>(
+                      value: dropdownValueState[i][j][k][0],
+                      onChanged: (item) {
+                        setState(() {
+                          dropdownValueState[i][j][k][0] = item!;
+                          _controllers[i][j][k][0].text = item;
+                        });
+                        DropdownBloc<String>(kExercises)
+                            .setSelectedItem(dropdownValueState[i][j][k][0]);
+                      },
+                      items: DropdownBloc<String>(kExercises)
+                          .items
+                          .map<DropdownMenuItem<String>>((item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                    ),
                     SizedBox(width: 10),
                     Container(
                       width: 100,
