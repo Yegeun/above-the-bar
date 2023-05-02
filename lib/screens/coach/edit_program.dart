@@ -21,9 +21,10 @@ class EditProgram extends StatefulWidget {
 class _EditProgramState extends State<EditProgram> {
   @override
   Widget build(BuildContext context) {
-    context.read<ProgramDetailsBloc>().add(LoadProgramDetails(
-        widget.editProgramProgramName[1], widget.editProgramProgramName[0]));
-
+    context.read<ProgramBloc>().add(
+          LoadProgram(widget.editProgramProgramName[1],
+              widget.editProgramProgramName[0]),
+        );
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Program"),
@@ -115,7 +116,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         }
         if (state is ProgramLoaded) {
           List<ProgramModel> vProgram = state.program;
-          Future.delayed(Duration(milliseconds: 250), () {
+          Future.delayed(Duration(milliseconds: 500), () {
             if (dropdownValueState[0][0][0][0] == 'Select Exercise') {
               setState(() {
                 loadProgramDetails(vProgram);

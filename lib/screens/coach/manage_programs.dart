@@ -340,10 +340,6 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                         programsList[index],
                                         widget.manageProgramsList[0],
                                       ];
-                                      context.read<ProgramDetailsBloc>().add(
-                                          LoadProgramDetails(
-                                              programsList[index],
-                                              widget.manageProgramsList[0]));
                                       Navigator.pushNamed(
                                           context, '/coach/edit',
                                           arguments: programEditList);
