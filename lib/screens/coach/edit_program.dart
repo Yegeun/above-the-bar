@@ -25,6 +25,9 @@ class _EditProgramState extends State<EditProgram> {
           LoadProgram(widget.editProgramProgramName[1],
               widget.editProgramProgramName[0]),
         );
+
+    context.read<ProgramDetailsBloc>().add(LoadProgramDetails(
+        widget.editProgramProgramName[1], widget.editProgramProgramName[0]));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Program"),
@@ -77,6 +80,312 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> displayCopyDialog(BuildContext context) async {
+      final TextEditingController controllerWeek = TextEditingController();
+      final TextEditingController controllerCopyWeek = TextEditingController();
+      final TextEditingController controllerSetsPM = TextEditingController();
+      final TextEditingController controllerSets = TextEditingController();
+      final TextEditingController controllerRepsPM = TextEditingController();
+      final TextEditingController controllerReps = TextEditingController();
+      final TextEditingController controllerIntensityPM =
+          TextEditingController();
+      final TextEditingController controllerIntensity = TextEditingController();
+      void updateControllerText(
+          String pm,
+          TextEditingController currentController,
+          TextEditingController setsController,
+          TextEditingController copyController) {
+        if (pm == '+') {
+          copyController.text = (int.parse(currentController.text) +
+                  int.parse(setsController.text))
+              .toString();
+        } else if (pm == '-') {
+          final int current = int.parse(currentController.text);
+          final int sets = int.parse(setsController.text);
+          final int result = current - sets;
+          copyController.text = (result < 0) ? '0' : result.toString();
+        } else {
+          copyController.text = currentController.text;
+        }
+      }
+
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'COPY Week',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  DropdownButtonFormField<int>(
+                    value: controllerWeek.text.isEmpty
+                        ? null
+                        : int.parse(controllerWeek.text),
+                    decoration: InputDecoration(
+                      hintText: 'Copy',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: List.generate(widget.numWeeks, (index) => index + 1)
+                        .map((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text('$value'),
+                      );
+                    }).toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        controllerWeek.text = value.toString();
+                      });
+                    },
+                  ),
+                  DropdownButtonFormField<int>(
+                    value: controllerCopyWeek.text.isEmpty
+                        ? null
+                        : int.parse(controllerCopyWeek.text),
+                    decoration: InputDecoration(
+                      hintText: 'Copy To Week',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: List.generate(widget.numWeeks, (index) => index + 1)
+                        .map((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text('$value'),
+                      );
+                    }).toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        controllerCopyWeek.text = value.toString();
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10.0),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 100,
+                        child: Text(
+                          'Sets',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Container(
+                        width: 122.0,
+                        padding: EdgeInsets.only(left: 10, right: 20.0),
+                        child: DropdownButtonFormField<String>(
+                          value: controllerSetsPM.text.isEmpty
+                              ? null
+                              : controllerSetsPM.text,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          hint: Text('+ or -'),
+                          items: ['+', '-'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              controllerSetsPM.text = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        child: TextField(
+                          controller: controllerSets,
+                          decoration: InputDecoration(
+                            hintText: 'S',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 100,
+                        child: Text(
+                          'Reps',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Container(
+                        width: 122.0,
+                        padding: EdgeInsets.only(left: 10, right: 20.0),
+                        child: DropdownButtonFormField<String>(
+                          value: controllerRepsPM.text.isEmpty
+                              ? null
+                              : controllerRepsPM.text,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          hint: Text('+ or -'),
+                          items: ['+', '-'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              controllerRepsPM.text = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        child: TextField(
+                          controller: controllerReps,
+                          decoration: InputDecoration(
+                            hintText: 'R',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 100,
+                        child: Text(
+                          'Intensity',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Container(
+                        width: 122.0,
+                        padding: EdgeInsets.only(left: 10, right: 20.0),
+                        child: DropdownButtonFormField<String>(
+                          value: controllerIntensityPM.text.isEmpty
+                              ? null
+                              : controllerIntensityPM.text,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          hint: Text('+ or -'),
+                          items: ['+', '-'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              controllerIntensityPM.text = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        child: TextField(
+                          controller: controllerIntensity,
+                          decoration: InputDecoration(
+                            hintText: '%',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      SizedBox(width: 10.0),
+                      ElevatedButton(
+                        child: Text('COPY'),
+                        onPressed: () {
+                          int copyNum = int.parse(controllerCopyWeek.text) - 1;
+                          int num = int.parse(controllerWeek.text) - 1;
+                          print('copyNum: $copyNum num: $num');
+                          for (int j = 0; j < widget.sessionsPerWeek; j++) {
+                            for (int k = 0;
+                                k < widget.exercisesPerSession;
+                                k++) {
+                              setState(() {
+                                dropdownValueState[copyNum][j][k][0] =
+                                    dropdownValueState[num][j][k][0];
+                              });
+                              _controllers[copyNum][j][k][0].text =
+                                  _controllers[num][j][k][0].text;
+                              updateControllerText(
+                                  controllerSetsPM.text,
+                                  _controllers[num][j][k][1],
+                                  controllerSets,
+                                  _controllers[copyNum][j][k][1]);
+                              updateControllerText(
+                                  controllerRepsPM.text,
+                                  _controllers[num][j][k][2],
+                                  controllerReps,
+                                  _controllers[copyNum][j][k][2]);
+                              updateControllerText(
+                                  controllerIntensityPM.text,
+                                  _controllers[num][j][k][3],
+                                  controllerIntensity,
+                                  _controllers[copyNum][j][k][3]);
+                              _controllers[copyNum][j][k][4].text =
+                                  _controllers[num][j][k][4].text;
+                            }
+                          }
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     List<Widget> weekFields = [];
     for (int i = 0; i < widget.numWeeks; i++) {
       List<List<List<TextEditingController>>> weekSessions = [];
@@ -242,19 +551,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Week ${i + 1}'),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          if (i == 0) SizedBox(height: 35),
-                          if (i > 0)
-                            IconButton(
-                              icon: Icon(Icons.content_copy),
-                              onPressed: () {
-                                // _copyWeek(i);
-                              },
-                            ),
-                        ],
-                      ),
                     ],
                   ),
                   Column(
@@ -267,15 +563,41 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
 
           return Column(
             children: [
-              Expanded(
-                child: InteractiveViewer(
-                  minScale: 0.001,
-                  maxScale: 0.5,
-                  constrained: false,
-                  transformationController: _transformationController,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: weekFields,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Name : ${widget.inputProgramName}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                  IconButton(
+                      tooltip: 'Copy Week x to Week y',
+                      onPressed: () {
+                        displayCopyDialog(context);
+                      },
+                      icon: Icon(Icons.copy)),
+                  Tooltip(
+                    message:
+                        'If you don\'t have an exercise, select "Empty" and the exercise will be skipped',
+                    child: IconButton(
+                      icon: Icon(Icons.help_outline),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InteractiveViewer(
+                    minScale: 0.001,
+                    maxScale: 0.5,
+                    constrained: false,
+                    transformationController: _transformationController,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: weekFields,
+                    ),
                   ),
                 ),
               ),
