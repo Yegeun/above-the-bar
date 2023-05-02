@@ -502,18 +502,6 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               children: [
                 Text('Week ${i + 1}', style: TextStyle(fontSize: 19)),
                 SizedBox(height: 10),
-                // Row(
-                //   children: [
-                //     if (i == 0) SizedBox(height: 35),
-                //     if (i > 0)
-                //       IconButton(
-                //         icon: Icon(Icons.content_copy),
-                //         onPressed: () {
-                //           _copyWeek(i);
-                //         },
-                //       ),
-                //   ],
-                // ),
               ],
             ),
             Column(
