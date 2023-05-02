@@ -7,16 +7,24 @@ abstract class ExerciseEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadExercises extends ExerciseEvent {}
+class LoadExercises extends ExerciseEvent {
+  final String email;
+
+  const LoadExercises(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
 
 class UpdateExercises extends ExerciseEvent {
   final List<Exercise> exercises;
+  final String email;
 
-  const UpdateExercises(this.exercises);
+  const UpdateExercises(this.exercises, this.email);
 
   @override
-  List<Object> get props => [exercises];
+  List<Object> get props => [exercises, email];
 
-  // @override
-  // String toString() => 'UpdateExercise { exercise: $exercise }';
+// @override
+// String toString() => 'UpdateExercise { exercise: $exercise }';
 }

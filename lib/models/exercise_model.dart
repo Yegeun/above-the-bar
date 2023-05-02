@@ -19,4 +19,11 @@ class Exercise extends Equatable {
     );
     return exercise;
   }
+
+  //To write in the firebase
+  Map<String, Object> toDocument() {
+    return {
+      'name': name,
+    };
+  }
 }

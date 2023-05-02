@@ -12,22 +12,34 @@ class LoadNewExercises extends CreateNewExerciseEvent {}
 
 class UpdateNewExercises extends CreateNewExerciseEvent {
   //write
-  final SingleExercise singleExercise;
+  final Exercise singleExercise;
+  final String email;
 
-  const UpdateNewExercises(this.singleExercise);
+  const UpdateNewExercises(this.singleExercise, this.email);
 
   @override
-  List<Object> get props => [SingleExercise(newName: singleExercise.newName)];
+  List<Object> get props => [Exercise(name: singleExercise.name), email];
 
-  // @override
-  // String toString() => 'UpdateExercise { exercise: $exercise }';
+// @override
+// String toString() => 'UpdateExercise { exercise: $exercise }';
 }
 
 class CreateNewExercise extends CreateNewExerciseEvent {
-  final SingleExercise singleExercise;
+  final Exercise singleExercise;
+  final String email;
 
-  const CreateNewExercise(this.singleExercise);
+  const CreateNewExercise(this.singleExercise, this.email);
 
   @override
-  List<Object> get props => [singleExercise.newName];
+  List<Object> get props => [singleExercise.name, email];
+}
+
+class DeleteExercise extends CreateNewExerciseEvent {
+  final Exercise singleExercise;
+  final String email;
+
+  const DeleteExercise(this.singleExercise, this.email);
+
+  @override
+  List<Object> get props => [singleExercise.name, email];
 }

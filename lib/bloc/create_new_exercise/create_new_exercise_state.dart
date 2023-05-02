@@ -10,11 +10,23 @@ abstract class CreateNewExerciseState extends Equatable {
 class CreateNewExerciseLoading extends CreateNewExerciseState {}
 
 class CreateNewExerciseLoaded extends CreateNewExerciseState {
-  final SingleExercise singleExercise;
+  final Exercise singleExercise;
+  final String email;
 
   const CreateNewExerciseLoaded(
-      {this.singleExercise = const SingleExercise(newName: 'empty')});
+      {this.singleExercise = const Exercise(name: 'empty'),
+      this.email = 'exercise@gmail.com'});
 
   @override
-  List<Object> get props => [singleExercise];
+  List<Object> get props => [singleExercise, email];
+}
+
+class CreateNewExerciseDeleting extends CreateNewExerciseState {}
+
+class CreateNewExerciseDeleted extends CreateNewExerciseState {
+  final Exercise singleExercise;
+  final String email;
+
+  const CreateNewExerciseDeleted(
+      {this.singleExercise = const Exercise(name: 'empty'), this.email = ''});
 }

@@ -22,11 +22,12 @@ class ExerciseBloc extends Bloc<ExerciseEvent, ExerciseState> {
 
   void _onLoadExercises(LoadExercises event, Emitter<ExerciseState> emit) {
     _exerciseSubscription?.cancel();
-    _exerciseSubscription = _exerciseRepository.getAllExercises().listen(
-          (exercise) => add(
-            UpdateExercises(exercise),
-          ),
-        );
+    _exerciseSubscription =
+        _exerciseRepository.getAllExercises(event.email).listen(
+              (exercise) => add(
+                UpdateExercises(exercise, event.email),
+              ),
+            );
   }
 
   void _onUpdateExercises(

@@ -1,6 +1,6 @@
-import 'package:above_the_bar/models/single_exercise_model.dart';
 import 'package:above_the_bar/repositories/create_new_exercise/base_create_new_exercise_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:above_the_bar/models/exercise_model.dart';
 
 class CreateNewExerciseRepository extends BaseCreateNewExerciseRepository {
   final FirebaseFirestore _firebaseFirestore;
@@ -10,11 +10,22 @@ class CreateNewExerciseRepository extends BaseCreateNewExerciseRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createNewExercise(SingleExercise name) async {
-    print('It has got here ${name.newName}');
+  Future<void> createNewExercise(Exercise name, String email) async {
     await _firebaseFirestore
+        .collection('coaches')
+        .doc(email)
         .collection('exercises')
-        .doc(name.newName)
+        .doc(name.name)
         .set(name.toDocument());
+  }
+
+  @override
+  Future<void> deleteExercise(Exercise name, String email) async {
+    await _firebaseFirestore
+        .collection('coaches')
+        .doc(email)
+        .collection('exercises')
+        .doc(name.name)
+        .delete();
   }
 }

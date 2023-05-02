@@ -10,10 +10,11 @@ class ExerciseRepository extends BaseExerciseRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Stream<List<Exercise>> getAllExercises() {
+  Stream<List<Exercise>> getAllExercises(String email) {
     return _firebaseFirestore
+        .collection('coaches')
+        .doc(email)
         .collection('exercises')
-        //.doc //If you want to access a specific document
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Exercise.fromSnapshot(doc)).toList();

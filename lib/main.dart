@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => ExerciseBloc(
                 exerciseRepository: ExerciseRepository(),
-              )..add(LoadExercises()),
+              )..add(LoadExercises('exerciselist@yegeun.com')),
             ),
             BlocProvider(
               create: (_) => CreateNewExerciseBloc(
@@ -207,7 +207,9 @@ class AppView extends StatelessWidget {
             );
           case '/coach/create-exercise':
             return MaterialPageRoute(
-              builder: (_) => CreateExercise(),
+              builder: (_) => CreateExercise(
+                coachEmail: settings.arguments as String,
+              ),
             );
           case '/coach/add-athlete':
             return MaterialPageRoute(

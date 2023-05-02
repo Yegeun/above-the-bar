@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:above_the_bar/bloc/blocs.dart';
 
 class CreateExercise extends StatefulWidget {
+  final String coachEmail;
+
+  const CreateExercise({super.key, required this.coachEmail});
+
   @override
   State<CreateExercise> createState() => _CreateExerciseState();
 }
@@ -11,8 +15,13 @@ class CreateExercise extends StatefulWidget {
 class _CreateExerciseState extends State<CreateExercise> {
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() =>
+        context.read<ExerciseBloc>().add(LoadExercises(widget.coachEmail)));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Exercise"),
@@ -43,8 +52,7 @@ class _CreateExerciseState extends State<CreateExercise> {
                     }
                     if (state is ExerciseLoaded) {
                       final List<Exercise> exercisetemp =
-                          state.exercises.toList();
-                      print(exercisetemp.length);
+                      state.exercises.toList();
                       return Flexible(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -52,8 +60,19 @@ class _CreateExerciseState extends State<CreateExercise> {
                           itemCount: exercisetemp.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text('Name: ${exercisetemp[index].name}'),
-                            );
+                                title:
+                                Text('Name: ${exercisetemp[index].name}'),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    context.read<CreateNewExerciseBloc>().add(
+                                      DeleteExercise(
+                                        exercisetemp[index],
+                                        widget.coachEmail,
+                                      ),
+                                    );
+                                  },
+                                ));
                           },
                         ),
                       );
@@ -101,18 +120,12 @@ class _CreateExerciseState extends State<CreateExercise> {
                           padding: EdgeInsets.only(top: 10.0),
                           alignment: Alignment.center,
                           child: TextFormField(
+                            controller: nameController,
                             decoration: InputDecoration(
                               icon: Icon(Icons.add),
                               hintText: 'What is the exercise called',
                               labelText: 'Name',
                             ),
-                            onChanged: (value) {
-                              context.read<CreateNewExerciseBloc>().add(
-                                    UpdateNewExercises(
-                                      SingleExercise(newName: value),
-                                    ),
-                                  );
-                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some text';
@@ -144,14 +157,23 @@ class _CreateExerciseState extends State<CreateExercise> {
                   if (state is CreateNewExerciseLoaded) {
                     return ElevatedButton(
                       onPressed: () {
-                        context.read<CreateNewExerciseBloc>().add(
-                              CreateNewExercise(
-                                SingleExercise(
-                                  newName: state.singleExercise.newName,
-                                ),
-                              ),
-                            );
-                        Navigator.pop(context);
+                        nameController.text
+                            .trim()
+                            .isNotEmpty
+                            ? context.read<CreateNewExerciseBloc>().add(
+                          CreateNewExercise(
+                            Exercise(
+                              name: nameController.text,
+                            ),
+                            widget.coachEmail,
+                          ),
+                        )
+                            : SnackBar(content: Text('Please enter a name'));
+                        //refresh
+                        Future.microtask(() =>
+                            context
+                                .read<ExerciseBloc>()
+                                .add(LoadExercises(widget.coachEmail)));
                       },
                       child: Text('Submit'),
                     );

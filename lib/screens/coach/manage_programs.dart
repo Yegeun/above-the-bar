@@ -275,7 +275,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/coach/create-exercise');
+                      Navigator.pushNamed(context, '/coach/create-exercise',
+                          arguments: widget.manageProgramsList[0]);
                     },
                     child: Text(
                       'Create Exercise',

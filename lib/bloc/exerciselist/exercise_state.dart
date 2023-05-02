@@ -11,14 +11,10 @@ class ExerciseLoading extends ExerciseState {}
 
 class ExerciseLoaded extends ExerciseState {
   final List<Exercise> exercises;
+  final String email;
 
-  const ExerciseLoaded({this.exercises = const <Exercise>[]});
+  const ExerciseLoaded({this.exercises = const <Exercise>[], this.email = ''});
 
   @override
   List<Object> get props => [exercises];
 }
-
-// class ExerciseInitial extends ExerciseState {
-//   @override
-//   List<Object> get props => [];
-// }
