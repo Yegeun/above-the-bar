@@ -35,17 +35,19 @@ class CreateAthleteProfile extends AthleteProfileEvent {
 }
 
 class UpdateCreateAthleteProfile extends AthleteProfileEvent {
-  const UpdateCreateAthleteProfile(
-      this.email, this.programId, this.startDate, this.week, this.session);
+  const UpdateCreateAthleteProfile(this.email, this.coachEmail, this.programId,
+      this.startDate, this.week, this.session);
 
   final String email;
+  final String coachEmail;
   final String programId;
   final DateTime startDate;
   final int week;
   final int session;
 
   @override
-  List<Object> get props => [email, programId, startDate, week, session];
+  List<Object> get props =>
+      [email, coachEmail, programId, startDate, week, session];
 }
 
 class UpdatePersonalBestProfile extends AthleteProfileEvent {
@@ -60,8 +62,7 @@ class UpdatePersonalBestProfile extends AthleteProfileEvent {
 }
 
 class UpdateWeightsOnProfile extends AthleteProfileEvent {
-  const UpdateWeightsOnProfile(
-      this.email,
+  const UpdateWeightsOnProfile(this.email,
       this.weightClass,
       this.snatch,
       this.cleanAndJerk,
@@ -112,7 +113,8 @@ class UpdateWeightsOnProfile extends AthleteProfileEvent {
   final int sideHold;
 
   @override
-  List<Object> get props => [
+  List<Object> get props =>
+      [
         email,
         weightClass,
         snatch,

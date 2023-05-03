@@ -161,6 +161,7 @@ class _AthleteHomeState extends State<AthleteHome> {
     context.read<AthleteProfileBloc>().add(
           UpdateCreateAthleteProfile(
             athleteProfile.email,
+            athleteProfile.coachEmail,
             athleteProfile.programId,
             athleteProfile.startDate,
             week,

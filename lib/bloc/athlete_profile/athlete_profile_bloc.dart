@@ -58,8 +58,13 @@ class AthleteProfileBloc
       Emitter<AthleteProfileState> emit) async {
     _athleteProfileSubscription?.cancel();
 
-    await _athleteProfileRepository.updateAthleteProfile(event.email,
-        event.programId, event.startDate, event.week, event.session);
+    await _athleteProfileRepository.updateAthleteProfile(
+        event.email,
+        event.coachEmail,
+        event.programId,
+        event.startDate,
+        event.week,
+        event.session);
     emit(AthleteProfileCreateUpdated());
     emit(AthleteProfileLoaded());
   }

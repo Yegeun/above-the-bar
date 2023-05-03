@@ -231,6 +231,7 @@ class _CoachHomeState extends State<CoachHome> {
                                                         UpdateCreateAthleteProfile(
                                                           athleteList[index]
                                                               .email,
+                                                          widget.userEmail,
                                                           item,
                                                           _startDate,
                                                           1,

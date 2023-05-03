@@ -136,10 +136,10 @@ class _AddAthleteState extends State<AddAthlete> {
                                             padding: EdgeInsets.only(right: 60),
                                             child: Card(
                                                 child: Container(
-                                                  width: double.infinity,
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Text(opt),
-                                                ))));
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(10),
+                                              child: Text(opt),
+                                            ))));
                                   }).toList(),
                                 ),
                               ),
@@ -166,7 +166,7 @@ class _AddAthleteState extends State<AddAthlete> {
                       }
                       if (state is ProgramListLoaded) {
                         final List<String> programsList =
-                        state.programList.toList();
+                            state.programList.toList();
                         programsList.insert(0, 'unassigned');
 
                         final dropdownBloc = DropdownBloc<String>(programsList);
@@ -254,50 +254,50 @@ class _AddAthleteState extends State<AddAthlete> {
                                     if (athleteList.contains(
                                         controllerGetEmailText.toLowerCase())) {
                                       context.read<AthleteProfileBloc>().add(
-                                        LoadAthleteProfile(
-                                            addAthleteEmail.toLowerCase()),
-                                      );
+                                            LoadAthleteProfile(
+                                                addAthleteEmail.toLowerCase()),
+                                          );
 
                                       context
                                           .read<ProgramDetailsBloc>()
                                           .add(LoadProgramDetails(
-                                        addAthleteEmail.toLowerCase(),
-                                        profileState
-                                            .athleteProfile.programId,
-                                      ));
+                                            addAthleteEmail.toLowerCase(),
+                                            profileState
+                                                .athleteProfile.programId,
+                                          ));
 
                                       context.read<AthleteProfileBloc>().add(
-                                        UpdateCreateAthleteProfile(
-                                            addAthleteEmail.toLowerCase(),
-                                            controllerGetProgramId
-                                                .toLowerCase(),
-                                            DateTime.parse(text),
-                                            1,
-                                            1),
-                                      );
+                                            UpdateCreateAthleteProfile(
+                                                addAthleteEmail.toLowerCase(),
+                                                widget.userEmail,
+                                                controllerGetProgramId
+                                                    .toLowerCase(),
+                                                DateTime.parse(text),
+                                                1,
+                                                1),
+                                          );
                                       context.read<AthleteBloc>().add(
-                                        CreateAthlete(
-                                          AthleteModel(
-                                            name: controllerGetNameText
-                                                .toLowerCase(),
-                                            email: addAthleteEmail
-                                                .toLowerCase(),
-                                            programId:
-                                            controllerGetProgramId
-                                                .toLowerCase(),
-                                            startDate: DateTime.parse(text),
-                                          ),
-                                          widget.userEmail,
-                                        ),
-                                      );
+                                            CreateAthlete(
+                                              AthleteModel(
+                                                name: controllerGetNameText
+                                                    .toLowerCase(),
+                                                email: addAthleteEmail
+                                                    .toLowerCase(),
+                                                programId:
+                                                    controllerGetProgramId
+                                                        .toLowerCase(),
+                                                startDate: DateTime.parse(text),
+                                              ),
+                                              widget.userEmail,
+                                            ),
+                                          );
                                       dispose();
                                       // Navigation.pop(context);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              CoachHome(
-                                                  userEmail: widget.userEmail),
+                                          builder: (context) => CoachHome(
+                                              userEmail: widget.userEmail),
                                         ),
                                       );
                                     } else {
@@ -305,7 +305,7 @@ class _AddAthleteState extends State<AddAthlete> {
                                           .showSnackBar(
                                         SnackBar(
                                           content:
-                                          Text('Athlete does not exist'),
+                                              Text('Athlete does not exist'),
                                         ),
                                       );
                                     }

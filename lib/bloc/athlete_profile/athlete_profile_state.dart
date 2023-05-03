@@ -93,6 +93,7 @@ class AthleteProfileUpdating extends AthleteProfileState {
 
 class AthleteProfileCreateUpdating extends AthleteProfileState {
   final String email;
+  final String coachEmail;
   final String programId;
   final DateTime startDate;
   final String maxWeek;
@@ -102,6 +103,7 @@ class AthleteProfileCreateUpdating extends AthleteProfileState {
 
   const AthleteProfileCreateUpdating({
     required this.email,
+    required this.coachEmail,
     required this.programId,
     required this.startDate,
     required this.maxWeek,
