@@ -127,7 +127,7 @@ class _AthleteHomeState extends State<AthleteHome> {
         .toList();
     for (int i = 0; i < filteredList.length; i++) {
       if (filteredList[i].exercise != '') {
-        if (kExercises.contains(filteredList[i].exercise != '')) {
+        if (kExercises.contains(filteredList[i].exercise)) {
           int maxLoad =
               athleteProfile.getWeightliftingResult(filteredList[i].exercise);
           int actualLoad = (maxLoad * filteredList[i].intensity / 100).round();

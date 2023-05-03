@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
-import 'package:flutter/rendering.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:above_the_bar/utilities/constants.dart';
 
 class AthleteProgram extends StatefulWidget {
