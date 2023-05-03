@@ -9,6 +9,7 @@ void main() {
   late int load;
   late int sets;
   late int reps;
+  late List<String> inputExercises;
 
   // initialize variables
   setUp(() {
@@ -17,6 +18,7 @@ void main() {
     load = 150;
     sets = 3;
     reps = 10;
+    inputExercises = ["Snatch", "Clean and Jerk", "Jerk"];
   });
 
   testWidgets('Test AthleteInputWidget', (WidgetTester tester) async {
@@ -29,6 +31,7 @@ void main() {
           load: load,
           sets: sets,
           reps: reps,
+          inputExercises: inputExercises,
         ),
       ),
     ));

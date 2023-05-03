@@ -34,7 +34,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
+        Flexible(
           flex: 3,
           child: DropdownButton<String>(
             value: widget.exerciseName,
