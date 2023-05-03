@@ -1,16 +1,16 @@
 # above_the_bar
 
-A new Flutter project.
+Welcome to Above the Bar Application
 
-## Getting Started
+## Installations
 
-This project is a starting point for a Flutter application.
+To install this application, clone the repository and run the following commands:
 
-A few resources to get you started if this is your first Flutter project:
+```
+flutter pub get
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Description
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Where a coach is able to monitor athlete's progress.
