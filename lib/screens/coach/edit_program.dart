@@ -1,5 +1,4 @@
 import 'package:above_the_bar/bloc/blocs.dart';
-import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +20,7 @@ class EditProgram extends StatefulWidget {
 class _EditProgramState extends State<EditProgram> {
   @override
   Widget build(BuildContext context) {
+    final List<String> _exerciseList = widget.editProgramProgramName.sublist(2);
     context.read<ProgramBloc>().add(
           LoadProgram(widget.editProgramProgramName[1],
               widget.editProgramProgramName[0]),
@@ -40,7 +40,8 @@ class _EditProgramState extends State<EditProgram> {
               weekCoachEmail: widget.editProgramProgramName[1],
               numWeeks: state.programDetails.weeks,
               sessionsPerWeek: state.programDetails.sessions,
-              exercisesPerSession: state.programDetails.exercises);
+              exercisesPerSession: state.programDetails.exercises,
+              weekExerciseList: _exerciseList);
           return weekTextInputListEdit;
         }
         return Container();
@@ -55,6 +56,7 @@ class WeekTextInputListEdit extends StatefulWidget {
   final int exercisesPerSession;
   final String inputProgramName;
   final String weekCoachEmail;
+  final List<String> weekExerciseList;
 
   WeekTextInputListEdit({
     required this.numWeeks,
@@ -62,6 +64,7 @@ class WeekTextInputListEdit extends StatefulWidget {
     required this.exercisesPerSession,
     required this.inputProgramName,
     required this.weekCoachEmail,
+    required this.weekExerciseList,
   });
 
   @override
@@ -463,10 +466,11 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                                 dropdownValueState[i][j][k][0] = item!;
                                 _controllers[i][j][k][0].text = item;
                               });
-                              DropdownBloc<String>(kExercises).setSelectedItem(
-                                  _controllers[i][j][k][0].text);
+                              DropdownBloc<String>(widget.weekExerciseList)
+                                  .setSelectedItem(
+                                      _controllers[i][j][k][0].text);
                             },
-                            items: DropdownBloc<String>(kExercises)
+                            items: DropdownBloc<String>(widget.weekExerciseList)
                                 .items
                                 .map<DropdownMenuItem<String>>((item) {
                               return DropdownMenuItem<String>(

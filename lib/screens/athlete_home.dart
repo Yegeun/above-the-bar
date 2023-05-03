@@ -12,6 +12,9 @@ import 'package:above_the_bar/models/programs_model.dart';
 import 'package:above_the_bar/widgets/athlete_input_widget.dart';
 
 import '../bloc/auth/auth_bloc.dart';
+import '../bloc/exerciselist/exercise_bloc.dart';
+import '../models/exercise_model.dart';
+import '../utilities/constants.dart';
 
 class AthleteHome extends StatefulWidget {
   final String userEmail;
@@ -36,7 +39,7 @@ class _AthleteHomeState extends State<AthleteHome> {
   final List<AthleteInputWidget> _exerciseWidgets = [];
   bool isWeightClassSet = false;
 
-  void _addExerciseWidget() {
+  _addExerciseWidget(List<String> homeExerciseList) {
     setState(() {
       _exerciseWidgets.add(
         AthleteInputWidget(
@@ -44,7 +47,8 @@ class _AthleteHomeState extends State<AthleteHome> {
             exerciseName: 'Select Exercise',
             load: 1,
             sets: 1,
-            reps: 1),
+            reps: 1,
+            inputExercises: homeExerciseList),
       );
     });
   }
@@ -115,6 +119,7 @@ class _AthleteHomeState extends State<AthleteHome> {
     int currentWeek,
     int currentSession,
     AthleteProfileModel athleteProfile,
+    List<String> homeExerciseList,
   ) {
     List<ProgramModel> filteredList = athleteProgram
         .where((program) =>
@@ -122,17 +127,31 @@ class _AthleteHomeState extends State<AthleteHome> {
         .toList();
     for (int i = 0; i < filteredList.length; i++) {
       if (filteredList[i].exercise != '') {
-        int maxLoad =
-            athleteProfile.getWeightliftingResult(filteredList[i].exercise);
-        int actualLoad = (maxLoad * filteredList[i].intensity / 100).round();
-        _exerciseWidgets.add(
-          AthleteInputWidget(
-              exerciseNum: i + 1,
-              exerciseName: filteredList[i].exercise,
-              load: actualLoad,
-              sets: filteredList[i].sets,
-              reps: filteredList[i].reps),
-        );
+        if (kExercises.contains(filteredList[i].exercise != '')) {
+          int maxLoad =
+              athleteProfile.getWeightliftingResult(filteredList[i].exercise);
+          int actualLoad = (maxLoad * filteredList[i].intensity / 100).round();
+          _exerciseWidgets.add(
+            AthleteInputWidget(
+                exerciseNum: i + 1,
+                exerciseName: filteredList[i].exercise,
+                load: actualLoad,
+                sets: filteredList[i].sets,
+                reps: filteredList[i].reps,
+                inputExercises: homeExerciseList),
+          );
+        } else {
+          int actualLoad = 0;
+          _exerciseWidgets.add(
+            AthleteInputWidget(
+                exerciseNum: i + 1,
+                exerciseName: filteredList[i].exercise,
+                load: actualLoad,
+                sets: filteredList[i].sets,
+                reps: filteredList[i].reps,
+                inputExercises: homeExerciseList),
+          );
+        }
       }
     }
   }
@@ -152,11 +171,14 @@ class _AthleteHomeState extends State<AthleteHome> {
 
   @override
   Widget build(BuildContext context) {
+    List<Exercise> exerciseTemp = [];
     String text = DateFormat('yyyy-MM-dd').format(date);
     context
         .read<AthleteProfileBloc>()
         .add(LoadAthleteProfile(widget.userEmail));
-
+    Future.microtask(() => context
+        .read<ExerciseBloc>()
+        .add(LoadExercises(athletePersonalBest.coachEmail)));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Athlete Home"),
@@ -164,6 +186,25 @@ class _AthleteHomeState extends State<AthleteHome> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            BlocBuilder<ExerciseBloc, ExerciseState>(
+              builder: (context, state) {
+                if (state is ExerciseLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ExerciseLoaded) {
+                  exerciseTemp = state.exercises.toList();
+
+                  return Container();
+                } else {
+                  return Text(
+                    'Something went wrong ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  );
+                }
+              },
+            ),
             Stack(
               children: [
                 Align(
@@ -257,6 +298,15 @@ class _AthleteHomeState extends State<AthleteHome> {
                                   ),
                                   onPressed: () {
                                     setState(() {
+                                      List<String> _exerciseList = [];
+                                      _exerciseList.clear();
+                                      _exerciseList.addAll(kExercises);
+                                      for (int i = 0;
+                                          i < exerciseTemp.length;
+                                          i++) {
+                                        _exerciseList.add(exerciseTemp[i].name);
+                                      }
+                                      _exerciseList.add('Empty');
                                       if (athleteState.athleteProfile.session ==
                                               1 &&
                                           athleteState.athleteProfile.week ==
@@ -267,7 +317,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                                             content: Text(
                                                 'You are on the first session'),
                                             duration:
-                                                Duration(milliseconds: 95),
+                                                Duration(milliseconds: 200),
                                           ),
                                         );
                                       } else {
@@ -287,7 +337,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                                                   1,
                                               programState
                                                   .program[0].maxSession,
-                                              athleteState.athleteProfile);
+                                              athleteState.athleteProfile,
+                                              _exerciseList);
                                         } else {
                                           updateAthleteProfile(
                                               athleteState.athleteProfile,
@@ -295,14 +346,6 @@ class _AthleteHomeState extends State<AthleteHome> {
                                               athleteState
                                                       .athleteProfile.session -
                                                   1);
-                                          _exerciseWidgets.clear();
-                                          _populateExercises(
-                                              programState.program,
-                                              athleteState.athleteProfile.week,
-                                              athleteState
-                                                      .athleteProfile.session -
-                                                  1,
-                                              athleteState.athleteProfile);
                                         }
                                       }
                                       _refreshScreen(context, widget.userEmail);
@@ -320,6 +363,14 @@ class _AthleteHomeState extends State<AthleteHome> {
                                   ),
                                   onPressed: () {
                                     setState(() {
+                                      List<String> _exerciseList = [];
+                                      _exerciseList.clear();
+                                      _exerciseList.addAll(kExercises);
+                                      for (int i = 0;
+                                          i < exerciseTemp.length;
+                                          i++) {
+                                        _exerciseList.add(exerciseTemp[i].name);
+                                      }
                                       if (programState.program.length <
                                           programState.program[0].maxWeek *
                                               programState
@@ -349,7 +400,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                                               athleteState
                                                       .athleteProfile.session +
                                                   1,
-                                              athleteState.athleteProfile);
+                                              athleteState.athleteProfile,
+                                              _exerciseList);
                                         } else if (athleteState
                                                 .athleteProfile.week <
                                             programState.program[0].maxWeek) {
@@ -364,7 +416,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                                               athleteState.athleteProfile.week +
                                                   1,
                                               1,
-                                              athleteState.athleteProfile);
+                                              athleteState.athleteProfile,
+                                              _exerciseList);
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -455,6 +508,14 @@ class _AthleteHomeState extends State<AthleteHome> {
                               IconButton(
                                 onPressed: () {
                                   setState(() {
+                                    List<String> _exerciseList = [];
+                                    _exerciseList.clear();
+                                    _exerciseList.addAll(kExercises);
+                                    for (int i = 0;
+                                        i < exerciseTemp.length;
+                                        i++) {
+                                      _exerciseList.add(exerciseTemp[i].name);
+                                    }
                                     _loadExercises(
                                       programState.program,
                                       athleteState.athleteProfile.week,
@@ -466,7 +527,8 @@ class _AthleteHomeState extends State<AthleteHome> {
                                         programState.program,
                                         athleteState.athleteProfile.week,
                                         athleteState.athleteProfile.session,
-                                        athleteState.athleteProfile);
+                                        athleteState.athleteProfile,
+                                        _exerciseList);
                                   });
                                 },
                                 icon: Icon(Icons.refresh),
@@ -493,7 +555,7 @@ class _AthleteHomeState extends State<AthleteHome> {
               children: [
                 Text('Date:'),
                 Container(
-                  width: 100,
+                  width: 105,
                   margin: EdgeInsets.all(3.0),
                   child: TextButton(
                     onPressed: () async {
@@ -585,12 +647,11 @@ class _AthleteHomeState extends State<AthleteHome> {
                                       ),
                                     ),
                                   );
-                              if (athletePersonalBest.getWeightliftingResult(
-                                      _exerciseWidgets[i].exerciseName) <
-                                  _exerciseWidgets[i].load) {
-                                print(
-                                    athletePersonalBest.getWeightliftingResult(
-                                        _exerciseWidgets[i].exerciseName));
+                              if (kExercises.contains(
+                                      _exerciseWidgets[i].exerciseName) &&
+                                  athletePersonalBest.getWeightliftingResult(
+                                          _exerciseWidgets[i].exerciseName) <
+                                      _exerciseWidgets[i].load) {
                                 context.read<AthleteProfileBloc>().add(
                                     UpdatePersonalBestProfile(
                                         widget.userEmail,
@@ -609,7 +670,9 @@ class _AthleteHomeState extends State<AthleteHome> {
                                 content: Text('Data Submitted'),
                               ),
                             );
-                            _refreshScreen(context, widget.userEmail);
+                            setState(() {
+                              _exerciseWidgets.clear();
+                            });
                           },
                           child: Text("Submit Data"));
                     }
@@ -622,11 +685,21 @@ class _AthleteHomeState extends State<AthleteHome> {
                 ),
                 SizedBox(width: 20.0),
                 FloatingActionButton(
-                  onPressed: _addExerciseWidget,
+                  onPressed: () {
+                    setState(() {
+                      List<String> _exerciseList = [];
+                      _exerciseList.clear();
+                      _exerciseList.addAll(kExercises);
+                      for (int i = 0; i < exerciseTemp.length; i++) {
+                        _exerciseList.add(exerciseTemp[i].name);
+                      }
+                      _addExerciseWidget(_exerciseList);
+                    });
+                  },
                   child: Icon(Icons.add),
                 ),
               ],
-            ), // Submit Button
+            ), // Add Exercise Button
           ],
         ),
       ),

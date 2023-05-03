@@ -1,8 +1,11 @@
 import 'package:above_the_bar/bloc/blocs.dart';
+import 'package:above_the_bar/utilities/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../models/exercise_model.dart';
 
 String _name = 'Program Name';
 
@@ -67,8 +70,8 @@ class _ManageProgramsState extends State<ManagePrograms> {
         });
   }
 
-  Future<void> _displayCreateDialog(
-      BuildContext context, List<String> list) async {
+  Future<void> _displayCreateDialog(BuildContext context, List<String> list,
+      List<String> exerciseList) async {
     final TextEditingController controllerProgramName =
         TextEditingController(text: 'Program Name');
     final TextEditingController controllerWeeks = TextEditingController();
@@ -181,6 +184,7 @@ class _ManageProgramsState extends State<ManagePrograms> {
                             controllerExercises.text,
                           ];
                           _programList.add(widget.manageProgramsList[0]);
+                          _programList.addAll(exerciseList);
                           Navigator.of(context).pop();
                           navigateToCreateProgram(_programList);
                         }
@@ -226,16 +230,37 @@ class _ManageProgramsState extends State<ManagePrograms> {
   }
 
   List<String> globalProgramList = [];
+  List<Exercise> exerciseTemp = [];
 
   @override
   Widget build(BuildContext context) {
-    print(widget.manageProgramsList);
+    Future.microtask(() => context
+        .read<ExerciseBloc>()
+        .add(LoadExercises(widget.manageProgramsList[0])));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Manage Programs"),
       ),
       body: Column(
         children: [
+          BlocBuilder<ExerciseBloc, ExerciseState>(
+            builder: (context, state) {
+              if (state is ExerciseLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is ExerciseLoaded) {
+                exerciseTemp = state.exercises.toList();
+                return Container();
+              } else {
+                return Text(
+                  'Something went wrong ',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                );
+              }
+            },
+          ),
           SizedBox(height: 10.0),
           Row(
             children: [
@@ -249,7 +274,15 @@ class _ManageProgramsState extends State<ManagePrograms> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      _displayCreateDialog(context, globalProgramList);
+                      List<String> _exerciseList = [];
+                      _exerciseList.clear();
+                      _exerciseList.addAll(kExercises);
+                      for (int i = 0; i < exerciseTemp.length; i++) {
+                        _exerciseList.add(exerciseTemp[i].name);
+                      }
+                      _exerciseList.add('Empty');
+                      _displayCreateDialog(
+                          context, globalProgramList, _exerciseList);
                     },
                     child: Text(
                       'Create Program',
@@ -336,10 +369,20 @@ class _ManageProgramsState extends State<ManagePrograms> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
+                                      List<String> _exerciseList = [];
+                                      _exerciseList.clear();
+                                      _exerciseList.addAll(kExercises);
+                                      for (int i = 0;
+                                          i < exerciseTemp.length;
+                                          i++) {
+                                        _exerciseList.add(exerciseTemp[i].name);
+                                      }
+                                      _exerciseList.add('Empty');
                                       List<String> programEditList = [
                                         programsList[index],
                                         widget.manageProgramsList[0],
                                       ];
+                                      programEditList.addAll(_exerciseList);
                                       Navigator.pushNamed(
                                           context, '/coach/edit',
                                           arguments: programEditList);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../bloc/cupertino_picker/dropdown_bloc.dart';
 
 class AthleteInputWidget extends StatefulWidget {
+  final List<String> inputExercises;
   final int exerciseNum;
   String exerciseName;
   int load;
@@ -10,6 +12,7 @@ class AthleteInputWidget extends StatefulWidget {
 
   AthleteInputWidget({
     super.key,
+    required this.inputExercises,
     required this.exerciseNum,
     required this.exerciseName,
     required this.load,
@@ -24,7 +27,6 @@ class AthleteInputWidget extends StatefulWidget {
 class _AthleteInputWidgetState extends State<AthleteInputWidget> {
   @override
   Widget build(BuildContext context) {
-    final controllerEx = TextEditingController(text: widget.exerciseName);
     final controllerSets = TextEditingController(text: widget.sets.toString());
     final controllerReps = TextEditingController(text: widget.reps.toString());
     final controllerLoad = TextEditingController(text: widget.load.toString());
@@ -34,24 +36,23 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
       children: [
         Expanded(
           flex: 3,
-          child: Container(
-            margin: EdgeInsets.all(5.0),
-            child: TextFormField(
-              controller: controllerEx,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Exercise ${widget.exerciseNum}',
-              ),
-              onChanged: (value) {
-                widget.exerciseName = value;
-              },
-              validator: (value) {
-                if (value!.isEmpty) {
-                  throw Exception('Please enter a value');
-                }
-                return null;
-              },
-            ),
+          child: DropdownButton<String>(
+            value: widget.exerciseName,
+            onChanged: (item) {
+              setState(() {
+                widget.exerciseName = item!;
+              });
+              DropdownBloc<String>(widget.inputExercises)
+                  .setSelectedItem(widget.exerciseName);
+            },
+            items: DropdownBloc<String>(widget.inputExercises)
+                .items
+                .map<DropdownMenuItem<String>>((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(item),
+              );
+            }).toList(),
           ),
         ),
         Expanded(

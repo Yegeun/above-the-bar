@@ -24,7 +24,7 @@ List<String> kExercises = [
   'Trunk Hold', // 21
   'Back Hold', // 22
   'Side Hold', // 23
-  'Empty', // 24
+  // 'Empty', // 24
 ];
 
 const kRepsSetsColour = Color(0xF0008080);

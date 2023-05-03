@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:above_the_bar/models/models.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../utilities/constants.dart';
 import '/bloc/blocs.dart';
 
 List<ProgramModel> _programModelList = [];
@@ -30,6 +29,7 @@ class _CreateProgramScreenState extends State<CreateProgramScreen> {
       sessionsPerWeek: int.parse(widget.createProgramScreenProgramName[2]),
       exercisesPerSession: int.parse(widget.createProgramScreenProgramName[3]),
       weekCoachEmail: widget.createProgramScreenProgramName[4],
+      exerciseList: widget.createProgramScreenProgramName.sublist(5),
     );
 
     return Scaffold(
@@ -53,6 +53,7 @@ class WeekTextInputList extends StatefulWidget {
   final int exercisesPerSession;
   final String inputProgramName;
   final String weekCoachEmail;
+  final List<String> exerciseList;
 
   WeekTextInputList({
     required this.numWeeks,
@@ -60,6 +61,7 @@ class WeekTextInputList extends StatefulWidget {
     required this.exercisesPerSession,
     required this.inputProgramName,
     required this.weekCoachEmail,
+    required this.exerciseList,
   });
 
   @override
@@ -378,10 +380,6 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
       );
     }
 
-    List<String> newExerciseList = [];
-    Future.microtask(() =>
-        context.read<ExerciseBloc>().add(LoadExercises(widget.weekCoachEmail)));
-
     List<Widget> weekFields = [];
     final TransformationController transformationController =
         TransformationController();
@@ -418,10 +416,10 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                           dropdownValueState[i][j][k][0] = item!;
                           _controllers[i][j][k][0].text = item;
                         });
-                        DropdownBloc<String>(kExercises)
+                        DropdownBloc<String>(widget.exerciseList)
                             .setSelectedItem(dropdownValueState[i][j][k][0]);
                       },
-                      items: DropdownBloc<String>(kExercises)
+                      items: DropdownBloc<String>(widget.exerciseList)
                           .items
                           .map<DropdownMenuItem<String>>((item) {
                         return DropdownMenuItem<String>(
