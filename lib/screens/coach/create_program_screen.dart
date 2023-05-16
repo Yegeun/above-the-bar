@@ -82,16 +82,15 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
       final TextEditingController controllerRepsPM = TextEditingController();
       final TextEditingController controllerReps = TextEditingController();
       final TextEditingController controllerIntensityPM =
-          TextEditingController();
+      TextEditingController();
       final TextEditingController controllerIntensity = TextEditingController();
-      void updateControllerText(
-          String pm,
+      void updateControllerText(String pm,
           TextEditingController currentController,
           TextEditingController setsController,
           TextEditingController copyController) {
         if (pm == '+') {
           copyController.text = (int.parse(currentController.text) +
-                  int.parse(setsController.text))
+              int.parse(setsController.text))
               .toString();
         } else if (pm == '-') {
           final int current = int.parse(currentController.text);
@@ -340,11 +339,11 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                           print('copyNum: $copyNum num: $num');
                           for (int j = 0; j < widget.sessionsPerWeek; j++) {
                             for (int k = 0;
-                                k < widget.exercisesPerSession;
-                                k++) {
+                            k < widget.exercisesPerSession;
+                            k++) {
                               setState(() {
                                 dropdownValueState[copyNum][j][k][0] =
-                                    dropdownValueState[num][j][k][0];
+                                dropdownValueState[num][j][k][0];
                               });
                               _controllers[copyNum][j][k][0].text =
                                   _controllers[num][j][k][0].text;
@@ -382,7 +381,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
 
     List<Widget> weekFields = [];
     final TransformationController transformationController =
-        TransformationController();
+    TransformationController();
 
     for (int i = 0; i < widget.numWeeks; i++) {
       List<Widget> sessionFields = [];
@@ -530,7 +529,7 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
                 icon: Icon(Icons.copy)),
             Tooltip(
               message:
-                  'If you don\'t have an exercise, select "Empty" and the exercise will be skipped',
+              'If you don\'t have an exercise, select "Empty" and the exercise will be skipped',
               child: IconButton(
                 icon: Icon(Icons.help_outline),
                 onPressed: () {},
@@ -581,9 +580,15 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
               SizedBox(width: 16.0),
               FloatingActionButton(
                 onPressed: () {
-                  handleSubmit(widget.inputProgramName, widget.numWeeks,
-                      widget.sessionsPerWeek, widget.exercisesPerSession);
-                  Navigator.pop(context);
+                  try {
+                    handleSubmit(widget.inputProgramName, widget.numWeeks,
+                        widget.sessionsPerWeek, widget.exercisesPerSession);
+                    Navigator.pop(context);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Please fill out all fields'),
+                    ));
+                  }
                 },
                 heroTag: null,
                 backgroundColor: Color(0xFF4285F4),
@@ -631,11 +636,11 @@ class _WeekTextInputListState extends State<WeekTextInputList> {
     print('ProgramModelList: $_programModelList');
     for (int i = 0; i < _programModelList.length; i++) {
       context.read<ProgramBloc>().add(
-            CreateProgram(
-              _programModelList[i],
-              widget.weekCoachEmail,
-            ),
-          );
+        CreateProgram(
+          _programModelList[i],
+          widget.weekCoachEmail,
+        ),
+      );
     }
     return _programModelList;
   }

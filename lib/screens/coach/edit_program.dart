@@ -21,13 +21,15 @@ class _EditProgramState extends State<EditProgram> {
   @override
   Widget build(BuildContext context) {
     final List<String> _exerciseList = widget.editProgramProgramName.sublist(2);
-    context.read<ProgramBloc>().add(
-          LoadProgram(widget.editProgramProgramName[1],
-              widget.editProgramProgramName[0]),
-        );
+    Future.delayed(Duration(milliseconds: 100), () {
+      context.read<ProgramBloc>().add(
+            LoadProgram(widget.editProgramProgramName[1],
+                widget.editProgramProgramName[0]),
+          );
+      context.read<ProgramDetailsBloc>().add(LoadProgramDetails(
+          widget.editProgramProgramName[1], widget.editProgramProgramName[0]));
+    });
 
-    context.read<ProgramDetailsBloc>().add(LoadProgramDetails(
-        widget.editProgramProgramName[1], widget.editProgramProgramName[0]));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Program"),
@@ -346,7 +348,6 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                         onPressed: () {
                           int copyNum = int.parse(controllerCopyWeek.text) - 1;
                           int num = int.parse(controllerWeek.text) - 1;
-                          print('copyNum: $copyNum num: $num');
                           for (int j = 0; j < widget.sessionsPerWeek; j++) {
                             for (int k = 0;
                                 k < widget.exercisesPerSession;
@@ -389,7 +390,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
       );
     }
 
-    List<Widget> weekFields = [];
+    List<Widget> weekFieldsWidget = [];
     for (int i = 0; i < widget.numWeeks; i++) {
       List<List<List<TextEditingController>>> weekSessions = [];
       List<List<List<String>>> dropdownValueWeek = [];
@@ -428,18 +429,19 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
         }
         if (state is ProgramLoaded) {
           List<ProgramModel> vProgram = state.program;
-          Future.delayed(Duration(milliseconds: 500), () {
+          Future.delayed(Duration(milliseconds: 300), () {
             if (dropdownValueState[0][0][0][0] == 'Select Exercise') {
               setState(() {
                 loadProgramDetails(vProgram);
               });
             }
           });
+          weekFieldsWidget.clear();
           for (int i = 0; i < widget.numWeeks; i++) {
-            List<Widget> sessionFields = [];
+            List<Widget> sessionFieldsWidget = [];
             for (int j = 0; j < widget.sessionsPerWeek; j++) {
-              List<Widget> exerciseFields = [];
-              exerciseFields.add(
+              List<Widget> exerciseFieldsWidget = [];
+              exerciseFieldsWidget.add(
                 Row(
                   children: [
                     Padding(
@@ -450,7 +452,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                 ),
               );
               for (int k = 0; k < widget.exercisesPerSession; k++) {
-                exerciseFields.add(
+                exerciseFieldsWidget.add(
                   Column(
                     children: [
                       Padding(padding: EdgeInsets.only(top: 15)),
@@ -542,13 +544,11 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                   ),
                 );
               }
-              sessionFields.add(
-                Column(
-                  children: exerciseFields,
-                ),
+              sessionFieldsWidget.add(
+                Column(children: exerciseFieldsWidget),
               );
             }
-            weekFields.add(
+            weekFieldsWidget.add(
               Column(
                 children: [
                   Row(
@@ -558,7 +558,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                     ],
                   ),
                   Column(
-                    children: sessionFields,
+                    children: sessionFieldsWidget,
                   ),
                 ],
               ),
@@ -600,7 +600,7 @@ class _WeekTextInputListEditState extends State<WeekTextInputListEdit> {
                     transformationController: _transformationController,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: weekFields,
+                      children: weekFieldsWidget,
                     ),
                   ),
                 ),

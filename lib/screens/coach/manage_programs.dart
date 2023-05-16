@@ -183,6 +183,13 @@ class _ManageProgramsState extends State<ManagePrograms> {
                             controllerSession.text,
                             controllerExercises.text,
                           ];
+                          if (_programList[0] == '' ||
+                              _programList[1] == '' ||
+                              _programList[2] == '' ||
+                              _programList[3] == '') {
+                            showSnack('Please fill in all fields');
+                            return;
+                          }
                           _programList.add(widget.manageProgramsList[0]);
                           _programList.addAll(exerciseList);
                           Navigator.of(context).pop();
