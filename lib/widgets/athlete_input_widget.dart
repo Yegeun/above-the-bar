@@ -35,7 +35,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          flex: 3,
+          flex: 5,
           child: DropdownButton<String>(
             value: widget.exerciseName,
             onChanged: (item) {
@@ -56,7 +56,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Container(
             margin: EdgeInsets.all(5.0),
             child: TextFormField(
@@ -85,7 +85,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Container(
             margin: EdgeInsets.all(5.0),
             child: TextFormField(
@@ -114,7 +114,7 @@ class _AthleteInputWidgetState extends State<AthleteInputWidget> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Container(
             margin: EdgeInsets.all(1.0),
             child: TextFormField(

@@ -83,6 +83,7 @@ class _AthleteHomeState extends State<AthleteHome> {
             children: [
               SizedBox(height: 10),
               Container(
+                padding: EdgeInsets.only(left: 4),
                 width: 100,
                 child: Text(
                   filteredList[i].exercise,
@@ -573,7 +574,7 @@ class _AthleteHomeState extends State<AthleteHome> {
                   ),
                 ),
                 Container(
-                  width: 70,
+                  width: 65,
                   margin: EdgeInsets.all(3.0),
                   child: TextField(
                     controller: _controller,
@@ -594,7 +595,7 @@ class _AthleteHomeState extends State<AthleteHome> {
             Column(
               children: [
                 Container(
-                  height: 150,
+                  height: 165,
                   child: ListView.builder(
                     itemCount: _exerciseWidgets.length,
                     itemBuilder: (context, index) {
@@ -631,6 +632,27 @@ class _AthleteHomeState extends State<AthleteHome> {
                       return OutlinedButton(
                           onPressed: () {
                             for (int i = 0; i < _exerciseWidgets.length; i++) {
+                              if (_exerciseWidgets[i].exerciseName ==
+                                      'Select Exercise' ||
+                                  _exerciseWidgets[i].sets.toString() == '' ||
+                                  _exerciseWidgets[i].reps.toString() == '' ||
+                                  _exerciseWidgets[i].load.toString() == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Please fill in all the fields for each exercise'),
+                                  ),
+                                );
+                              }
+                              if (DateTime.parse(text)
+                                      .compareTo(DateTime.now()) >
+                                  0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Future Date Selected'),
+                                  ),
+                                );
+                              }
                               context.read<AthleteDataBloc>().add(
                                     CreateAthleteData(
                                       AthleteDataEntryModel(
